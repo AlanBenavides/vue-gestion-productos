@@ -8,12 +8,32 @@
             <button type="button" class="btn btn-secondary">Menor inventario</button>
             <button type="button" class="btn btn-secondary">Precio</button>
         </div>
+        <div class="list">
+            <Item></Item>
+            <Item></Item>
+            <Item></Item>
+            <Item></Item>
+        </div>
     </div>
 </template>
 
 <script>
+import Item from "@/components/admin_prod/Item.vue"
+
 export default {
-    name: "Short"
+    name: "Short",
+    components: {
+        Item
+    },
+    data: function(){
+        return{
+            productos: [
+                {id: 1, nombre: "laptop"},
+                {id: 2, nombre: "licuadora"},
+                {id: 3, nombre: "sandias"}
+            ]
+        }
+    }
 }
 </script>
 
@@ -23,5 +43,9 @@ export default {
         float: right;
         margin-left: 5%;
         text-align: left;
+    }
+    .list {
+        display: flex;
+        align-items: stretch;
     }
 </style>

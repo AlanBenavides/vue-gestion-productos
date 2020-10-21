@@ -11,8 +11,8 @@
 
 <script>
 import Nav from "@/components/Nav.vue"
-import Options from "@/components/Options.vue"
-import Short from "@/components/Short.vue"
+import Options from "@/components/admin_prod/Options.vue"
+import Short from "@/components/admin_prod/Short.vue"
 
 export default {
     name: "Admin_productos",
