@@ -17,15 +17,15 @@
             <form class="formulario">
               <label
                 >Nombre del Producto:
-                <input type="text" v-model="producto.name"
+                <input type="text" required v-model="producto.nombre_prod"
               /></label>
 
               <label
-                >decription:<textarea cols="30" rows="10"></textarea>
+                >decription:<textarea v-model="producto.descripcion" cols="30" rows="10"></textarea>
               </label>
               <label>Categoria:</label>
-              <select name="CATEGORIA" v-model="producto.categoria">
-                <option selected value="0">Elige una opción</option>
+              <select name="CATEGORIA" required v-model="producto.categoria">
+                <option selected value="">Elige una opción</option>
                 <option value="Farmacia">Farmacia</option>
                 <option value="Electronicos">Electronicos</option>
                 <option value="Ropa">Ropa</option>
@@ -33,7 +33,7 @@
                 <option value="Entretenimiento">Entretenimieto</option>
               </select>
               <label
-                >Precio por unidad (Bs.):<input class="precio" type="number"
+                >Precio por unidad (Bs.):<input class="precio" type="number" v-model="producto.precio_unid"
               /></label>
 
               <p>
@@ -42,29 +42,30 @@
                 <label
                   ><input
                     type="radio"
-                    name="cantidad"
-                    value="unidades"
-                    v-model="producto.unidades"
+                    name="cantidad" value="unidades"  @click="clickable()"
+                   v-model="producto.unidad"
+                    
                   />Unidades</label
                 ><br />
-                <input type="number" />
+                <input type="number"  :disabled="producto.unidad ==='peso'" v-model="producto.cantidad"  />
 
                 <label
                   ><input
                     type="radio"
                     name="cantidad"
                     value="peso"
-                    v-model="producto.unidades"
+                    @click="clickable()"
+                    v-model="producto.unidad"
                   />Peso</label
                 ><br />
-                <input class="peso" type="number" />
-                <select name="UNIDAD PESO" class="unidad">
-                  <option selected value="0">Elige una opción</option>
-                  <option value="1">Kilogramos</option>
-                  <option value="2">Libras</option>
-                  <option value="3">Litros</option>
-                  <option value="4">Galones</option>
-                  <option value="5">Onzas</option>
+                <input class="peso" type="number" :disabled="producto.unidad === 'unidades'" v-model="producto.peso"/>
+                <select name="UNIDAD PESO" class="unidad" :disabled="producto.unidad === 'unidades'" v-model="producto.unidad_med">
+                  <option selected value="">Elige una opción</option>
+                  <option value="Kilogramos">Kilogramos</option>
+                  <option value="Libras">Libras</option>
+                  <option value="Litros">Litros</option>
+                  <option value="Galones">Galones</option>
+                  <option value="Onzas">Onzas</option>
                 </select>
               </p>
 
@@ -75,7 +76,7 @@
                 name="trip-start"
                 value="DD/MM/AA"
                 min="2020-01-01"
-                max="2025-12-31"
+                max="2025-12-31" v-model="producto.fecha_venc"
               />
 
               <div>
@@ -98,15 +99,34 @@ export default {
   data: function () {
     return {
       producto: {},
-      nombre: "",
+     
     };
+    
   },
   methods: {
     send: function (event) {
       event.preventDefault();
       console.log(this.producto);
     },
+    clickable() {
+                  // if somethin
+                 if(this.producto.unidad==='peso'){
+                    this.producto.peso=null;
+                    this.producto.unidad_med=null;
+                    return false;
+                 }else{
+                   if(this.producto.unidad==='unidades'){
+                   this.producto.cantidad=null;
+                   return true;}
+                 }
+
+                 
+                
+              }
   },
+    
+              
+          
 };
 </script>
 
