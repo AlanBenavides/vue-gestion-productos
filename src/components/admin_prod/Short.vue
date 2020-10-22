@@ -47,7 +47,7 @@ export default {
         return {
             pagina: 1,
             pagCount: 0,
-            orden: 'nombre'
+            orden: 'nombre',
         }
     },
     computed: {

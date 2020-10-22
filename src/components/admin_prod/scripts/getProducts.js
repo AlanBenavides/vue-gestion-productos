@@ -1,3 +1,5 @@
+//import axios from 'axios'
+
 //funcion para pruebas
 function gen(init, cantidad){
     let productos = []
@@ -22,18 +24,24 @@ sql: SELECT id, nombre, precio, descripcion, fecha FROM producto ORDER BY <crite
 por ahora solo muestran en consola el orden elegido
 */
 function getProducts(page, criteria) {
-    let offset = (page-1)*10
-
+    const offset = (page-1)*10
     console.log("Ordenado por ".concat(criteria))
     return gen(offset,10)
+    //let productos = []
+    //data = {offset, criteria}
+    //axios.get('http://direccion:puerto/consulta/', data)
+    //.then(response => (productos.push(response.rowa)))
+    //return productos
 }
 
 function getPagesCount(){
-    let productsCount = 76
+    let productsCount = 76;
+    //axios.get('http://direccion:puerto/consulta')
+    //.then(response => (productsCount.push(response.datos)))
     return (productsCount-(productsCount%10))/10
 }
 
-module.exports = {
+export {
     getProducts,
     getPagesCount
 };
