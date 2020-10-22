@@ -13,14 +13,7 @@
 
 export default {
     name: "Item",
-    data: function(){
-        return {
-            nombre: "Sin nombre",
-            precio: "Sin precio",
-            descripcion: "Sin descripcion",
-            fecha: "Sin fecha"
-        }
-    }
+    props: ['nombre', 'precio', 'descripcion', 'fecha'],
 }
 </script>
 
