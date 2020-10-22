@@ -14,15 +14,17 @@
 
           <div>
             <h2>Datos del producto:</h2>
-            <form  class="formulario">
+            <form class="formulario">
               <label
-                >Nombre del Producto:<input type="text" required v-model="nombre"></label>
-                
+                >Nombre del Producto:
+                <input type="text" v-model="producto.name"
+              /></label>
+
               <label
                 >decription:<textarea cols="30" rows="10"></textarea>
               </label>
               <label>Categoria:</label>
-              <select name="CATEGORIA">
+              <select name="CATEGORIA" v-model="producto.categoria">
                 <option selected value="0">Elige una opción</option>
                 <option value="Farmacia">Farmacia</option>
                 <option value="Electronicos">Electronicos</option>
@@ -42,6 +44,7 @@
                     type="radio"
                     name="cantidad"
                     value="unidades"
+                    v-model="producto.unidades"
                   />Unidades</label
                 ><br />
                 <input type="number" />
@@ -51,6 +54,7 @@
                     type="radio"
                     name="cantidad"
                     value="peso"
+                    v-model="producto.unidades"
                   />Peso</label
                 ><br />
                 <input class="peso" type="number" />
@@ -76,11 +80,11 @@
 
               <div>
                 <ion-col text-rigth>
-                  <button class="boton" @click="crear">Confirmar</button>
+                  <button class="boton" @click="send">Confirmar</button>
                 </ion-col>
               </div>
             </form>
-            {{ nombre}}
+            {{ producto }}
           </div>
         </div>
       </div>
@@ -93,11 +97,15 @@ export default {
   name: "Formulario",
   data: function () {
     return {
-      producto: {
-        
-      },
-      nombre:""
+      producto: {},
+      nombre: "",
     };
+  },
+  methods: {
+    send: function (event) {
+      event.preventDefault();
+      console.log(this.producto);
+    },
   },
 };
 </script>

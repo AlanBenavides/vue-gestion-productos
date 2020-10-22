@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
+      <Nav />
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/registroProducto">Registro Producto</router-link>
@@ -8,6 +9,16 @@
     <router-view />
   </div>
 </template>
+
+<script>
+import Nav from "@/components/Nav.vue";
+export default {
+  name: "RegistroProducto",
+  components: {
+    Nav,
+  },
+};
+</script>
 
 <style>
 #app {
