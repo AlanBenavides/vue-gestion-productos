@@ -21,19 +21,33 @@
               /></label>
 
               <label
-                >decription:<textarea v-model="producto.descripcion" cols="30" rows="10"></textarea>
+                >decription:<textarea
+                  v-model="producto.descripcion"
+                  cols="30"
+                  rows="10"
+                ></textarea>
               </label>
-              <label>Categoria:</label>
-              <select name="CATEGORIA" required v-model="producto.categoria">
-                <option selected value="">Elige una opción</option>
-                <option value="Farmacia">Farmacia</option>
-                <option value="Electronicos">Electronicos</option>
-                <option value="Ropa">Ropa</option>
-                <option value="Alimentos">Alimentos</option>
-                <option value="Entretenimiento">Entretenimieto</option>
-              </select>
+
+              <label for="categoria">Categoria:</label>
+              <input
+                list="categorias"
+                name="categoria"
+                id="categoria"
+                v-model="producto.categoria"
+              />
+              <datalist id="categorias">
+                <option value="Farmacia"></option>
+                <option value="Electronicos"></option>
+                <option value="Ropa"></option>
+                <option value="Alimentos"></option>
+                <option value="Entretenimiento"></option>
+              </datalist>
+
               <label
-                >Precio por unidad (Bs.):<input class="precio" type="number" v-model="producto.precio_unid"
+                >Precio por unidad (Bs.):<input
+                  class="precio"
+                  type="number"
+                  v-model="producto.precio_unid"
               /></label>
 
               <p>
@@ -42,12 +56,17 @@
                 <label
                   ><input
                     type="radio"
-                    name="cantidad" value="unidades"  @click="clickable()"
-                   v-model="producto.unidad"
-                    
+                    name="cantidad"
+                    value="unidades"
+                    @click="clickable()"
+                    v-model="producto.unidad"
                   />Unidades</label
                 ><br />
-                <input type="number"  :disabled="producto.unidad ==='peso'" v-model="producto.cantidad"  />
+                <input
+                  type="number"
+                  :disabled="producto.unidad === 'peso'"
+                  v-model="producto.cantidad"
+                />
 
                 <label
                   ><input
@@ -58,8 +77,18 @@
                     v-model="producto.unidad"
                   />Peso</label
                 ><br />
-                <input class="peso" type="number" :disabled="producto.unidad === 'unidades'" v-model="producto.peso"/>
-                <select name="UNIDAD PESO" class="unidad" :disabled="producto.unidad === 'unidades'" v-model="producto.unidad_med">
+                <input
+                  class="peso"
+                  type="number"
+                  :disabled="producto.unidad === 'unidades'"
+                  v-model="producto.peso"
+                />
+                <select
+                  name="UNIDAD PESO"
+                  class="unidad"
+                  :disabled="producto.unidad === 'unidades'"
+                  v-model="producto.unidad_med"
+                >
                   <option selected value="">Elige una opción</option>
                   <option value="Kilogramos">Kilogramos</option>
                   <option value="Libras">Libras</option>
@@ -76,7 +105,8 @@
                 name="trip-start"
                 value="DD/MM/AA"
                 min="2020-01-01"
-                max="2025-12-31" v-model="producto.fecha_venc"
+                max="2025-12-31"
+                v-model="producto.fecha_venc"
               />
 
               <div>
@@ -99,9 +129,7 @@ export default {
   data: function () {
     return {
       producto: {},
-     
     };
-    
   },
   methods: {
     send: function (event) {
@@ -109,24 +137,19 @@ export default {
       console.log(this.producto);
     },
     clickable() {
-                  // if somethin
-                 if(this.producto.unidad==='peso'){
-                    this.producto.peso=null;
-                    this.producto.unidad_med=null;
-                    return false;
-                 }else{
-                   if(this.producto.unidad==='unidades'){
-                   this.producto.cantidad=null;
-                   return true;}
-                 }
-
-                 
-                
-              }
+      // if somethin
+      if (this.producto.unidad === "peso") {
+        this.producto.peso = null;
+        this.producto.unidad_med = null;
+        return false;
+      } else {
+        if (this.producto.unidad === "unidades") {
+          this.producto.cantidad = null;
+          return true;
+        }
+      }
+    },
   },
-    
-              
-          
 };
 </script>
 
@@ -153,8 +176,12 @@ label {
 h1 {
   text-align: center;
 }
+.select,#categoria{
+  border: #e6e6fa 1px solid;
+}
 .unidad {
   margin: 0 30px;
+  border: #e6e6fa 1px solid;
 }
 
 .contenedor {
