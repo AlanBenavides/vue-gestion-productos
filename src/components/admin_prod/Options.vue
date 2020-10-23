@@ -1,9 +1,10 @@
 <template>
     <div class="options btn-group-vertical">
-        <button type="button" class="btn btn-secondary">APLICAR DESCUENTO</button>
-        <button type="button" class="btn btn-secondary">EDITAR PRODUCTO</button>
-        <button type="button" class="btn btn-secondary">AÑADIR A PROMICIÓN</button>
-        <button type="button" class="btn btn-secondary">ELIMINAR PRODUCTO</button>
+        <router-link type="button" class="btn btn-secondary" to="/about">REGISTRAR PRODUCTO</router-link>
+        <router-link type="button" class="btn btn-secondary" to="/about">APLICAR DESCUENTO</router-link>
+        <router-link type="button" class="btn btn-secondary" to="/about">EDITAR PRODUCTO</router-link>
+        <router-link type="button" class="btn btn-secondary" to="/about">AÑADIR A PROMICIÓN</router-link>
+        <router-link type="button" class="btn btn-secondary" to="/about">ELIMINAR PRODUCTO</router-link>
     </div>
 </template>
 
@@ -19,7 +20,7 @@ export default {
         width: 25%;
         float: left;
     }
-    .options > button {
+    .btn{
         margin: 20px 20px 20px 20px;
     }
 </style>

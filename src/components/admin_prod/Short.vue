@@ -9,7 +9,8 @@
             <button type="button" class="btn" :class="orden=='precio' ? 'btn-primary':'btn-light'" @click="orden='precio'; pagina=1">Precio</button>
         </div>
         <div class="list">
-            <Item v-for="producto of productos" :key="producto.id" 
+            <Item v-for="producto of productos" :key="producto.id"
+            :product_id="producto.id" 
             :nombre="producto.nombre"
             :precio="producto.precio"
             :desripcion="producto.descripcion"
@@ -33,6 +34,7 @@
 
 <script>
 import Item from "@/components/admin_prod/Item.vue"
+
 import {    
     getProducts,
     getPagesCount
@@ -64,12 +66,6 @@ export default {
             return {
                 '' : this.pagina < this.pagCount,
                 'disabled' : this.pagina >= this.pagCount
-            }
-        },
-        pageActive(){
-            return {
-                '' : this.pagina == 2,
-                'active' : this.pagina != 2
             }
         }
     },
