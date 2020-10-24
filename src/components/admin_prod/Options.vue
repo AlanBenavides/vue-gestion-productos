@@ -1,11 +1,7 @@
 <template>
   <aside>
     <ul class="options btn-group-vertical">
-      <button
-        v-for="(button, index) in buttons"
-        :key="index"
-        class="button"
-      >
+      <button v-for="(button, index) in buttons" :key="index" class="button">
         {{ button.name }}
       </button>
     </ul>

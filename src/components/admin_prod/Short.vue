@@ -18,25 +18,27 @@
     </div>
     <div class="short-list">
       <div
-        v-for="producto of productos"
-        :key="producto.id"
+        v-for="producto in arrayProd1"
+        :key="producto.cod_prod"
         :class="`short-product ${
-          producto.id == produtSelect ? 'short-product_select' : ''
+          producto.cod_prod == produtSelect ? 'short-product_select' : ''
         }`"
-        @click="selectProduct(producto.id)"
+        @click="selectProduct(producto.cod_prod)"
       >
         <Item
-          :nombre="producto.nombre"
+          :nombre="producto.nombre_prod"
           :precio="producto.precio"
           :desripcion="producto.descripcion"
-          :fecha="producto.fecha"
+          :fecha="producto.fecha_adic"
         />
       </div>
     </div>
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <li class="page-item" :class="previousEnabled">
-          <a class="page-link" href="#" tabindex="-1" @click="pagina--">Anterior</a>
+          <a class="page-link" href="#" tabindex="-1" @click="pagina--"
+            >Anterior</a
+          >
         </li>
         <li
           class="page-item"
@@ -56,7 +58,7 @@
 
 <script>
 import Item from "@/components/admin_prod/Item.vue";
-import { getProducts, getPagesCount } from "./scripts/getProducts";
+import axios from "axios";
 
 export default {
   name: "Short",
@@ -67,8 +69,11 @@ export default {
     return {
       pagina: 1,
       pagCount: 0,
-      orden: "nombre",
+      orden: "nombre_prod",
       produtSelect: -1,
+      arrayProd1: [],
+      arrayNext: [],
+      arrayAnt: [],
       orderButtons: [
         {
           order: "nombre",
@@ -90,9 +95,6 @@ export default {
     };
   },
   computed: {
-    productos() {
-      return getProducts(this.pagina, this.orden);
-    },
     previousEnabled() {
       return {
         "": this.pagina > 1,
@@ -121,9 +123,38 @@ export default {
       this.produtSelect = id;
       console.log(id);
     },
+    getProducts(pagina, orden) {
+      let me = this;
+
+      axios
+        .get(
+          "http://localhost:4000/products?criterio=" +
+            orden +
+            "&page=" +
+            pagina +
+            "&limit=" +
+            6
+        )
+        .then(function (response) {
+          var respuesta = response.data;
+          this.arrayProd1 = respuesta.results;
+
+          var arrayCount = respuesta.cant;
+          if (((arrayCount[0].count * 1) / 6) % 10 == 0) {
+            me.pagCount = (arrayCount[0].count * 1) / 6;
+          } else {
+            me.pagCount = (arrayCount[0].count * 1) / 6 + 1;
+          }
+          me.arrayNext = respuesta.next;
+          me.arrayAnt = respuesta.previus;
+
+          //me.pagina = me.arrayNext.page
+          //me.pagina = me.arrayAnt.page
+        });
+    },
   },
   mounted: function () {
-    this.pagCount = getPagesCount();
+    this.getProducts(this.pagina, this.orden);
   },
 };
 </script>
