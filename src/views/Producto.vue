@@ -1,8 +1,14 @@
 <template>
-  <div id="product">
-    <Galeria />
-    <Datos />
-  </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-6">
+          <Galeria />
+        </div>
+        <div class="col-6">
+          <Datos />
+        </div>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -19,16 +25,5 @@ export default {
 </script>
 
 <style scoped>
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
-.product {
-  display: flex;
-  justify-content: space-evenly;
-}
 </style>

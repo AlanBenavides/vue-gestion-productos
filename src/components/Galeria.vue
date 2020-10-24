@@ -1,66 +1,89 @@
 import Galeria from '@/components/Galeria.vue';
 <template>
-  <div class="galeria">
-    <h2 class="subtitulo">Galeria</h2>
-    <div class="principal">
-      <img src="" alt="" />
+  <div class="container">
+    <div class="row cont-principal">
+      <div class="col-12 text-center" >
+        <img class="principal" src="../assets/logo.png" alt="valió :v " width="100%" height="400px">
+      </div>
     </div>
-    <div class="secundario">
-      <img src="" alt="" />
-      <img src="" alt="" />
-    </div>
+          <div class="carousel">
+            <div class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+              <div class="row">
+                <div class="carousel-item active col-5">
+                  <img class="d-block w-100" src="../assets/logojs.png" alt="First slide">
+                </div>
+                <div class="carousel-item active col-5">
+                  <img class="d-block w-100" src="../assets/logojs.png" alt="Second slide">
+                </div>
+              </div>
+             <button class="carousel-control-next col-2" data-slide="next"></button>
+            </div>
+
+          </div>
+
+          </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "Galeria",
+  data: function () {
+    return {
+      products: {},
+      boleano: true,
+    };
+  },
+
+  mounted: async function () {
+    const response = await this.$http.get("/products/" + this.$route.params.id);
+    this.products = response.data[0];
+    console.log(this.products);
+  },
+
+  
 };
 </script>
 
 <style scoped>
-*,
-*:before,
-*:after {
+
+*{
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
 }
 
-.galeria {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-evenly;
-  width: 45%;
-  height: 700px;
-  float: left;
-  flex-wrap: wrap;
-  border: 2px solid black;
-  margin-left: 10px;
-  background: #edf0f5;
+.container{
+  padding: 50px;
 }
 
-.subtitulo {
-  margin: 0;
-  margin-bottom: 10px;
-  text-align: center;
-  width: 100%;
-  height: 20px;
+.cont-principal{
+  padding: 50px;
+  margin-bottom: 50px;
+  height: 500px;
+  background: var(--color);
 }
 
-.galeria img {
-  margin: 10px;
-  box-shadow: 3px gray;
-  max-width: 200px;
+.principal{
+  height: 100;
+  width: 100;
 }
 
-.principal {
-  border: 1px solid black;
-  width: 100%;
-  height: 50%;
+.carousel{
+  height: 100%;
+  max-height: 400px;
+  background: var(--color);
 }
 
-.secundario {
-  border: 1px solid black;
-  width: 100%;
-  height: 35%;
+.d-block{
+  padding: 20px;
+  background: var(--color);
+  max-height: 400px;
 }
+
+.carousel-control-next{
+  border: 1px solid var(--color-btn);
+}
+
 </style>

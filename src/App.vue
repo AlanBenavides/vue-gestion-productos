@@ -9,6 +9,12 @@
 </template>
 
 <style>
+:root {
+--color-fondo: white;
+--color: #EDF0F5;
+--color-btn: #2A323D;
+--color-fuente: #A09BB0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

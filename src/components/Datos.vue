@@ -1,47 +1,63 @@
 <template>
-  <div class="datos">
-    <h2 class="subtitulo">name{{ products.nombre_prod }}</h2>
+  <div class="container">
+    <div class="nombre">{{ products.nombre_prod }}</div>
+    <div class="datos">
+      <div class="row">
+        <div class="col-12 ">Precio por unidad</div>
+        <div class="col-3 " v-if="products.desc == null">{{ products.precio_unid }}(Bs.)</div>
+        <div class="col-3 "  id="precio_desc" v-if="products.desc != null">
+          {{ products.precio_unid }} (Bs.)
+          </div>
+        
+      </div>
+      
+      <div class="row">
+        <div class="col-3">{{ products.precio_desc }} (Bs.)</div>
+        <div class="col-9">{{ products.precio_desc }} %OFF</div>
+      </div>
+  
+      <div class="row">
+        <div class="col-3">Peso: </div>
+        <div class="col-9">{{ products.peso }} {{ products.unidad_med }}</div>
+      </div>
+      
+      <div class="row">
+        <div class="col-3">Existencias: </div>
+        <div class="col-9">{{ products.cantidad }}</div>
+      </div>
+  
+      <div class="row" v-if="products.fecha_venc != null">
+        <div class="col-3" >Fecha de vencimiento: </div>
+        <div class="col-9">{{ products.fecha_venc }}</div>
+      </div>
+  
+      <div class="row" v-if="products.descripcion != null">
+        <div class="col-3">Sobre este Producto: </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-12" id="descripcion">{{ products.descripcion }}</div>
+      </div>
+  
+      <div class="row">
+        <div class="col-4">Cantidad: </div>
+        <div class="col-4">
+          <input type="number">
+        </div>
+        <div class="col-4">unidad/es</div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4"></div>
+        <div class="col-4 d-flex justify-content-end">
+          <button type="button" class=" btn-lg carrito">Añadir al carrito</button>
+        </div>
+    </div>
+    </div>
 
-    <p class="datos-info__label precio">Precio por unidad</p>
-    <label for="" class="datos-info__recuperados precio"
-      >10{{ datos.precio }}</label
-    >
-
-    <label for="" class="datos-info__recuperados t25" id="desc">9{{}}</label>
-    <label for="" class="datos-info__label t25">Bs</label>
-    <label for="" class="datos-info__recuperados t25">10{{}}</label>
-    <label for="" class="datos-info__label t25">OFF</label>
-
-    <label for="" class="datos-info__label">Peso:</label>
-    <label for="" class="datos-info__recuperados t25">80{{}}</label>
-    <label for="" class="datos-info__label t25">kg</label>
-
-    <label for="" class="datos-info__label">Existencias:</label>
-    <label for="" class="datos-info__recuperados t25">1{{}}</label>
-    <label for="" class="datos-info__label t25">unidad/es</label>
-
-    <p class="datos-info__label" v-if="products.fecha_venc != null">
-      Fecha de vencimiento:
-    </p>
-    <label for="" class="datos-info__recuperados">{{}}</label>
-
-    <label for="" class="datos-info__label descripcion"
-      >Sobre este producto</label
-    >
-    <label for="" class="datos-info__recuperados descripcion">{{
-      datos.descripcion
-    }}</label>
-
-    <label for="" class="datos-info__label pedido" id="cantidad"
-      >Cantidad</label
-    >
-    <input type="number" class="pedido" />
-    <label for="" class="datos-info__label pedido" id="unidades"
-      >unidad/es</label
-    >
-
-    <button class="datos-info__button">Añadir al Carrito</button>
   </div>
+  
 </template>
 
 <script>
@@ -49,7 +65,6 @@ export default {
   name: "Datos",
   data: function () {
     return {
-      datos: { nombre: "leche", descripcion: "pil", precio: 6 },
       products: {},
       boleano: true,
     };
@@ -64,84 +79,44 @@ export default {
 </script>
 
 <style scoped>
-*,
-*:before,
-*:after {
+
+* {
+  padding: 0;
+  margin: 0;
   box-sizing: border-box;
 }
 
-.datos {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-evenly;
-  width: 45%;
+.container{
   height: 700px;
-  float: right;
-  flex-wrap: wrap;
-  border: 2px solid black;
-  margin-right: 10px;
-  background: #edf0f5;
+  width: auto;
+  padding: 50px;
 }
 
-.subtitulo {
-  margin: 0;
-  margin-bottom: 10px;
-  text-align: center;
-  width: 100%;
-}
-
-label {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  width: 50%;
-  color: #798087;
-}
-
-.datos-info__label {
-  padding-left: 50px;
+.col-9, .col-3, .col-4, .col-12 {
   text-align: left;
-}
-.datos-info__recuperados {
-  text-align: left;
+  padding: 10px 10px;
 }
 
-.descripcion {
-  padding-left: 50px;
+.datos{
+  padding-left:30px;
   width: 100%;
+  height: auto;
+  background: var(--color);
 }
 
-.pedido {
-  width: 25%;
+.nombre{
+  font-size: 35px;
+  color: var(--color-fuente);
 }
-
-.precio {
-  padding-left: 50px;
+.carrito{
   width: 100%;
+  color: white;
+  background: var(--color-btn);
 }
 
-.t25 {
-  width: 25%;
+
+#precio_desc{
+  text-decoration: line-through; 
 }
 
-#desc {
-  padding-left: 50px;
-}
-
-#cantidad {
-  width: 50%;
-}
-
-#unidades {
-  text-align: left;
-}
-
-.datos-info__button {
-  width: 33%;
-  padding: 15px 35px;
-  border: transparent;
-  background: #696969;
-  color: #e6e6fa;
-  margin: 100px 10px 0px 300px;
-  flex-basis: auto;
-}
 </style>
