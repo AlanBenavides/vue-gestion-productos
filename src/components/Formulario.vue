@@ -56,13 +56,13 @@
                 <label
                   ><input
                     type="radio"
-                    name="cantidad"
                     value="unidades"
                     @click="clickable()"
                     v-model="producto.unidad"
                   />Unidades</label
                 ><br />
                 <input
+                  class="cantidad"
                   type="number"
                   :disabled="producto.unidad === 'peso'"
                   v-model="producto.cantidad"
@@ -128,7 +128,16 @@ export default {
   name: "Formulario",
   data: function () {
     return {
-      producto: {},
+      producto: {
+        nombre_prod: null,
+        descripcion: null,
+        categoria: null,
+        precio_unid: null,
+        unidad: null,
+        peso: null,
+        unidad_med: null,
+        fecha_venc: null,
+      },
     };
   },
   methods: {
@@ -176,7 +185,8 @@ label {
 h1 {
   text-align: center;
 }
-.select,#categoria{
+.select,
+#categoria {
   border: #e6e6fa 1px solid;
 }
 .unidad {
@@ -235,7 +245,7 @@ h1 {
 }
 .formulario input[type="text"]:focus,
 .formulario textarea:focus,
-.formulario input[type="number"]:focus {
+.formulario input[type="number"]:focus{
   border: 1px solid #00ff00;
 }
 .formulario textarea {
