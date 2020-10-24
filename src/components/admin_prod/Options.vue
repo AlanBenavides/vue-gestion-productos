@@ -1,25 +1,63 @@
 <template>
-    <div class="options btn-group-vertical">
-        <button type="button" class="btn btn-secondary">APLICAR DESCUENTO</button>
-        <button type="button" class="btn btn-secondary">EDITAR PRODUCTO</button>
-        <button type="button" class="btn btn-secondary">AÑADIR A PROMICIÓN</button>
-        <button type="button" class="btn btn-secondary">ELIMINAR PRODUCTO</button>
-    </div>
+  <aside>
+    <ul class="options btn-group-vertical">
+      <button
+        v-for="(button, index) in buttons"
+        :key="index"
+        type="button"
+        class="button"
+      >
+        {{ button.name }}
+      </button>
+    </ul>
+  </aside>
 </template>
 
 <script>
 export default {
-    name: "Options"
-}
+  name: "Options",
+  data: function () {
+    return {
+      buttons: [
+        {
+          name: "Aplicar descuento",
+        },
+        {
+          name: "Editar producto",
+        },
+        {
+          name: "Añadir a promociones",
+        },
+        {
+          name: "Eliminar productos",
+        },
+      ],
+    };
+  },
+};
 </script>
 
 <style scoped>
-    .options {
-        padding-top: 100px;
-        width: 25%;
-        float: left;
-    }
-    .options > button {
-        margin: 20px 20px 20px 20px;
-    }
+ul {
+  padding: 0;
+  position: fixed;
+  left: 0;
+}
+
+div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.button {
+  text-transform: uppercase;
+  font-size: 14px;
+  background: none;
+  border: 1.4px solid grey;
+  border-radius: 5px;
+  width: 230px;
+  padding: 16px;
+  margin: 1rem;
+}
 </style>
