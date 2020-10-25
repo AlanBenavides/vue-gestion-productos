@@ -1,7 +1,12 @@
 <template>
   <aside>
     <ul class="options btn-group-vertical">
-      <button v-for="(button, index) in buttons" :key="index" class="button">
+      <button
+        v-for="(button, index) in buttons"
+        :key="index"
+        class="button"
+        :disabled="$store.state.idSelected === -1"
+      >
         {{ button.name }}
       </button>
     </ul>
@@ -21,10 +26,10 @@ export default {
           name: "Editar producto",
         },
         {
-          name: "Añadir a promociones",
+          name: "Añadir a promocion",
         },
         {
-          name: "Eliminar productos",
+          name: "Eliminar producto",
         },
       ],
     };

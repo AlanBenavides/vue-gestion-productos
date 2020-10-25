@@ -5,24 +5,24 @@ import Vuex from "vuex";
 
 import instance from "@/services/axios";
 
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    idSelected: -1,
+  },
+  mutations: {
+    changeSelection(state, newId) {
+      state.idSelected = newId;
+    },
+  },
+});
+
 Vue.config.productionTip = false;
 Vue.prototype.$http = instance;
 
-Vue.use(Vuex);
-
-/*const store = new Vuex.Store({
-  state: {
-    id_selected: -1,
-  },
-  mutations: {
-    change_selection(state, new_id) {
-      state.id_selected = new_id;
-    },
-  },
-});*/
-
 new Vue({
+  store,
   router,
-  // store,
   render: (h) => h(App),
 }).$mount("#app");
