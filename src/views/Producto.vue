@@ -1,14 +1,14 @@
 <template>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-6">
-          <Galeria />
-        </div>
-        <div class="col-6">
-          <Datos />
-        </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-6">
+        <Galeria />
+      </div>
+      <div class="col-6">
+        <Datos />
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -24,6 +24,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -1,28 +1,63 @@
 import Galeria from '@/components/Galeria.vue';
 <template>
   <div class="container">
+    <!-- vista foto principal -->
     <div class="row cont-principal">
-      <div class="col-12 text-center" >
-        <img class="principal" src="../assets/logo.png" alt="valió :v " width="100%" height="400px">
+      <div class="col-12 text-center">
+        <img class="principal" src="../assets/logojs.png" alt="valió :v " />
       </div>
     </div>
-          <div class="carousel">
-            <div class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-              <div class="row">
-                <div class="carousel-item active col-5">
-                  <img class="d-block w-100" src="../assets/logojs.png" alt="First slide">
-                </div>
-                <div class="carousel-item active col-5">
-                  <img class="d-block w-100" src="../assets/logojs.png" alt="Second slide">
-                </div>
-              </div>
-             <button class="carousel-control-next col-2" data-slide="next"></button>
+    <!-- carrusel de fotos (imagenes de prueba) -->
+    <div
+      id="carousel"
+      class="carousel slide"
+      data-ride="carousel"
+      data-interval="false"
+    >
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="row">
+            <div class="col-5">
+              <img src="../assets/logo.png" class="img-responsive" alt="" />
             </div>
-
+            <div class="col-5">
+              <img src="../assets/logo.png" class="img-responsive" alt="" />
+            </div>
           </div>
-
+        </div>
+        <div class="carousel-item">
+          <div class="row">
+            <div class="col-5">
+              <img src="../assets/logojs.png" class="img-responsive" alt="" />
+            </div>
+            <div class="col-5">
+              <img src="../assets/logojs.png" class="img-responsive" alt="" />
+            </div>
           </div>
+        </div>
+        <div class="carousel-item">
+          <div class="row">
+            <div class="col-5">
+              <img src="../assets/logojs.png" class="img-responsive" alt="" />
+            </div>
+            <div class="col-5">
+              <img src="../assets/logojs.png" class="img-responsive" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- boton siguiente  -->
+      <a
+        class="carousel-control-next"
+        href="#carousel"
+        role="button"
+        data-slide="next"
+      >
+        <i class="fa fa-chevron-right"></i>
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Siguiente</span>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -41,49 +76,56 @@ export default {
     this.products = response.data[0];
     console.log(this.products);
   },
-
-  
 };
 </script>
 
 <style scoped>
-
-*{
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-.container{
+.container {
   padding: 50px;
 }
 
-.cont-principal{
+.cont-principal {
   padding: 50px;
   margin-bottom: 50px;
   height: 500px;
   background: var(--color);
 }
 
-.principal{
-  height: 100;
-  width: 100;
-}
-
-.carousel{
+.principal {
+  width: 100%;
   height: 100%;
   max-height: 400px;
+}
+
+.carousel {
+  height: 100%;
+  min-height: 200px;
+  max-height: 200px;
   background: var(--color);
 }
 
-.d-block{
-  padding: 20px;
-  background: var(--color);
-  max-height: 400px;
+img {
+  width: 100%;
+  height: 100%;
+  max-height: 200px;
 }
 
-.carousel-control-next{
-  border: 1px solid var(--color-btn);
+.carousel-control-next-icon {
+  height: auto;
+  width: auto;
+  background-size: 100%, 100%;
+  background-image: none;
 }
 
+.carousel-control-next-icon:after {
+  content: ">";
+  font-size: 40px;
+  color: var(--color-btn);
+}
 </style>

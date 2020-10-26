@@ -10,10 +10,10 @@
 
 <style>
 :root {
---color-fondo: white;
---color: #EDF0F5;
---color-btn: #2A323D;
---color-fuente: #A09BB0;
+  --color-fondo: white;
+  --color: #edf0f5;
+  --color-btn: #2a323d;
+  --color-fuente: #a09bb0;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
