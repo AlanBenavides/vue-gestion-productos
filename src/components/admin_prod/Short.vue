@@ -97,6 +97,7 @@ export default {
     selectOrder(order) {
       this.orden = order;
       this.pagina = 1;
+      this.selectProduct(-1);
       this.getProducts();
     },
     selectProduct(id) {
@@ -123,14 +124,17 @@ export default {
 
     prevPag() {
       this.pagina--;
+      this.selectProduct(-1);
       this.getProducts();
     },
     nextPag() {
       this.pagina++;
+      this.selectProduct(-1);
       this.getProducts();
     },
     setPage(index) {
       this.pagina = index;
+      this.selectProduct(-1);
       this.getProducts();
     },
   },
