@@ -52,7 +52,7 @@
               ></textarea>
 
               <br />
-              <span v-if="!$v.producto.descripcion.alpha" class="error"
+              <span v-if="!$v.producto.descripcion.alpha1" class="error"
                 >No se aceptan caracteres especiales.</span
               >
               <span v-if="!$v.producto.descripcion.maxLength" class="error"
@@ -91,8 +91,10 @@
                   >Campo requerido.</span
                 >
                 <span v-if="!$v.producto.precio_unid.between" class="error"
-                  >Campo invalido (0-1000).</span
-                ><span v-if="!$v.producto.precio_unid.validate_decimales" class="error"
+                  >Campo invalido (0-10000).</span
+                ><span
+                  v-if="!$v.producto.precio_unid.validate_decimales"
+                  class="error"
                   >Maximo 2 decimales!</span
                 >
                 <br />
@@ -105,31 +107,32 @@
                   ><input
                     type="radio"
                     value="unidades"
-                    
-                    @click="clickable()"
+                    @click="pesoDisabled"
                     v-model="producto.unidad"
                   />Unidades</label
                 ><br />
                 <input
+                  id="unidad"
                   class="cantidad"
                   type="number"
-                  :disabled="producto.unidad === 'peso'"
+                  name="este1"
+                  disabled
                   v-model="producto.cantidad"
                 /><br />
 
                 <span v-if="!$v.producto.cantidad.minValue" class="error"
                   >Debe ser mayor a 0.</span
                 >
-                 <span v-if="!$v.producto.cantidad.integer" class="error"
+
+                <span v-if="!$v.producto.cantidad.integer" class="error"
                   >Solo se aceptan valores enteros.</span
                 >
-                 
 
                 <label
                   ><input
                     type="radio"
                     value="peso"
-                    @click="clickable()"
+                    @click="unidadDisabled"
                     v-model="producto.unidad"
                   />Peso</label
                 ><br />
@@ -138,14 +141,17 @@
                   type="number"
                   step="0.25"
                   value="0.00"
-                  :disabled="producto.unidad === 'unidades'"
+                  name="este"
+                  id="peso"
+                  disabled
                   v-model="producto.peso"
                 />
 
                 <select
                   name="UNIDAD PESO"
                   class="unidad"
-                  :disabled="producto.unidad === 'unidades'"
+                  id="unidadesMedida"
+                  disabled
                   v-model="producto.unidad_med"
                 >
                   <option selected value="">Elige una opción</option>
@@ -158,7 +164,8 @@
                 <span v-if="!$v.producto.peso.minValue" class="error"
                   >Debe ser mayor a 0.</span
                 >
-                 <span v-if="!$v.producto.peso.validate_decimales" class="error"
+
+                <span v-if="!$v.producto.peso.validate_decimales" class="error"
                   >Maximo 2 decimales!</span
                 >
               </p>
@@ -169,13 +176,11 @@
                 id="start"
                 name="trip-start"
                 value="DD/MM/AA"
-                
                 v-model="producto.fecha_venc"
               /><br />
               <span v-if="!$v.producto.fecha_venc.validate_date" class="error"
-                  >fecha invalida</span
-                >
-
+                >fecha invalida</span
+              >
 
               <div>
                 <button
@@ -187,6 +192,7 @@
                 </button>
               </div>
             </form>
+            {{ producto }}
           </div>
         </div>
       </div>
@@ -202,44 +208,38 @@ import {
   maxLength,
   between,
   minValue,
-  integer
-  
-  
+  integer,
 } from "vuelidate/lib/validators";
-const alpha = helpers.regex("alpha", /^[a-zA-Z\s]*$/);
 
+const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\s]*$/);
+const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,.\s]*$/);
 
- const validate_date=(value)=> {
-      const date = new Date();
-      const dd = date.getDate();
-      const mm = date.getMonth() + 1;
-      const yyyy = date.getFullYear();
-      const yyvalue=parseInt(value.slice(0,4));
-      const mmvalue=parseInt(value.slice(5,7));
-      const ddvalue=parseInt(value.slice(8,10));
-      
-      
-      return !helpers.req(value) || !(dd>ddvalue && mm>=mmvalue && yyyy>=yyvalue);
-    };
-    const validate_decimales=(value)=>{
-    
-       const datovalue=String(value);
-     
-         if(datovalue.indexOf(".")>0 ){
-     
-                   const parts = datovalue.split(".");//array 
-                   const dato=String(parts[1]);
-       
-                    return !helpers.req(value) || !(dato.length > 2);
-     
-     }else{
-      
-      return true;
-     }
-     
-    
-    }
-    
+const validate_date = (value) => {
+  const date = new Date();
+  const dd = date.getDate();
+  const mm = date.getMonth() + 1;
+  const yyyy = date.getFullYear();
+  const yyvalue = parseInt(value.slice(0, 4));
+  const mmvalue = parseInt(value.slice(5, 7));
+  const ddvalue = parseInt(value.slice(8, 10));
+
+  return (
+    !helpers.req(value) || !(dd > ddvalue && mm >= mmvalue && yyyy >= yyvalue)
+  );
+};
+const validate_decimales = (value) => {
+  const datovalue = String(value);
+
+  if (datovalue.indexOf(".") > 0) {
+    const parts = datovalue.split("."); //array
+    const dato = String(parts[1]);
+
+    return !helpers.req(value) || !(dato.length > 2);
+  } else {
+    return true;
+  }
+};
+
 export default {
   name: "Formulario",
   data() {
@@ -268,7 +268,7 @@ export default {
       descripcion: {
         required,
         maxLength: maxLength(1000),
-        alpha,
+        alpha1,
       },
       categoria: {
         required,
@@ -276,42 +276,41 @@ export default {
       precio_unid: {
         required,
         between: between(0, 10000),
-        validate_decimales
+        validate_decimales,
       },
       cantidad: {
         minValue: minValue(1),
-        integer
-        
+        integer,
       },
       peso: {
         minValue: minValue(0),
-        validate_decimales
-      },fecha_venc:{
-        validate_date
-      }
+        validate_decimales,
+      },
+      fecha_venc: {
+        validate_date,
+      },
     },
   },
 
   methods: {
-    send: function (event) {
+    send: function () {
       event.preventDefault();
       console.log(this.producto);
     },
-   
-
-    clickable() {
-      // if somethin
-      if (this.producto.unidad === "peso") {
-        this.producto.peso = null;
-        this.producto.unidad_med = null;
-        return false;
-      } else {
-        if (this.producto.unidad === "unidades") {
-          this.producto.cantidad = null;
-          return true;
-        }
-      }
+    pesoDisabled: function () {
+      document.getElementById("unidad").disabled = false;
+      document.getElementById("peso").disabled = true;
+      document.getElementById("unidadesMedida").disabled = true;
+      this.producto.peso = null;
+      this.producto.unidad_med = null;
     },
+    unidadDisabled: function () {
+      document.getElementById("peso").disabled = false;
+      document.getElementById("unidad").disabled = true;
+      document.getElementById("unidadesMedida").disabled = false;
+      this.producto.cantidad = null;
+    },
+
     submitForm() {
       if (!this.$v.producto.$invalid) {
         console.log("datos correctos ", this.producto);
@@ -320,7 +319,6 @@ export default {
       }
     },
   },
- 
 };
 </script>
 
