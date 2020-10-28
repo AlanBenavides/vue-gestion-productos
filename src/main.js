@@ -3,7 +3,8 @@ import App from "./App.vue";
 import router from "./router";
 
 import instance from "@/services/axios";
-
+import Vuelidate from "vuelidate";
+Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 Vue.prototype.$http = instance;
 

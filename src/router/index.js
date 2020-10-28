@@ -14,6 +14,11 @@ const routes = [
     name: "About",
     component: () => import("@/views/About.vue"),
   },
+  {
+    path: "/registroProducto",
+    name: "RegistroProducto",
+    component: () => import("@/views/RegistroProducto.vue"),
+  },
 ];
 
 const router = new VueRouter({
