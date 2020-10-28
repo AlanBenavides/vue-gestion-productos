@@ -9,15 +9,9 @@
         <div class="contenido">
           <div class="imagenes">
             <h2>Fotos del producto:</h2>
-<<<<<<< HEAD
                 <input type="file" multiple name="image" @change="GetImage" />
                   <img :src="avatar" alt="Image" /><br/>
           </div>
-=======
-            <!--imagenes del producto-->
-          </div>
-
->>>>>>> 896e3fd53ed39c563d7fc8ae81f9635ff2059540
           <div>
             <h2>Datos del producto:</h2>
             <form
@@ -248,11 +242,8 @@ export default {
   name: "Formulario",
   data() {
     return {
-<<<<<<< HEAD
     
       avatar: null,
-=======
->>>>>>> 896e3fd53ed39c563d7fc8ae81f9635ff2059540
       producto: {
         nombre_prod: null,
         descripcion: null,
@@ -263,10 +254,7 @@ export default {
         peso: "",
         unidad_med: null,
         fecha_venc: "",
-<<<<<<< HEAD
         
-=======
->>>>>>> 896e3fd53ed39c563d7fc8ae81f9635ff2059540
       },
     };
   },
@@ -330,7 +318,6 @@ export default {
         console.log("datos incorrectos");
       }
     },
-<<<<<<< HEAD
     GetImage(e){
       const amount = e.target.files.length;
       const image = e.target.files[amount-1];
@@ -341,8 +328,6 @@ export default {
       }
       
     }
-=======
->>>>>>> 896e3fd53ed39c563d7fc8ae81f9635ff2059540
   },
  
 };
@@ -446,7 +431,6 @@ h1 {
 span {
   color: red;
 }
-<<<<<<< HEAD
 #preview {
   display: flex;
   justify-content: center;
@@ -456,6 +440,4 @@ span {
   max-width: 100%;
   max-height: 500px;
 }
-=======
->>>>>>> 896e3fd53ed39c563d7fc8ae81f9635ff2059540
 </style>
