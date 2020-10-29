@@ -1,6 +1,6 @@
 <template>
   <section class="formulario">
-    <h2>Datos del producto:</h2>
+    <h2 class="formulario_tittle">Datos del producto:</h2>
     <form
       class="formulario_form"
       @submit.prevent="submitForm"
@@ -8,44 +8,75 @@
     >
       <div class="formulario_group">
         <label
-          >Nombre Producto:
+          ><div class="formulario_name">Nombre Producto:</div>
           <input type="text" required v-model="producto.nombre_prod" />
         </label>
-        <span v-if="!$v.producto.nombre_prod.alpha"
-          >No se aceptan caracteres especiales.</span
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.nombre_prod.alpha"
         >
-        <span v-if="!$v.producto.nombre_prod.minLength"
-          >Debe tener una longitud no menor a
-          {{ $v.producto.nombre_prod.$params.minLength.min }}.</span
+          No se aceptan caracteres especiales.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.nombre_prod.minLength"
         >
-        <span v-if="!$v.producto.nombre_prod.required">Campo requerido.</span>
-        <span v-if="!$v.producto.nombre_prod.maxLength"
-          >Nombre muy largo maximo
+          Debe tener una longitud no menor a
+          {{ $v.producto.nombre_prod.$params.minLength.min }}.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.nombre_prod.required"
+        >
+          Campo requerido.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.nombre_prod.maxLength"
+        >
+          Nombre muy largo maximo
           {{ $v.producto.nombre_prod.$params.maxLength.max }}
-          caracteres.</span
-        >
+          caracteres.
+        </div>
       </div>
 
       <div class="formulario_group">
         <label
-          >Descripcion:
+          ><div class="formulario_name">Descripcion:</div>
           <textarea v-model="producto.descripcion" cols="50" rows="10" />
         </label>
-        <span v-if="!$v.producto.descripcion.alpha1"
-          >No se aceptan caracteres especiales.</span
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.descripcion.alpha1"
         >
-        <span v-if="!$v.producto.descripcion.maxLength"
-          >Descripcion muy larga.
-          {{ $v.producto.descripcion.$params.maxLength.max }}.</span
+          No se aceptan caracteres especiales.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.descripcion.maxLength"
         >
-        <span v-if="!$v.producto.descripcion.required">Campo requerido.</span>
+          Descripcion muy larga.
+          {{ $v.producto.descripcion.$params.maxLength.max }}.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.descripcion.required"
+        >
+          Campo requerido.
+        </div>
       </div>
 
       <div>
         <label
-          >Categoria: <input list="categorias" v-model="producto.categoria"
+          ><div class="formulario_name">Categoria:</div>
+          <input list="categorias" v-model="producto.categoria"
         /></label>
-        <span v-if="!$v.producto.categoria.required">Campo requerido.</span>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.categoria.required"
+        >
+          Campo requerido.
+        </div>
         <datalist id="categorias">
           <option value="Farmacia"></option>
           <option value="Electronicos"></option>
@@ -57,38 +88,57 @@
 
       <div class="formulario_group">
         <label
-          >Precio por unidad (Bs.):<input
-            type="number"
-            v-model="producto.precio_unid"
-          />
+          ><div class="formulario_name">Precio por unidad (Bs.):</div>
+          <input type="number" v-model="producto.precio_unid" />
         </label>
-        <span v-if="!$v.producto.precio_unid.required">Campo requerido.</span>
-        <span v-if="!$v.producto.precio_unid.between"
-          >Campo invalido (0-10000).</span
-        ><span v-if="!$v.producto.precio_unid.validate_decimales"
-          >Maximo 2 decimales!</span
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.precio_unid.required"
         >
+          Campo requerido.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.precio_unid.between"
+        >
+          Campo invalido (0-10000).
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.precio_unid.validate_decimales"
+        >
+          Maximo 2 decimales!
+        </div>
       </div>
 
-      <div>
-        Cantidad:
+      <fieldset>
+        <legend class="formulario_name">Cantidad:</legend>
         <div class="formulario_group">
           <label
             ><input
               type="radio"
               @click="selectCantidad"
               v-model="producto.unidad"
-            />Unidades</label
-          >
+            />
+            <span class="formulario_name formulario_name-span">Unidades</span>
+          </label>
           <input
             type="number"
             :disabled="disabled"
             v-model="producto.cantidad"
           />
-          <span v-if="!$v.producto.cantidad.minValue">Debe ser mayor a 0.</span>
-          <span v-if="!$v.producto.cantidad.integer"
-            >Solo se aceptan valores enteros.</span
+          <div
+            class="formulario_check-error"
+            v-if="!$v.producto.cantidad.minValue"
           >
+            Debe ser mayor a 0.
+          </div>
+          <div
+            class="formulario_check-error"
+            v-if="!$v.producto.cantidad.integer"
+          >
+            Solo se aceptan valores enteros.
+          </div>
         </div>
 
         <div class="formulario_group">
@@ -98,14 +148,16 @@
               value="peso"
               @click="selectCantidad"
               v-model="producto.unidad"
-            />Peso</label
-          >
+            />
+            <span class="formulario_name formulario_name-span">Peso</span>
+          </label>
           <input
             type="number"
             step="0.25"
             value="0.00"
             :disabled="!disabled"
             v-model="producto.peso"
+            class="formulario_peso"
           />
 
           <select :disabled="!disabled" v-model="producto.unidad_med">
@@ -116,19 +168,29 @@
             <option value="Galones">Galones</option>
             <option value="Onzas">Onzas</option>
           </select>
-          <span v-if="!$v.producto.peso.minValue">Debe ser mayor a 0.</span>
-          <span v-if="!$v.producto.peso.validate_decimales"
-            >Maximo 2 decimales!</span
+          <div class="formulario_check-error" v-if="!$v.producto.peso.minValue">
+            Debe ser mayor a 0.
+          </div>
+          <div
+            class="formulario_check-error"
+            v-if="!$v.producto.peso.validate_decimales"
           >
+            Maximo 2 decimales!
+          </div>
         </div>
-      </div>
+      </fieldset>
 
       <div class="formulario_group">
         <label
-          >Fecha de vencimiento del producto:
+          ><div class="formulario_name">Fecha de vencimiento del producto:</div>
           <input type="date" value="DD/MM/AA" v-model="producto.fecha_venc"
         /></label>
-        <span v-if="!$v.producto.fecha_venc.validate_date">fecha invalida</span>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.fecha_venc.validate_date"
+        >
+          fecha invalida
+        </div>
       </div>
 
       <button :disabled="$v.producto.$invalid" class="formulario_button">
@@ -257,8 +319,83 @@ export default {
 </script>
 
 <style scope>
+.formulario_tittle {
+  text-align: left;
+  color: #919ca9;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
 .formulario_form {
   background-color: #edf0f4;
-  padding: 1rem;
+  padding: 2rem;
+  text-align: left;
+}
+
+.formulario label {
+  display: block;
+}
+
+.formulario textarea {
+  resize: none;
+}
+
+.formulario input,
+.formulario textarea,
+.formulario select {
+  border: none;
+  border: 2px solid #8b8b8b;
+  border-radius: 6px;
+  padding: 5px 7px;
+}
+
+.formulario select {
+  height: 38px;
+  margin-left: 1rem;
+}
+
+.formulario input[type="date"] {
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 2rem;
+  width: 60%;
+  text-align: center;
+}
+
+.formulario legend {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
+
+.formulario_name {
+  color: #919ca9;
+}
+
+.formulario_name-span {
+  padding-left: 1rem;
+}
+
+.formulario_group {
+  margin: 1rem;
+  margin-left: 0;
+}
+
+.formulario_group:first-child {
+  margin-top: 0;
+}
+
+.formulario_check-error {
+  color: red;
+}
+
+.formulario_button {
+  margin: auto;
+  display: block;
+  background-color: rgb(51, 51, 51);
+  padding: 13px 100px;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
 }
 </style>

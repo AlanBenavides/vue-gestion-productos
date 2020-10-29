@@ -26,11 +26,13 @@ export default {
 }
 
 .registro_tittle {
+  color: #8d8d8d;
+  font-weight: 600;
 }
 
 .registro_container {
   display: grid;
-  grid-template-columns: 1fr 0.7fr;
+  grid-template-columns: 1fr 0.6fr;
   gap: 2rem;
 }
 
