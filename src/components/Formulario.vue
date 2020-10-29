@@ -1,196 +1,195 @@
 <template>
   <div>
-    <head>
-      <title>Registro de Productos</title>
-    </head>
-    <body>
-      <div class="contenedor">
-        <h1>Registro de Producto</h1>
-        <div class="contenido">
-          <div class="imagenes">
-            <h2>Fotos del producto:</h2>
-                <input type="file" multiple name="image" @change="GetImage" />
-                  <img :src="avatar" alt="Image" /><br/>
-          </div>
-          <div>
-            <h2>Datos del producto:</h2>
-            <form
-              class="formulario"
-              @submit.prevent="submitForm"
-              autocomplete="off"
-            >
-              <div class="group">
-                <label>Nombre Producto:</label>
-                <input
-                  type="text"
-                  required
-                  v-model="producto.nombre_prod"
-                  id="nombre_prod"
-                /><br />
+    <div class="contenedor">
+      <h1>Registro de Producto</h1>
+      <div class="contenido">
+        <div class="imagenes">
+          <h2>Fotos del producto:</h2>
+          <input type="file" multiple name="image" @change="GetImage" />
+          <img
+            v-for="(value, index) in avatar"
+            :key="index"
+            :src="value"
+            alt="Image"
+            width="100px"
+          /><br />
+        </div>
+        <div>
+          <h2>Datos del producto:</h2>
+          <form
+            class="formulario"
+            @submit.prevent="submitForm"
+            autocomplete="off"
+          >
+            <div class="group">
+              <label>Nombre Producto:</label>
+              <input
+                type="text"
+                required
+                v-model="producto.nombre_prod"
+                id="nombre_prod"
+              /><br />
 
-                <span v-if="!$v.producto.nombre_prod.alpha" class="error"
-                  >No se aceptan caracteres especiales.</span
-                >
-                <span v-if="!$v.producto.nombre_prod.minLength" class="error"
-                  >Debe tener una longitud no menor a
-                  {{ $v.producto.nombre_prod.$params.minLength.min }}.</span
-                >
-                <span v-if="!$v.producto.nombre_prod.required" class="error"
-                  >Campo requerido.</span
-                >
-                <span v-if="!$v.producto.nombre_prod.maxLength" class="error"
-                  >Nombre muy largo maximo
-                  {{ $v.producto.nombre_prod.$params.maxLength.max }}
-                  caracteres.</span
-                >
-              </div>
-              <label>decription:</label>
-              <textarea
-                v-model="producto.descripcion"
-                cols="30"
-                rows="10"
-              ></textarea>
-
-              <br />
-              <span v-if="!$v.producto.descripcion.alpha" class="error"
+              <span v-if="!$v.producto.nombre_prod.alpha" class="error"
                 >No se aceptan caracteres especiales.</span
               >
-              <span v-if="!$v.producto.descripcion.maxLength" class="error"
-                >Descripcion muy larga.
-                {{ $v.producto.descripcion.$params.maxLength.max }}.</span
+              <span v-if="!$v.producto.nombre_prod.minLength" class="error"
+                >Debe tener una longitud no menor a
+                {{ $v.producto.nombre_prod.$params.minLength.min }}.</span
               >
-              <span v-if="!$v.producto.descripcion.required" class="error"
+              <span v-if="!$v.producto.nombre_prod.required" class="error"
                 >Campo requerido.</span
-              ><br />
+              >
+              <span v-if="!$v.producto.nombre_prod.maxLength" class="error"
+                >Nombre muy largo maximo
+                {{ $v.producto.nombre_prod.$params.maxLength.max }}
+                caracteres.</span
+              >
+            </div>
+            <label>decription:</label>
+            <textarea
+              v-model="producto.descripcion"
+              cols="30"
+              rows="10"
+            ></textarea>
 
-              <label for="categoria">Categoria:</label>
-              <input
-                list="categorias"
-                name="categoria"
-                id="categoria"
-                v-model="producto.categoria"
-              /><br />
-              <span v-if="!$v.producto.categoria.required" class="error"
+            <br />
+            <span v-if="!$v.producto.descripcion.alpha" class="error"
+              >No se aceptan caracteres especiales.</span
+            >
+            <span v-if="!$v.producto.descripcion.maxLength" class="error"
+              >Descripcion muy larga.
+              {{ $v.producto.descripcion.$params.maxLength.max }}.</span
+            >
+            <span v-if="!$v.producto.descripcion.required" class="error"
+              >Campo requerido.</span
+            ><br />
+
+            <label for="categoria">Categoria:</label>
+            <input
+              list="categorias"
+              name="categoria"
+              id="categoria"
+              v-model="producto.categoria"
+            /><br />
+            <span v-if="!$v.producto.categoria.required" class="error"
+              >Campo requerido.</span
+            ><br />
+            <datalist id="categorias">
+              <option value="Farmacia"></option>
+              <option value="Electronicos"></option>
+              <option value="Ropa"></option>
+              <option value="Alimentos"></option>
+              <option value="Entretenimiento"></option>
+            </datalist>
+
+            <label
+              >Precio por unidad (Bs.):<input
+                class="precio"
+                type="number"
+                v-model="producto.precio_unid"
+              />
+              <span v-if="!$v.producto.precio_unid.required" class="error"
                 >Campo requerido.</span
-              ><br />
-              <datalist id="categorias">
-                <option value="Farmacia"></option>
-                <option value="Electronicos"></option>
-                <option value="Ropa"></option>
-                <option value="Alimentos"></option>
-                <option value="Entretenimiento"></option>
-              </datalist>
+              >
+              <span v-if="!$v.producto.precio_unid.between" class="error"
+                >Campo invalido (0-1000).</span
+              ><span
+                v-if="!$v.producto.precio_unid.validate_decimales"
+                class="error"
+                >Maximo 2 decimales!</span
+              >
+              <br />
+            </label>
+
+            <p>
+              Cantidad:<br />
 
               <label
-                >Precio por unidad (Bs.):<input
-                  class="precio"
-                  type="number"
-                  v-model="producto.precio_unid"
-                />
-                <span v-if="!$v.producto.precio_unid.required" class="error"
-                  >Campo requerido.</span
-                >
-                <span v-if="!$v.producto.precio_unid.between" class="error"
-                  >Campo invalido (0-1000).</span
-                ><span v-if="!$v.producto.precio_unid.validate_decimales" class="error"
-                  >Maximo 2 decimales!</span
-                >
-                <br />
-              </label>
-
-              <p>
-                Cantidad:<br />
-
-                <label
-                  ><input
-                    type="radio"
-                    value="unidades"
-                    
-                    @click="clickable()"
-                    v-model="producto.unidad"
-                  />Unidades</label
-                ><br />
-                <input
-                  class="cantidad"
-                  type="number"
-                  :disabled="producto.unidad === 'peso'"
-                  v-model="producto.cantidad"
-                /><br />
-
-                <span v-if="!$v.producto.cantidad.minValue" class="error"
-                  >Debe ser mayor a 0.</span
-                >
-                 <span v-if="!$v.producto.cantidad.integer" class="error"
-                  >Solo se aceptan valores enteros.</span
-                >
-                 
-
-                <label
-                  ><input
-                    type="radio"
-                    value="peso"
-                    @click="clickable()"
-                    v-model="producto.unidad"
-                  />Peso</label
-                ><br />
-                <input
-                  class="peso"
-                  type="number"
-                  step="0.25"
-                  value="0.00"
-                  :disabled="producto.unidad === 'unidades'"
-                  v-model="producto.peso"
-                />
-
-                <select
-                  name="UNIDAD PESO"
-                  class="unidad"
-                  :disabled="producto.unidad === 'unidades'"
-                  v-model="producto.unidad_med"
-                >
-                  <option selected value="">Elige una opción</option>
-                  <option value="Kilogramos">Kilogramos</option>
-                  <option value="Libras">Libras</option>
-                  <option value="Litros">Litros</option>
-                  <option value="Galones">Galones</option>
-                  <option value="Onzas">Onzas</option></select
-                ><br />
-                <span v-if="!$v.producto.peso.minValue" class="error"
-                  >Debe ser mayor a 0.</span
-                >
-                 <span v-if="!$v.producto.peso.validate_decimales" class="error"
-                  >Maximo 2 decimales!</span
-                >
-              </p>
-
-              <label for="start">Fecha de vencimiento del producto:</label>
+                ><input
+                  type="radio"
+                  value="unidades"
+                  @click="clickable()"
+                  v-model="producto.unidad"
+                />Unidades</label
+              ><br />
               <input
-                type="date"
-                id="start"
-                name="trip-start"
-                value="DD/MM/AA"
-                
-                v-model="producto.fecha_venc"
+                class="cantidad"
+                type="number"
+                :disabled="producto.unidad === 'peso'"
+                v-model="producto.cantidad"
               /><br />
-              <span v-if="!$v.producto.fecha_venc.validate_date" class="error"
-                  >fecha invalida</span
-                >
 
+              <span v-if="!$v.producto.cantidad.minValue" class="error"
+                >Debe ser mayor a 0.</span
+              >
+              <span v-if="!$v.producto.cantidad.integer" class="error"
+                >Solo se aceptan valores enteros.</span
+              >
 
-              <div>
-                <button
-                  :disabled="$v.producto.$invalid"
-                  class="boton"
-                  @click="send"
-                >
-                  Confirmar
-                </button>
-              </div>
-            </form>
-          </div>
+              <label
+                ><input
+                  type="radio"
+                  value="peso"
+                  @click="clickable()"
+                  v-model="producto.unidad"
+                />Peso</label
+              ><br />
+              <input
+                class="peso"
+                type="number"
+                step="0.25"
+                value="0.00"
+                :disabled="producto.unidad === 'unidades'"
+                v-model="producto.peso"
+              />
+
+              <select
+                name="UNIDAD PESO"
+                class="unidad"
+                :disabled="producto.unidad === 'unidades'"
+                v-model="producto.unidad_med"
+              >
+                <option selected value="">Elige una opción</option>
+                <option value="Kilogramos">Kilogramos</option>
+                <option value="Libras">Libras</option>
+                <option value="Litros">Litros</option>
+                <option value="Galones">Galones</option>
+                <option value="Onzas">Onzas</option></select
+              ><br />
+              <span v-if="!$v.producto.peso.minValue" class="error"
+                >Debe ser mayor a 0.</span
+              >
+              <span v-if="!$v.producto.peso.validate_decimales" class="error"
+                >Maximo 2 decimales!</span
+              >
+            </p>
+
+            <label for="start">Fecha de vencimiento del producto:</label>
+            <input
+              type="date"
+              id="start"
+              name="trip-start"
+              value="DD/MM/AA"
+              v-model="producto.fecha_venc"
+            /><br />
+            <span v-if="!$v.producto.fecha_venc.validate_date" class="error"
+              >fecha invalida</span
+            >
+
+            <div>
+              <button
+                :disabled="$v.producto.$invalid"
+                class="boton"
+                @click="send"
+              >
+                Confirmar
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-    </body>
+    </div>
   </div>
 </template>
 
@@ -202,48 +201,40 @@ import {
   maxLength,
   between,
   minValue,
-  integer
-  
-  
+  integer,
 } from "vuelidate/lib/validators";
 const alpha = helpers.regex("alpha", /^[a-zA-Z\s]*$/);
- const validate_date=(value)=> {
-      const date = new Date();
-      const dd = date.getDate();
-      const mm = date.getMonth() + 1;
-      const yyyy = date.getFullYear();
-      const yyvalue=parseInt(value.slice(0,4));
-      const mmvalue=parseInt(value.slice(5,7));
-      const ddvalue=parseInt(value.slice(8,10));
-      
-      
-      return !helpers.req(value) || !(dd>ddvalue && mm>=mmvalue && yyyy>=yyvalue);
-    };
-    const validate_decimales=(value)=>{
-    
-       const datovalue=String(value);
-     
-         if(datovalue.indexOf(".")>0 ){
-     
-                   const parts = datovalue.split(".");//array 
-                   const dato=String(parts[1]);
-       
-                    return !helpers.req(value) || !(dato.length > 2);
-     
-     }else{
-      
-      return true;
-     }
-     
-    
-    }
-    
+const validate_date = (value) => {
+  const date = new Date();
+  const dd = date.getDate();
+  const mm = date.getMonth() + 1;
+  const yyyy = date.getFullYear();
+  const yyvalue = parseInt(value.slice(0, 4));
+  const mmvalue = parseInt(value.slice(5, 7));
+  const ddvalue = parseInt(value.slice(8, 10));
+
+  return (
+    !helpers.req(value) || !(dd > ddvalue && mm >= mmvalue && yyyy >= yyvalue)
+  );
+};
+const validate_decimales = (value) => {
+  const datovalue = String(value);
+
+  if (datovalue.indexOf(".") > 0) {
+    const parts = datovalue.split("."); //array
+    const dato = String(parts[1]);
+
+    return !helpers.req(value) || !(dato.length > 2);
+  } else {
+    return true;
+  }
+};
+
 export default {
   name: "Formulario",
   data() {
     return {
-    
-      avatar: null,
+      avatar: [],
       producto: {
         nombre_prod: null,
         descripcion: null,
@@ -254,7 +245,6 @@ export default {
         peso: "",
         unidad_med: null,
         fecha_venc: "",
-        
       },
     };
   },
@@ -277,19 +267,19 @@ export default {
       precio_unid: {
         required,
         between: between(0, 10000),
-        validate_decimales
+        validate_decimales,
       },
       cantidad: {
         minValue: minValue(1),
-        integer
-        
+        integer,
       },
       peso: {
         minValue: minValue(0),
-        validate_decimales
-      },fecha_venc:{
-        validate_date
-      }
+        validate_decimales,
+      },
+      fecha_venc: {
+        validate_date,
+      },
     },
   },
   methods: {
@@ -297,7 +287,7 @@ export default {
       event.preventDefault();
       console.log(this.producto);
     },
-   
+
     clickable() {
       // if somethin
       if (this.producto.unidad === "peso") {
@@ -318,18 +308,16 @@ export default {
         console.log("datos incorrectos");
       }
     },
-    GetImage(e){
+    GetImage(e) {
       const amount = e.target.files.length;
-      const image = e.target.files[amount-1];
+      const image = e.target.files[amount - 1];
       let reader = new FileReader();
       reader.readAsDataURL(image);
-      reader.onload = e =>{
-      this.avatar = e.target.result
-      }
-      
-    }
+      reader.onload = (e) => {
+        this.avatar.push(e.target.result);
+      };
+    },
   },
- 
 };
 </script>
 
@@ -436,7 +424,7 @@ span {
   justify-content: center;
   align-items: center;
 }
-#preview img{
+#preview img {
   max-width: 100%;
   max-height: 500px;
 }
