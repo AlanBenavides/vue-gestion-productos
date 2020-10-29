@@ -14,7 +14,6 @@ const routes = [
     name: "About",
     component: () => import("@/views/About.vue"),
   },
-
   {
     path: "/admin_productos",
     name: "Admin_productos",
