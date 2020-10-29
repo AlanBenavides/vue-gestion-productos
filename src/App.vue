@@ -21,6 +21,17 @@ export default {
 </script>
 
 <style>
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-principal: white;
+  --color: #f5f5f5;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

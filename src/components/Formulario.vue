@@ -1,203 +1,142 @@
 <template>
-  <div>
-    <head>
-      <title>Registro de Productos</title>
-    </head>
-    <body>
-      <div class="contenedor">
-        <h1>Registro de Producto</h1>
-        <div class="contenido">
-          <div class="imagenes">
-            <h2>Fotos del producto:</h2>
-            <!--imagenes del producto-->
-          </div>
+  <section class="formulario">
+    <h2>Datos del producto:</h2>
+    <form
+      class="formulario_form"
+      @submit.prevent="submitForm"
+      autocomplete="off"
+    >
+      <div class="formulario_group">
+        <label
+          >Nombre Producto:
+          <input type="text" required v-model="producto.nombre_prod" />
+        </label>
+        <span v-if="!$v.producto.nombre_prod.alpha"
+          >No se aceptan caracteres especiales.</span
+        >
+        <span v-if="!$v.producto.nombre_prod.minLength"
+          >Debe tener una longitud no menor a
+          {{ $v.producto.nombre_prod.$params.minLength.min }}.</span
+        >
+        <span v-if="!$v.producto.nombre_prod.required">Campo requerido.</span>
+        <span v-if="!$v.producto.nombre_prod.maxLength"
+          >Nombre muy largo maximo
+          {{ $v.producto.nombre_prod.$params.maxLength.max }}
+          caracteres.</span
+        >
+      </div>
 
-          <div>
-            <h2>Datos del producto:</h2>
-            <form
-              class="formulario"
-              @submit.prevent="submitForm"
-              autocomplete="off"
-            >
-              <div class="group">
-                <label>Nombre Producto:</label>
-                <input
-                  type="text"
-                  required
-                  v-model="producto.nombre_prod"
-                  id="nombre_prod"
-                /><br />
+      <div class="formulario_group">
+        <label
+          >Descripcion:
+          <textarea v-model="producto.descripcion" cols="50" rows="10" />
+        </label>
+        <span v-if="!$v.producto.descripcion.alpha1"
+          >No se aceptan caracteres especiales.</span
+        >
+        <span v-if="!$v.producto.descripcion.maxLength"
+          >Descripcion muy larga.
+          {{ $v.producto.descripcion.$params.maxLength.max }}.</span
+        >
+        <span v-if="!$v.producto.descripcion.required">Campo requerido.</span>
+      </div>
 
-                <span v-if="!$v.producto.nombre_prod.alpha" class="error"
-                  >No se aceptan caracteres especiales.</span
-                >
-                <span v-if="!$v.producto.nombre_prod.minLength" class="error"
-                  >Debe tener una longitud no menor a
-                  {{ $v.producto.nombre_prod.$params.minLength.min }}.</span
-                >
-                <span v-if="!$v.producto.nombre_prod.required" class="error"
-                  >Campo requerido.</span
-                >
-                <span v-if="!$v.producto.nombre_prod.maxLength" class="error"
-                  >Nombre muy largo maximo
-                  {{ $v.producto.nombre_prod.$params.maxLength.max }}
-                  caracteres.</span
-                >
-              </div>
-              <label>decription:</label>
-              <textarea
-                v-model="producto.descripcion"
-                cols="30"
-                rows="10"
-              ></textarea>
+      <div>
+        <label
+          >Categoria: <input list="categorias" v-model="producto.categoria"
+        /></label>
+        <span v-if="!$v.producto.categoria.required">Campo requerido.</span>
+        <datalist id="categorias">
+          <option value="Farmacia"></option>
+          <option value="Electronicos"></option>
+          <option value="Ropa"></option>
+          <option value="Alimentos"></option>
+          <option value="Entretenimiento"></option>
+        </datalist>
+      </div>
 
-              <br />
-              <span v-if="!$v.producto.descripcion.alpha1" class="error"
-                >No se aceptan caracteres especiales.</span
-              >
-              <span v-if="!$v.producto.descripcion.maxLength" class="error"
-                >Descripcion muy larga.
-                {{ $v.producto.descripcion.$params.maxLength.max }}.</span
-              >
-              <span v-if="!$v.producto.descripcion.required" class="error"
-                >Campo requerido.</span
-              ><br />
+      <div class="formulario_group">
+        <label
+          >Precio por unidad (Bs.):<input
+            type="number"
+            v-model="producto.precio_unid"
+          />
+        </label>
+        <span v-if="!$v.producto.precio_unid.required">Campo requerido.</span>
+        <span v-if="!$v.producto.precio_unid.between"
+          >Campo invalido (0-10000).</span
+        ><span v-if="!$v.producto.precio_unid.validate_decimales"
+          >Maximo 2 decimales!</span
+        >
+      </div>
 
-              <label for="categoria">Categoria:</label>
-              <input
-                list="categorias"
-                name="categoria"
-                id="categoria"
-                v-model="producto.categoria"
-              /><br />
-              <span v-if="!$v.producto.categoria.required" class="error"
-                >Campo requerido.</span
-              ><br />
-              <datalist id="categorias">
-                <option value="Farmacia"></option>
-                <option value="Electronicos"></option>
-                <option value="Ropa"></option>
-                <option value="Alimentos"></option>
-                <option value="Entretenimiento"></option>
-              </datalist>
+      <div>
+        Cantidad:
+        <div class="formulario_group">
+          <label
+            ><input
+              type="radio"
+              @click="selectCantidad"
+              v-model="producto.unidad"
+            />Unidades</label
+          >
+          <input
+            type="number"
+            :disabled="disabled"
+            v-model="producto.cantidad"
+          />
+          <span v-if="!$v.producto.cantidad.minValue">Debe ser mayor a 0.</span>
+          <span v-if="!$v.producto.cantidad.integer"
+            >Solo se aceptan valores enteros.</span
+          >
+        </div>
 
-              <label
-                >Precio por unidad (Bs.):<input
-                  class="precio"
-                  type="number"
-                  v-model="producto.precio_unid"
-                />
-                <span v-if="!$v.producto.precio_unid.required" class="error"
-                  >Campo requerido.</span
-                >
-                <span v-if="!$v.producto.precio_unid.between" class="error"
-                  >Campo invalido (0-10000).</span
-                ><span
-                  v-if="!$v.producto.precio_unid.validate_decimales"
-                  class="error"
-                  >Maximo 2 decimales!</span
-                >
-                <br />
-              </label>
+        <div class="formulario_group">
+          <label
+            ><input
+              type="radio"
+              value="peso"
+              @click="selectCantidad"
+              v-model="producto.unidad"
+            />Peso</label
+          >
+          <input
+            type="number"
+            step="0.25"
+            value="0.00"
+            :disabled="!disabled"
+            v-model="producto.peso"
+          />
 
-              <p>
-                Cantidad:<br />
-
-                <label
-                  ><input
-                    type="radio"
-                    value="unidades"
-                    @click="pesoDisabled"
-                    v-model="producto.unidad"
-                  />Unidades</label
-                ><br />
-                <input
-                  id="unidad"
-                  class="cantidad"
-                  type="number"
-                  name="este1"
-                  disabled
-                  v-model="producto.cantidad"
-                /><br />
-
-                <span v-if="!$v.producto.cantidad.minValue" class="error"
-                  >Debe ser mayor a 0.</span
-                >
-
-                <span v-if="!$v.producto.cantidad.integer" class="error"
-                  >Solo se aceptan valores enteros.</span
-                >
-
-                <label
-                  ><input
-                    type="radio"
-                    value="peso"
-                    @click="unidadDisabled"
-                    v-model="producto.unidad"
-                  />Peso</label
-                ><br />
-                <input
-                  class="peso"
-                  type="number"
-                  step="0.25"
-                  value="0.00"
-                  name="este"
-                  id="peso"
-                  disabled
-                  v-model="producto.peso"
-                />
-
-                <select
-                  name="UNIDAD PESO"
-                  class="unidad"
-                  id="unidadesMedida"
-                  disabled
-                  v-model="producto.unidad_med"
-                >
-                  <option selected value="">Elige una opción</option>
-                  <option value="Kilogramos">Kilogramos</option>
-                  <option value="Libras">Libras</option>
-                  <option value="Litros">Litros</option>
-                  <option value="Galones">Galones</option>
-                  <option value="Onzas">Onzas</option></select
-                ><br />
-                <span v-if="!$v.producto.peso.minValue" class="error"
-                  >Debe ser mayor a 0.</span
-                >
-
-                <span v-if="!$v.producto.peso.validate_decimales" class="error"
-                  >Maximo 2 decimales!</span
-                >
-              </p>
-
-              <label for="start">Fecha de vencimiento del producto:</label>
-              <input
-                type="date"
-                id="start"
-                name="trip-start"
-                value="DD/MM/AA"
-                v-model="producto.fecha_venc"
-              /><br />
-              <span v-if="!$v.producto.fecha_venc.validate_date" class="error"
-                >fecha invalida</span
-              >
-
-              <div>
-                <button
-                  :disabled="$v.producto.$invalid"
-                  class="boton"
-                  @click="send"
-                >
-                  Confirmar
-                </button>
-              </div>
-            </form>
-            {{ producto }}
-          </div>
+          <select :disabled="!disabled" v-model="producto.unidad_med">
+            <option selected value="">Elige una opción</option>
+            <option value="Kilogramos">Kilogramos</option>
+            <option value="Libras">Libras</option>
+            <option value="Litros">Litros</option>
+            <option value="Galones">Galones</option>
+            <option value="Onzas">Onzas</option>
+          </select>
+          <span v-if="!$v.producto.peso.minValue">Debe ser mayor a 0.</span>
+          <span v-if="!$v.producto.peso.validate_decimales"
+            >Maximo 2 decimales!</span
+          >
         </div>
       </div>
-    </body>
-  </div>
+
+      <div class="formulario_group">
+        <label
+          >Fecha de vencimiento del producto:
+          <input type="date" value="DD/MM/AA" v-model="producto.fecha_venc"
+        /></label>
+        <span v-if="!$v.producto.fecha_venc.validate_date">fecha invalida</span>
+      </div>
+
+      <button :disabled="$v.producto.$invalid" class="formulario_button">
+        Confirmar
+      </button>
+    </form>
+    <pre>{{ producto }}</pre>
+  </section>
 </template>
 
 <script>
@@ -231,7 +170,7 @@ const validate_decimales = (value) => {
   const datovalue = String(value);
 
   if (datovalue.indexOf(".") > 0) {
-    const parts = datovalue.split("."); //array
+    const parts = datovalue.split(".");
     const dato = String(parts[1]);
 
     return !helpers.req(value) || !(dato.length > 2);
@@ -244,6 +183,7 @@ export default {
   name: "Formulario",
   data() {
     return {
+      disabled: false,
       producto: {
         nombre_prod: null,
         descripcion: null,
@@ -251,7 +191,7 @@ export default {
         precio_unid: null,
         unidad: null,
         cantidad: null,
-        peso: "",
+        peso: null,
         unidad_med: null,
         fecha_venc: "",
       },
@@ -293,24 +233,18 @@ export default {
   },
 
   methods: {
-    send: function () {
-      event.preventDefault();
-      console.log(this.producto);
+    selectCantidad() {
+      this.disabled = !this.disabled;
+      if (!this.disabled) {
+        this.producto.peso = null;
+        this.producto.unidad_med = null;
+        this.producto.cantidad = "";
+      } else {
+        this.producto.cantidad = null;
+        this.producto.peso = "";
+        this.producto.unidad_med = "";
+      }
     },
-    pesoDisabled: function () {
-      document.getElementById("unidad").disabled = false;
-      document.getElementById("peso").disabled = true;
-      document.getElementById("unidadesMedida").disabled = true;
-      this.producto.peso = null;
-      this.producto.unidad_med = null;
-    },
-    unidadDisabled: function () {
-      document.getElementById("peso").disabled = false;
-      document.getElementById("unidad").disabled = true;
-      document.getElementById("unidadesMedida").disabled = false;
-      this.producto.cantidad = null;
-    },
-
     submitForm() {
       if (!this.$v.producto.$invalid) {
         console.log("datos correctos ", this.producto);
@@ -323,106 +257,8 @@ export default {
 </script>
 
 <style scope>
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-a {
-  text-decoration: none;
-  font-size: 15px;
-}
-:root {
-  --color-principal: white;
-  --color: #f5f5f5;
-}
-label {
-  width: 100%;
-  display: block;
-  margin: 0.5em 0 0 0;
-  display: table;
-}
-h1 {
-  text-align: center;
-}
-.select,
-#categoria {
-  border: #e6e6fa 1px solid;
-}
-.unidad {
-  margin: 0 30px;
-  border: #e6e6fa 1px solid;
-}
-
-.contenedor {
-  padding: 50px;
-  margin: 20 px auto;
-  width: 100%;
-  height: 90%;
-}
-
-.contenido {
-  display: flex;
-  width: 100%;
-  overflow: hidden;
-  background: var(--color-principal);
-}
-
-.contenido .imagenes,
-.contenido .fomulario {
-  width: 60%;
-}
-/* Estilos formulario*/
-.formulario {
-  padding: 40px;
-  background: var(--color);
-}
-.formulario input[type="text"],
-.formulario textarea {
-  width: 90%;
-  margin-bottom: 15px;
-  padding: 15px 10px;
-  border: 1px solid #e6e6fa;
-  outline: 0;
-  height: 10px;
-}
-.formulario input[type="number"] {
-  border: #e6e6fa 1px solid;
-  width: 30%;
-}
-.precio {
-  border: #e6e6fa 1px solid;
-  display: block;
-}
-.peso {
-  border: #e6e6fa 1px solid;
-  display: inline-block;
-}
-
-.formulario input[type="date"],
-.cantidad {
-  max-width: 50%;
-}
-.formulario input[type="text"]:focus,
-.formulario textarea:focus,
-.formulario input[type="number"]:focus {
-  border: 1px solid #00ff00;
-}
-.formulario textarea {
-  max-width: 100%;
-  min-width: 100%;
-  min-height: 50px;
-  max-height: 120px;
-}
-
-.boton {
-  padding: 15px 35px;
-  border: transparent;
-  background: #696969;
-  color: #e6e6fa;
-  margin: 20px 70px 20px 200px;
-}
-span {
-  color: red;
+.formulario_form {
+  background-color: #edf0f4;
+  padding: 1rem;
 }
 </style>
