@@ -1,9 +1,8 @@
-import axios from 'axios'
+import axios from "axios";
 
 const instance = axios.create({
-    // baseURL: 'https://localhost:4000/',
-    baseURL: 'https://jsonplaceholder.typicode.com/',
-    timeout: 1000,
+  baseURL: "http://localhost:4000/",
+  headers: { "Content-Type": "application/json" },
 });
 
-export default instance
+export default instance;

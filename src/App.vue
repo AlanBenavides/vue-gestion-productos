@@ -1,12 +1,25 @@
 <template>
   <div id="app">
+    <Nav />
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/Admin_productos">Productos</router-link>
     </div>
     <router-view />
   </div>
 </template>
+
+<script>
+import Nav from "@/components/Nav.vue";
+
+export default {
+  name: "App",
+  components: {
+    Nav,
+  },
+};
+</script>
 
 <style>
 #app {
@@ -28,5 +41,11 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+:root {
+  --primary-color: rgb(192, 192, 192);
+  --secondary-color: rgb(216, 216, 216);
+  --font-color: black;
 }
 </style>

@@ -36,12 +36,12 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Integrantes
 
--   Abasto Pérez Víctor Eduardo
--   Arce Aguirre William Omar
--   Arévalo Ferrufino Juan Carlos
--   Benavides Alvarez Alan Bruno
--   Encinas Boza Geovanny Brian
--   Machado Álvaro Dennis
--   Torrico Rosas Britany
--   Ugarte García Richard
--   Zurita Gómez Gabriel
+- Abasto Pérez Víctor Eduardo
+- Arce Aguirre William Omar
+- Arévalo Ferrufino Juan Carlos
+- Benavides Alvarez Alan Bruno
+- Encinas Boza Geovanny Brian
+- Machado Álvaro Dennis
+- Torrico Rosas Britany
+- Ugarte García Richard
+- Zurita Gómez Gabriel
