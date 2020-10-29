@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <img src="@/assets/logo.png" alt="" />
+    <img src="@/assets/logo.png" :alt="nombre" />
     <h5>{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
     <p>
@@ -9,7 +9,7 @@
       distinctio veritatis vitae rerum doloribus labore sequi non quidem ducimus
       aperiam!.
     </p>
-    <p>Añadido el {{ fecha }}</p>
+    <p>Añadido el {{ parseDate() }}</p>
   </div>
 </template>
 
@@ -17,6 +17,15 @@
 export default {
   name: "Item",
   props: ["nombre", "precio", "descripcion", "fecha"],
+  methods: {
+    parseDate() {
+      const date = new Date(this.fecha);
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${day}-${month}-${year}`;
+    },
+  },
 };
 </script>
 
