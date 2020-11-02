@@ -44,6 +44,8 @@ export default {
 ul {
   padding: 0;
   position: fixed;
+  top:50%;
+  transform: translate(0, -50%); 
   left: 0;
 }
 
@@ -63,4 +65,5 @@ div {
   padding: 16px;
   margin: 1rem;
 }
+
 </style>
