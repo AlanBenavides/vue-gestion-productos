@@ -1,13 +1,10 @@
 <template>
   <div class="item">
-    <img src="@/assets/logo.png" :alt="nombre" />
+    <img :src="imagen" :alt="nombre"  width="300"/>
     <h5>{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
     <p>
-      Descripcion:<br />Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      Molestiae non error ad nihil qui iure modi laboriosam dolorum. Amet
-      distinctio veritatis vitae rerum doloribus labore sequi non quidem ducimus
-      aperiam!.
+      Descripcion:<br />{{descripcion}}
     </p>
     <p>Añadido el {{ parseDate() }}</p>
   </div>
@@ -16,7 +13,12 @@
 <script>
 export default {
   name: "Item",
-  props: ["nombre", "precio", "descripcion", "fecha"],
+  props: ["id_product","nombre", "precio", "descripcion", "fecha"],
+  data: function() {
+    return {
+      imagen: '',
+    }
+  },
   methods: {
     parseDate() {
       const date = new Date(this.fecha);
@@ -25,6 +27,13 @@ export default {
       const year = date.getFullYear();
       return `${day}-${month}-${year}`;
     },
+  },
+  mounted: async function(){
+    const response = await this.$http.get(
+      `image?id=${this.id_product}`
+    );
+    const imageURL = response.data[0].imagen;
+    this.imagen = 'data:image/jpg;base64,' + imageURL;
   },
 };
 </script>

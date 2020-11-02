@@ -26,6 +26,7 @@
         @click="selectProduct(product.cod_prod)"
       >
         <Item
+          :id_product="product.cod_prod"
           :nombre="product.nombre_prod"
           :precio="product.precio_unid"
           :descripcion="product.descripcion"
