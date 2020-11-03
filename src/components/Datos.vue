@@ -17,15 +17,15 @@
         <div class="col-3">{{ products.precio_desc }} (Bs.)</div>
         <div class="col-9">{{ products.precio_desc }} % OFF</div>
       </div>
+      <!-- Unidades disponibles -->
+      <div class="row">
+        <div class="col-3">Unidades disponibles:</div>
+        <div class="col-9">{{ products.cantidad }}</div>
+      </div>
       <!-- peso -->
       <div class="row">
         <div class="col-3">Peso:</div>
         <div class="col-9">{{ products.peso }} {{ products.unidad_med }}</div>
-      </div>
-      <!-- Existencias -->
-      <div class="row">
-        <div class="col-3">Existencias:</div>
-        <div class="col-9">{{ products.cantidad }}</div>
       </div>
       <!-- Fecha -->
       <div class="row" v-if="products.fecha_venc != null">
@@ -36,13 +36,13 @@
       <div class="row" v-if="products.descripcion != null">
         <div class="col-3">Sobre este Producto:</div>
       </div>
-      <div class="row">
+      <div class="description">
         <div class="col-12" id="descripcion">{{ products.descripcion }}</div>
       </div>
       <!-- Cantidad de productos a comprar, sin funcionalidad, ya es parte de otro subsistema-->
       <div class="row">
         <div class="col-3">Cantidad:</div>
-        <div class="col-3"><input class="w-50" type="number" /></div>
+        <div class="col-3"><input class="w-50" type="number" min ="1"/></div>
         <div class="col-3">unidad/es</div>
       </div>
       <br />
@@ -119,5 +119,12 @@ export default {
 
 #precio_desc {
   text-decoration: line-through;
+}
+
+.description{
+  height: 200px;
+  width: auto;
+  box-sizing: content-box;
+  border: 2px solid black;
 }
 </style>
