@@ -6,21 +6,23 @@
         <div class="imagenes">
           <h2>Fotos del producto:</h2>
           <br>
-          <input type="file" id="files" ref="files" accept="image/*" multiple v-on:change="handleFilesUpload()" />
+          <input type="file" id="files" ref="files" accept="image/*" multiple v-on:change="handleFilesUpload()"/>
           <div class="imagenes">
             <div class="grid-x">
-              <div v-for="(file, key) in files" :key="file" class="file-listing">
+              <div v-for="(file, key) in files" :key="key" class="file-listing">
                 {{ file.name }}
-                <img class="preview" v-bind:ref="'image'+parseInt( key )"/>
-                <span class="remove-file" v-on:click="removeFile(key)">Remove</span>
+                <img class="preview" v-bind:ref="'image'+parseInt( key )"/><br>
+                <span class="remove-file" v-on:click="removeFile(key)">eliminar</span>
               </div>
             </div>
           </div>
           <br>
           <div class="imagenes">
-            <button v-on:click="addFiles()">Add Files</button>
+            <button v-on:click="addFiles()">Añadir imagenes</button>
           </div>
           <br>
+          <span class="error" v-if="!$v.files.required">Imagen requerida</span>
+          <span class="error" v-if="!$v.files.maxLength">No se aceptan mas de 4 imagenes</span>
         </div>
         
         <div>
@@ -287,13 +289,14 @@ export default {
       },
     },
     files: {
-      minLength: minLength(1),
+      required,
       maxLength: maxLength(4),
     }
   },
   methods: {
     send: function (event) {
       event.preventDefault();
+      this.sendFiles();
       console.log(this.producto);
       console.log(this.files);
     },
@@ -322,9 +325,14 @@ export default {
     },
     handleFilesUpload(){
       let uploadedFiles = this.$refs.files.files;
+      if (uploadedFiles[uploadedFiles.length-1].size > 1024*1024){
+        alert('File too big (> 1MB)');
+        return;
+      }
       for( var i= 0; i < uploadedFiles.length; i++ ){
         this.files.push( uploadedFiles[i] );
       }
+      console.log(uploadedFiles[uploadedFiles.length-1].width);
       this.getImagePreviews();
     },
     getImagePreviews(){
@@ -338,8 +346,22 @@ export default {
         }
       }
     },
-    removeFiles( key ){
+    removeFile( key ){
       this.files.splice(key, 1);
+    },
+    sendFiles(){
+      const cant = this.files.length;
+      for (let i=0; i<cant;i++){
+        this.createBase64Image(this.files[i]);
+      }
+      this.files.splice(0, cant);
+    },
+    createBase64Image( fileObject ){
+      const reader = new FileReader();
+      reader.readAsDataURL(fileObject);
+      reader.onload = (e) =>{
+        this.files.push(e.target.result);
+      }
     }
   },
 };
@@ -449,8 +471,10 @@ span {
   align-items: center;
 }
 #preview img {
-  max-width: 100%;
-  max-height: 500px;
+  min-width: 640px;
+  min-height: 360px;
+  max-width: 1366px;
+  max-height: 768px;
 }
 input[type="file"]{
   position: absolute;
