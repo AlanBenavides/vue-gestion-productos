@@ -177,13 +177,19 @@
           >
             Maximo 2 decimales!
           </div>
+          <div
+            class="formulario_check-error"
+            v-if="!$v.producto.peso.validate_decimales"
+          >
+            Maximo 2 decimales!
+          </div>
         </div>
       </fieldset>
 
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Fecha de vencimiento del producto:</div>
-          <input type="date" value="DD/MM/AA" v-model="producto.fecha_venc " 
+          <input type="date" value="DD/MM/AA" v-model="producto.fecha_venc"
         /></label>
         <div
           class="formulario_check-error"
@@ -192,6 +198,8 @@
           fecha invalida
         </div>
       </div>
+
+      
 
       <button :disabled="$v.producto.$invalid" class="formulario_button">
         Confirmar
@@ -348,7 +356,6 @@ export default {
   border-radius: 6px;
   padding: 5px 7px;
 }
-
 
 .formulario select {
   height: 38px;
