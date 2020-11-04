@@ -21,7 +21,7 @@
             <button v-on:click="addFiles()">Añadir imagenes</button>
           </div>
           <br>
-          <span class="error" v-if="!$v.files.required">Imagen requerida</span>
+          <span class="error" v-if="!$v.files.required">Faltan fotografias</span>
           <span class="error" v-if="!$v.files.maxLength">No se aceptan mas de 4 imagenes</span>
         </div>
         
@@ -325,19 +325,47 @@ export default {
     },
     handleFilesUpload(){
       let uploadedFiles = this.$refs.files.files;
-      if (uploadedFiles[uploadedFiles.length-1].size > 1024*1024){
-        alert('File too big (> 1MB)');
+      if ( /\.(jpe?g|png)$/i.test( uploadedFiles[uploadedFiles.length-1].name ) ){
+        if (uploadedFiles[uploadedFiles.length-1].size > 1024*1024){
+          alert('Archivo muy pesado (> 1MB)');
+          this.removeFile(uploadedFiles.length-1);
+          return;
+        }else{
+          let arch=uploadedFiles[uploadedFiles.length-1];
+          let reader = new FileReader();
+          reader.readAsDataURL(arch)
+          reader.onload = evt =>{
+            let img = new Image();
+            img.onload = () =>{
+              console.log(img.width);
+              console.log(img.height);
+              if(img.width<640 || img.width>1366){
+                alert ('El ancho debe estar entre 640px y 1366px');
+                this.removeFile(uploadedFiles.length-1);
+                return;
+              }else if (img.height<360 || img.height>768){
+                alert ('El alto debe estar entre 360px y 768px');
+                this.removeFile(uploadedFiles.length-1);
+                return;
+              }
+            }
+            img.src=evt.target.result;
+        }
+        for( var i= 0; i < uploadedFiles.length; i++ ){
+          this.files.push( uploadedFiles[i] );
+        }
+        this.getImagePreviews();
+        }
+        
+      }else{
+        alert ('Seleccione un archivo jpg o png');
         return;
       }
-      for( var i= 0; i < uploadedFiles.length; i++ ){
-        this.files.push( uploadedFiles[i] );
-      }
-      console.log(uploadedFiles[uploadedFiles.length-1].width);
-      this.getImagePreviews();
+      
     },
     getImagePreviews(){
       for (let i = 0; i < this.files.length; i++){
-        if ( /\.(jpe?g|png|gif)$/i.test( this.files[i].name ) ){
+        if ( /\.(jpe?g|png)$/i.test( this.files[i].name ) ){
           let reader = new FileReader();
           reader.addEventListener("load", function(){
             this.$refs['image'+parseInt( i )][0].src = reader.result;
