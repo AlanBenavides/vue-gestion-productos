@@ -338,7 +338,7 @@ export default {
         }
       }
     },
-    removeFiles( key ){
+    removeFile( key ){
       this.files.splice(key, 1);
     }
   },
