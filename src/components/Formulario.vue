@@ -61,8 +61,14 @@
             v-model="producto.descripcion"
             cols="50"
             rows="10"
+            maxlength="1000"
           />
         </label>
+          <div
+          class="formulario_check-error1">
+          
+          {{`${producto.descripcion.length}/1000` }} caracteres.
+        </div>
         <div
           class="formulario_check-error"
           v-if="!$v.producto.descripcion.alpha1"
@@ -82,6 +88,9 @@
         >
           Campo requerido.
         </div>
+       
+        
+        
       </div>
 
       <div>
@@ -146,7 +155,7 @@
           class="formulario_check-error"
           v-if="!$v.producto.precio_unid.alpha2"
         >
-          No se aceptan caracteres especiales
+           Ingrese un valor numérico.
         </div>
       </div>
 
@@ -183,7 +192,7 @@
             class="formulario_check-error"
             v-if="!$v.producto.cantidad.alpha2"
           >
-            No se aceptan caracteres especiales
+            Ingrese un valor numérico
           </div>
         </div>
 
@@ -235,7 +244,7 @@
             Maximo 2 decimales!
           </div>
           <div class="formulario_check-error" v-if="!$v.producto.peso.alpha2">
-            no se aceptan caracteres especiales
+           Ingrese un valor numérico.
           </div>
         </div>
       </fieldset>
@@ -243,7 +252,7 @@
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Fecha de vencimiento del producto:</div>
-          <input type="date" value="DD/MM/AA" v-model="producto.fecha_venc"
+          <input type="date" value="DD/MM/AA" onkeydown="return false" v-model="producto.fecha_venc" 
         /></label>
         <div
           class="formulario_check-error-center"
@@ -257,6 +266,7 @@
         Confirmar
       </button>
     </form>
+    
   </section>
 </template>
 
@@ -303,6 +313,7 @@ const validate_decimales = (value) => {
   }
 };
 
+
 export default {
   name: "Formulario",
   data() {
@@ -310,7 +321,7 @@ export default {
       disabled: false,
       producto: {
         nombre_prod: null,
-        descripcion: null,
+        descripcion: "",
         categoria: null,
         precio_unid: null,
         unidad: null,
@@ -332,7 +343,7 @@ export default {
       },
       descripcion: {
         required,
-        maxLength: maxLength(10),
+        maxLength: maxLength(1000),
         alpha1,
       },
       categoria: {
@@ -467,5 +478,9 @@ export default {
   color: white;
   font-size: 20px;
   font-weight: 700;
+}
+.formulario_check-error1{
+  color: black;
+  text-align: right;
 }
 </style>
