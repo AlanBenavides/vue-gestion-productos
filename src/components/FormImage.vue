@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       files: [],
+      image64: [],
     };
   },
   validations: {
@@ -77,9 +78,10 @@ export default {
                                     this.removeFile(this.files.length+i);
                                     return;
                                 }else{
+                                    this.createBase64Image(arch);
                                     this.files.push( arch );
                                     this.getImagePreviews();
-                                    this.$emit("sendimages", this.files);
+                                    this.$emit("sendimages", this.image64);
                                 }
                             }
                             img.src=evt.target.result;
@@ -90,8 +92,7 @@ export default {
                 }else{
                     alert (arch.name + ' no es un archivo jpg o png');
                 }
-                    
-                   // this.$emit("sendimages", []);
+                
             }
         },
     getImagePreviews() {
@@ -113,18 +114,11 @@ export default {
       this.files.splice(key, 1);
       this.getImagePreviews();
     },
-    sendFiles() {
-      const cant = this.files.length;
-      for (let i = 0; i < cant; i++) {
-        this.createBase64Image(this.files[i]);
-      }
-      this.files.splice(0, cant);
-    },
     createBase64Image(fileObject) {
       const reader = new FileReader();
       reader.readAsDataURL(fileObject);
       reader.onload = (e) => {
-        this.files.push(e.target.result);
+        this.image64.push(e.target.result);
       };
     },
   },

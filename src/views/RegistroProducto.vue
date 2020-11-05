@@ -5,6 +5,7 @@
       <FormImage @sendimages="passImages($event)" />
       <Formulario class="registro_form" :images="images" />
     </div>
+    {{ images }}
   </div>
 </template>
 
@@ -28,7 +29,6 @@ export default {
       this.images = images;
       console.log(this.images);
     },
-
   },
 };
 </script>
