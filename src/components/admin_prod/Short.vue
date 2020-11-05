@@ -107,15 +107,15 @@ export default {
     },
     async getProducts() {
       const response = await this.$http.get(
-        `products?criterio=${this.orden}&page=${this.pagina}&limit=${6}`
+        `products?criterio=${this.orden}&page=${this.pagina}&limit=${10}`
       );
 
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      if ((arrayCount / 6) % 10 == 0)
-        this.pagCount = Math.trunc(arrayCount / 6);
-      else this.pagCount = Math.trunc(arrayCount / 6) + 1;
+      if ((arrayCount / 10) % 10 == 0)
+        this.pagCount = Math.trunc(arrayCount / 10);
+      else this.pagCount = Math.trunc(arrayCount / 10) + 1;
 
       this.arrayNext = data.next;
       this.arrayAnt = data.previus;
