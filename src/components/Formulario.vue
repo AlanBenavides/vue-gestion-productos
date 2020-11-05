@@ -8,8 +8,17 @@
     >
       <div class="formulario_group">
         <label
-          ><div  class="formulario_name">Nombre Producto:</div>
-          <input :style="$v.producto.nombre_prod.$invalid ? 'border:1px solid red ':'border:1px solid green '" type="text" required v-model="producto.nombre_prod" />
+          ><div class="formulario_name">Nombre Producto:</div>
+          <input
+            :style="
+              $v.producto.nombre_prod.$invalid
+                ? 'border:1px solid red '
+                : 'border:1px solid green '
+            "
+            type="text"
+            required
+            v-model="producto.nombre_prod"
+          />
         </label>
         <div
           class="formulario_check-error"
@@ -43,7 +52,16 @@
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Descripcion:</div>
-          <textarea :style="$v.producto.descripcion.$invalid ? 'border:1px solid red ':'border:1px solid green '" v-model="producto.descripcion" cols="50" rows="10" />
+          <textarea
+            :style="
+              $v.producto.descripcion.$invalid
+                ? 'border:1px solid red '
+                : 'border:1px solid green '
+            "
+            v-model="producto.descripcion"
+            cols="50"
+            rows="10"
+          />
         </label>
         <div
           class="formulario_check-error"
@@ -55,7 +73,7 @@
           class="formulario_check-error"
           v-if="!$v.producto.descripcion.maxLength"
         >
-          Descripcion muy larga maximo 
+          Descripcion muy larga maximo
           {{ $v.producto.descripcion.$params.maxLength.max }} caracteres.
         </div>
         <div
@@ -69,15 +87,22 @@
       <div>
         <label
           ><div class="formulario_name">Categoria:</div>
-          <input :style="$v.producto.categoria.$invalid ? 'border:1px solid red ':'border:1px solid green '" list="categorias" v-model="producto.categoria"
+          <input
+            :style="
+              $v.producto.categoria.$invalid
+                ? 'border:1px solid red '
+                : 'border:1px solid green '
+            "
+            list="categorias"
+            v-model="producto.categoria"
         /></label>
         <div
           class="formulario_check-error"
-          v-if="!$v.producto.categoria.required" 
+          v-if="!$v.producto.categoria.required"
         >
           Campo requerido.
         </div>
-        <datalist id="categorias" >
+        <datalist id="categorias">
           <option value="Farmacia"></option>
           <option value="Electronicos"></option>
           <option value="Ropa"></option>
@@ -89,7 +114,15 @@
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Precio por unidad (Bs.):</div>
-          <input type="text" v-model="producto.precio_unid" :style="$v.producto.precio_unid.$invalid ? 'border:1px solid red ':'border:1px solid green '" />
+          <input
+            type="text"
+            v-model="producto.precio_unid"
+            :style="
+              $v.producto.precio_unid.$invalid
+                ? 'border:1px solid red '
+                : 'border:1px solid green '
+            "
+          />
         </label>
         <div
           class="formulario_check-error"
@@ -100,7 +133,6 @@
         <div
           class="formulario_check-error"
           v-if="!$v.producto.precio_unid.between"
-         
         >
           Campo invalido (0.10-10000).
         </div>
@@ -132,7 +164,8 @@
           <input
             type="text"
             :disabled="disabled"
-            v-model="producto.cantidad" :required="!disabled" 
+            v-model="producto.cantidad"
+            :required="!disabled"
           />
           <div
             class="formulario_check-error"
@@ -146,11 +179,11 @@
           >
             Solo se aceptan valores enteros.
           </div>
-           <div
+          <div
             class="formulario_check-error"
             v-if="!$v.producto.cantidad.alpha2"
           >
-           No se aceptan caracteres especiales 
+            No se aceptan caracteres especiales
           </div>
         </div>
 
@@ -165,15 +198,20 @@
             <span class="formulario_name formulario_name-span">Peso</span>
           </label>
           <input
-            type="text" 
+            type="text"
             step="0.25"
             value="0.00"
             :disabled="!disabled"
             v-model="producto.peso"
-            class="formulario_peso" :required="disabled"
+            class="formulario_peso"
+            :required="disabled"
           />
-           
-          <select :required="disabled" :disabled="!disabled" v-model="producto.unidad_med" >
+
+          <select
+            :required="disabled"
+            :disabled="!disabled"
+            v-model="producto.unidad_med"
+          >
             <option selected value="">Elige una opción</option>
             <option value="Kilogramos">Kilogramos</option>
             <option value="Libras">Libras</option>
@@ -196,13 +234,9 @@
           >
             Maximo 2 decimales!
           </div>
-          <div
-          class="formulario_check-error"
-          v-if="!$v.producto.peso.alpha2"
-        >
-          no se aceptan caracteres especiales
-        </div>
-        
+          <div class="formulario_check-error" v-if="!$v.producto.peso.alpha2">
+            no se aceptan caracteres especiales
+          </div>
         </div>
       </fieldset>
 
@@ -212,20 +246,17 @@
           <input type="date" value="DD/MM/AA" v-model="producto.fecha_venc"
         /></label>
         <div
-          class="formulario_check-error"
+          class="formulario_check-error-center"
           v-if="!$v.producto.fecha_venc.validate_date"
         >
           fecha invalida
         </div>
       </div>
 
-      
-
       <button :disabled="$v.producto.$invalid" class="formulario_button">
         Confirmar
       </button>
     </form>
-   
   </section>
 </template>
 
@@ -237,25 +268,27 @@ import {
   maxLength,
   between,
   minValue,
-  integer
+  integer,
 } from "vuelidate/lib/validators";
 
 const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\s]*$/);
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,.\s]*$/);
-const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);//para precio unidad
+const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/); //para precio unidad
 
 const validate_date = (value) => {
   const date = new Date();
   const dd = date.getDate();
-  const mm = date.getMonth()+1;
+  const mm = date.getMonth() + 1;
   const yyyy = date.getFullYear();
   const yyvalue = parseInt(value.slice(0, 4));
   const mmvalue = parseInt(value.slice(5, 7));
   const ddvalue = parseInt(value.slice(8, 10));
-console.log(dd>ddvalue);
-console.log(mm>=mmvalue);
-console.log(!(yyyy>yyvalue));
- return(!helpers.req(value) || !(yyvalue < yyyy) & !((yyvalue == yyyy) && (mmvalue < mm)) & !((yyyy == yyvalue) && (mm == mmvalue) && (ddvalue<dd)));
+  return (
+    !helpers.req(value) ||
+    !(yyvalue < yyyy) &
+      !(yyvalue == yyyy && mmvalue < mm) &
+      !(yyyy == yyvalue && mm == mmvalue && ddvalue < dd)
+  );
 };
 const validate_decimales = (value) => {
   const datovalue = String(value);
@@ -268,10 +301,7 @@ const validate_decimales = (value) => {
   } else {
     return true;
   }
-}; 
-
-
-
+};
 
 export default {
   name: "Formulario",
@@ -291,6 +321,7 @@ export default {
       },
     };
   },
+  props: ["images"],
   validations: {
     producto: {
       nombre_prod: {
@@ -309,26 +340,25 @@ export default {
       },
       precio_unid: {
         required,
-        between: between(0.10, 10000),
+        between: between(0.1, 10000),
         validate_decimales,
-        alpha2
+        alpha2,
       },
       cantidad: {
         minValue: minValue(1),
         integer,
-        alpha2
-        
+        alpha2,
       },
       peso: {
-        minValue: minValue(0.10),
-        validate_decimales,alpha2
+        minValue: minValue(0.1),
+        validate_decimales,
+        alpha2,
       },
       fecha_venc: {
         validate_date,
       },
     },
   },
-
   methods: {
     selectCantidad() {
       this.disabled = !this.disabled;
@@ -353,7 +383,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style>
 .formulario_tittle {
   text-align: left;
   color: #919ca9;
@@ -421,6 +451,11 @@ export default {
 }
 
 .formulario_check-error {
+  color: red;
+}
+
+.formulario_check-error-center {
+  text-align: center;
   color: red;
 }
 

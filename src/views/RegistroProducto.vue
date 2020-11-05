@@ -1,20 +1,34 @@
 <template>
   <div class="registro">
     <h1 class="registro_tittle">Registro de Producto</h1>
-    <!-- imagenes -->
+    {{ images }}
     <div class="registro_container">
-      <section class="registro_image"></section>
-      <Formulario class="registro_form" />
+      <FormImage @sendimages="passImages($event)" />
+      <Formulario class="registro_form" :images="images" />
     </div>
   </div>
 </template>
 
 <script>
 import Formulario from "@/components/Formulario.vue";
+import FormImage from "@/components/FormImage.vue";
+
 export default {
   name: "RegistroProducto",
   components: {
     Formulario,
+    FormImage,
+  },
+  data: function () {
+    return {
+      images: [],
+    };
+  },
+  methods: {
+    passImages(images) {
+      this.images = images;
+      console.log(this.images);
+    },
   },
 };
 </script>
