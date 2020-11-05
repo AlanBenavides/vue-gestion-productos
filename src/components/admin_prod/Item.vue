@@ -30,9 +30,9 @@ export default {
   },
   mounted: async function(){
     const response = await this.$http.get(
-      `image?id=${this.id_product}`
+      `images/${this.id_product}?cantidad=1`
     );
-    const imageURL = response.data[0].imagen;
+    const imageURL = response.data.datos[0].imagen;
     this.imagen = 'data:image/jpg;base64,' + imageURL;
   },
 };
