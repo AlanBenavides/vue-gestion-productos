@@ -55,8 +55,8 @@
           class="formulario_check-error"
           v-if="!$v.producto.descripcion.maxLength"
         >
-          Descripcion muy larga.
-          {{ $v.producto.descripcion.$params.maxLength.max }}.
+          Descripcion muy larga maximo 
+          {{ $v.producto.descripcion.$params.maxLength.max }} caracteres.
         </div>
         <div
           class="formulario_check-error"
@@ -89,7 +89,7 @@
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Precio por unidad (Bs.):</div>
-          <input type="number" v-model="producto.precio_unid" :style="$v.producto.precio_unid.$invalid ? 'border:1px solid red ':'border:1px solid green '" />
+          <input type="text" v-model="producto.precio_unid" :style="$v.producto.precio_unid.$invalid ? 'border:1px solid red ':'border:1px solid green '" />
         </label>
         <div
           class="formulario_check-error"
@@ -100,14 +100,21 @@
         <div
           class="formulario_check-error"
           v-if="!$v.producto.precio_unid.between"
+         
         >
-          Campo invalido (0-10000).
+          Campo invalido (0.10-10000).
         </div>
         <div
           class="formulario_check-error"
           v-if="!$v.producto.precio_unid.validate_decimales"
         >
           Maximo 2 decimales!
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.producto.precio_unid.alpha2"
+        >
+          No se aceptan caracteres especiales
         </div>
       </div>
 
@@ -123,7 +130,7 @@
             <span class="formulario_name formulario_name-span">Unidades</span>
           </label>
           <input
-            type="number"
+            type="text"
             :disabled="disabled"
             v-model="producto.cantidad" :required="!disabled" 
           />
@@ -139,6 +146,12 @@
           >
             Solo se aceptan valores enteros.
           </div>
+           <div
+            class="formulario_check-error"
+            v-if="!$v.producto.cantidad.alpha2"
+          >
+           No se aceptan caracteres especiales 
+          </div>
         </div>
 
         <div class="formulario_group">
@@ -152,14 +165,14 @@
             <span class="formulario_name formulario_name-span">Peso</span>
           </label>
           <input
-            type="number"
+            type="text" 
             step="0.25"
             value="0.00"
             :disabled="!disabled"
             v-model="producto.peso"
             class="formulario_peso" :required="disabled"
           />
-
+           
           <select :required="disabled" :disabled="!disabled" v-model="producto.unidad_med" >
             <option selected value="">Elige una opción</option>
             <option value="Kilogramos">Kilogramos</option>
@@ -169,7 +182,7 @@
             <option value="Onzas">Onzas</option>
           </select>
           <div class="formulario_check-error" v-if="!$v.producto.peso.minValue">
-            Debe ser mayor a 0.
+            Debe ser mayor a 0.10.
           </div>
           <div
             class="formulario_check-error"
@@ -183,6 +196,13 @@
           >
             Maximo 2 decimales!
           </div>
+          <div
+          class="formulario_check-error"
+          v-if="!$v.producto.peso.alpha2"
+        >
+          no se aceptan caracteres especiales
+        </div>
+        
         </div>
       </fieldset>
 
@@ -205,7 +225,7 @@
         Confirmar
       </button>
     </form>
-    <pre>{{ producto }}</pre>
+   
   </section>
 </template>
 
@@ -217,24 +237,25 @@ import {
   maxLength,
   between,
   minValue,
-  integer,
+  integer
 } from "vuelidate/lib/validators";
 
 const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\s]*$/);
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,.\s]*$/);
+const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);//para precio unidad
 
 const validate_date = (value) => {
   const date = new Date();
   const dd = date.getDate();
-  const mm = date.getMonth() + 1;
+  const mm = date.getMonth()+1;
   const yyyy = date.getFullYear();
   const yyvalue = parseInt(value.slice(0, 4));
   const mmvalue = parseInt(value.slice(5, 7));
   const ddvalue = parseInt(value.slice(8, 10));
-
-  return (
-    !helpers.req(value) || !(dd > ddvalue && mm >= mmvalue && yyyy >= yyvalue)
-  );
+console.log(dd>ddvalue);
+console.log(mm>=mmvalue);
+console.log(!(yyyy>yyvalue));
+ return(!helpers.req(value) || !(yyvalue < yyyy) & !((yyvalue == yyyy) && (mmvalue < mm)) & !((yyyy == yyvalue) && (mm == mmvalue) && (ddvalue<dd)));
 };
 const validate_decimales = (value) => {
   const datovalue = String(value);
@@ -247,7 +268,10 @@ const validate_decimales = (value) => {
   } else {
     return true;
   }
-};
+}; 
+
+
+
 
 export default {
   name: "Formulario",
@@ -277,7 +301,7 @@ export default {
       },
       descripcion: {
         required,
-        maxLength: maxLength(1000),
+        maxLength: maxLength(10),
         alpha1,
       },
       categoria: {
@@ -285,16 +309,19 @@ export default {
       },
       precio_unid: {
         required,
-        between: between(0, 10000),
+        between: between(0.10, 10000),
         validate_decimales,
+        alpha2
       },
       cantidad: {
         minValue: minValue(1),
         integer,
+        alpha2
+        
       },
       peso: {
-        minValue: minValue(0),
-        validate_decimales,
+        minValue: minValue(0.10),
+        validate_decimales,alpha2
       },
       fecha_venc: {
         validate_date,
