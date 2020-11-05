@@ -1,7 +1,6 @@
 <template>
   <div class="registro">
     <h1 class="registro_tittle">Registro de Producto</h1>
-    {{ images }}
     <div class="registro_container">
       <FormImage @sendimages="passImages($event)" />
       <Formulario class="registro_form" :images="images" />
@@ -29,6 +28,7 @@ export default {
       this.images = images;
       console.log(this.images);
     },
+
   },
 };
 </script>
