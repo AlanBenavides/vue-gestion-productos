@@ -60,7 +60,7 @@ export default {
                 if ( /\.(jpe?g|png)$/i.test( arch.name ) ){
                     if (arch.size > 1024*1024){
                         alert(arch.name+' es muy pesado (> 1MB)');
-                        this.removeFile(i);
+                        this.removeFile(this.files.length+i);
                         return;
                     }else{
                         let reader = new FileReader();
@@ -70,11 +70,11 @@ export default {
                             img.onload = () =>{
                                 if(img.width<640 || img.width>1366){
                                     alert ('El ancho de '+ arch.name +' debe estar entre 640px y 1366px');
-                                    this.removeFile(i);
+                                    this.removeFile(this.files.length+i);
                                     return;
                                 }else if (img.height<360 || img.height>768){
                                     alert ('El alto de '+ arch.name +' debe estar entre 360px y 768px');
-                                    this.removeFile(i);
+                                    this.removeFile(this.files.length+i);
                                     return;
                                 }else{
                                     this.files.push( arch );
