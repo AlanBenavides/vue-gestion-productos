@@ -19,6 +19,11 @@ const routes = [
     name: "Producto",
     component: () => import("@/views/Producto.vue"),
   },
+  {
+    path: "/admin_productos",
+    name: "Admin_productos",
+    component: () => import("@/views/Admin_productos.vue"),
+  },
 ];
 
 const router = new VueRouter({
