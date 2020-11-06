@@ -30,7 +30,15 @@ export default {
   --background: #e8ecf1;
   --font-color-secondary: #7a7a7a;
   --font-color-primary: #3b4754;
+  --color-principal: white;
+  --color: #f5f5f5;
 }
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

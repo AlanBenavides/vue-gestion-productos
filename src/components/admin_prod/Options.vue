@@ -1,11 +1,14 @@
 <template>
   <aside>
     <ul class="options btn-group-vertical">
+      <router-link to="/registro_producto" class="button"
+        >Registro de Producto
+      </router-link>
       <button
         v-for="(button, index) in buttons"
         :key="index"
         class="button"
-        :disabled="index !== 0 && $store.state.idSelected === -1"
+        :disabled="$store.state.idSelected === -1"
       >
         {{ button.name }}
       </button>
@@ -19,9 +22,6 @@ export default {
   data: function () {
     return {
       buttons: [
-        {
-          name: "Registrar producto",
-        },
         {
           name: "Aplicar descuento",
         },
