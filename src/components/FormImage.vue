@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       files: [],
+      image64: [],
     };
   },
   validations: {
@@ -52,48 +53,48 @@ export default {
     addFiles() {
       this.$refs.files.click();
     },
-    handleFilesUpload() {
-      let uploadedFiles = this.$refs.files.files;
-      if (
-        /\.(jpe?g|png)$/i.test(uploadedFiles[uploadedFiles.length - 1].name)
-      ) {
-        if (uploadedFiles[uploadedFiles.length - 1].size > 1024 * 1024) {
-          alert("Archivo muy pesado (> 1MB)");
-          this.removeFile(uploadedFiles.length - 1);
-          return;
-        } else {
-          let arch = uploadedFiles[uploadedFiles.length - 1];
-          let reader = new FileReader();
-          reader.readAsDataURL(arch);
-          reader.onload = (evt) => {
-            let img = new Image();
-            img.onload = () => {
-              console.log(img.width);
-              console.log(img.height);
-              if (img.width < 640 || img.width > 1366) {
-                alert("El ancho debe estar entre 640px y 1366px");
-                this.removeFile(uploadedFiles.length - 1);
-                return;
-              } else if (img.height < 360 || img.height > 768) {
-                alert("El alto debe estar entre 360px y 768px");
-                this.removeFile(uploadedFiles.length - 1);
-                return;
-              }
-            };
-            img.src = evt.target.result;
-          };
-          for (var i = 0; i < uploadedFiles.length; i++) {
-            this.files.push(uploadedFiles[i]);
-          }
-          this.getImagePreviews();
-          this.$emit("sendimages", this.files); //aqui mete las imagenes a base64
-        }
-      } else {
-        alert("Seleccione un archivo jpg o png");
-        this.$emit("sendimages", []);
-        return;
-      }
-    },
+    handleFilesUpload(){
+          let uploadedFiles = this.$refs.files.files;
+          var rep=uploadedFiles.length;
+            for( var i= 0; i < rep; i++ ){
+                let arch=uploadedFiles[i];
+                if ( /\.(jpe?g|png)$/i.test( arch.name ) ){
+                    if (arch.size > 1024*1024){
+                        alert(arch.name+' es muy pesado (> 1MB)');
+                        this.removeFile(this.files.length+i);
+                        return;
+                    }else{
+                        let reader = new FileReader();
+                        reader.readAsDataURL(arch)
+                        reader.onload = evt =>{
+                            let img = new Image();
+                            img.onload = () =>{
+                                if(img.width<640 || img.width>1366){
+                                    alert ('El ancho de '+ arch.name +' debe estar entre 640px y 1366px');
+                                    this.removeFile(this.files.length+i);
+                                    return;
+                                }else if (img.height<360 || img.height>768){
+                                    alert ('El alto de '+ arch.name +' debe estar entre 360px y 768px');
+                                    this.removeFile(this.files.length+i);
+                                    return;
+                                }else{
+                                    this.createBase64Image(arch);
+                                    this.files.push( arch );
+                                    this.getImagePreviews();
+                                    this.$emit("sendimages", this.image64);
+                                }
+                            }
+                            img.src=evt.target.result;
+                        }
+                        
+                        
+                    }
+                }else{
+                    alert (arch.name + ' no es un archivo jpg o png');
+                }
+                
+            }
+        },
     getImagePreviews() {
       for (let i = 0; i < this.files.length; i++) {
         if (/\.(jpe?g|png)$/i.test(this.files[i].name)) {
@@ -111,19 +112,13 @@ export default {
     },
     removeFile(key) {
       this.files.splice(key, 1);
-    },
-    sendFiles() {
-      const cant = this.files.length;
-      for (let i = 0; i < cant; i++) {
-        this.createBase64Image(this.files[i]);
-      }
-      this.files.splice(0, cant);
+      this.getImagePreviews();
     },
     createBase64Image(fileObject) {
       const reader = new FileReader();
       reader.readAsDataURL(fileObject);
       reader.onload = (e) => {
-        this.files.push(e.target.result);
+        this.image64.push(e.target.result);
       };
     },
   },
