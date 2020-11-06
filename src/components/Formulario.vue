@@ -265,7 +265,6 @@
         Confirmar
       </button>
     </form>
-    <pre>{{ producto }}</pre>
   </section>
 </template>
 
@@ -387,9 +386,10 @@ export default {
         else {
           const productId = await this.sendDataProduct();
           await this.sendImage(productId);
+          alert("Producto creado exitosamente");
         }
       } else {
-        console.log("datos incorrectos");
+        alert("Rellene todos los datos correctamente");
       }
     },
     async sendDataProduct() {
@@ -398,8 +398,7 @@ export default {
         descripcion: this.producto.descripcion,
         categoria: this.producto.categoria,
         precio_unid: this.producto.precio_unid,
-        unidad: this.producto.unidad ? null : this.producto.unidad,
-        cantidad: this.producto.cantidad ? null : this.producto.cantidad,
+        cantidad: !this.producto.cantidad ? null : this.producto.cantidad,
         peso: this.producto.peso ? null : this.producto.peso,
         unidad_med: this.producto.unidad_med ? null : this.producto.unidad_med,
         fecha_venc:
@@ -409,7 +408,6 @@ export default {
     },
     async sendImage(productId) {
       this.images.forEach(async (image) => {
-        console.log(image);
         await this.$http.post(`images`, {
           cod_prod: productId,
           imagen: image,
@@ -440,6 +438,7 @@ export default {
 
 .formulario textarea {
   resize: none;
+  background-color: transparent;
 }
 
 .formulario input,

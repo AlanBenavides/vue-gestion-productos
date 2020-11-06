@@ -1,7 +1,6 @@
 <template>
   <section class="imagenes">
     <h2 class="formulario_tittle">Fotos del producto:</h2>
-    <br />
     <input
       type="file"
       id="files"
@@ -9,23 +8,35 @@
       accept="image/*"
       multiple
       @change="handleFilesUpload()"
+      class="images_input"
     />
-    <div class="imagenes">
-      <div class="grid-x">
-        <div v-for="(file, key) in files" :key="key" class="file-listing">
-          {{ file.name }}
-          <img class="preview" v-bind:ref="'image' + parseInt(key)" /><br />
-          <span class="remove-file" v-on:click="removeFile(key, 2)"
-            >eliminar</span
-          >
-        </div>
+    <div class="imagenes_container">
+      <div
+        v-for="(file, key) in files"
+        :key="key"
+        :class="`imagenes_list ${key == 0 ? 'imagenes_list-firt' : ''}`"
+      >
+        <img
+          class="imaneges_preview"
+          v-bind:ref="'image' + parseInt(key)"
+          :height="key == 0 ? '360px' : '200px'"
+        />
+        <span class="imagenes_remove" v-on:click="removeFile(key, 2)">X</span>
       </div>
+      <div v-if="files.length == 0" class="imagenes_list-firt"></div>
+      <template v-for="(button, index) in 3">
+        <div
+          :key="'image' + index"
+          class="images_container-button"
+          v-if="image64.length <= index + 1"
+        >
+          <button @click="addFiles()" class="add_imagenes">
+            <span class="images_container-button">+</span>
+          </button>
+        </div>
+      </template>
     </div>
-    <br />
-    <div class="imagenes">
-      <button @click="addFiles()">Añadir imagenes</button>
-    </div>
-    <br />
+
     <span class="formulario_check-error" v-if="!$v.files.required"
       >Faltan fotografias</span
     >
@@ -149,27 +160,54 @@ export default {
 </script>
 
 <style scoped>
-#preview {
+.images_input {
+  display: none;
+}
+
+.imagenes_list {
+  display: inline-block;
+  padding: 1rem;
+  background-color: #edf0f4;
+  width: calc(100% / 3);
+}
+
+.imagenes_list-firt {
+  height: 400px;
+  width: 100%;
+  background: #edf0f4;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
 }
-#preview img {
-  min-width: 640px;
-  min-height: 360px;
-  max-width: 1366px;
-  max-height: 768px;
+
+.imaneges_preview {
+  border: 1px solid #8b8b8b;
+  border-radius: 15px;
 }
-input[type="file"] {
-  position: absolute;
-  top: -500px;
-}
-div.file-listing img {
-  max-width: 90%;
-}
-span.remove-file {
-  color: red;
+
+.imagenes_remove {
+  margin-bottom: auto;
   cursor: pointer;
-  float: right;
+  margin-left: -30px;
+  margin-top: 20px;
+}
+
+.add_imagenes {
+  height: 200px;
+  width: 180px;
+  background: #edf0f4;
+  border: 1px solid #8b8b8b;
+  border-radius: 15px;
+  font-weight: 300;
+  font-size: 70px;
+  color: #8b8b8b;
+}
+
+.images_container-button {
+  display: inline-block;
+  padding: 1rem;
+  background-color: #edf0f4;
+  width: calc(100% / 3);
 }
 </style>

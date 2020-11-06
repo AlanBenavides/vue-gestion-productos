@@ -49,7 +49,9 @@ export default {
   methods: {
     transformDate(value) {
       const date = new Date(value);
-      return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
+      return `${date.getDate() + 1}/${
+        date.getMonth() + 1
+      }/${date.getFullYear()}`;
     },
   },
 };
