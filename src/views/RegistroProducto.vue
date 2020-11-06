@@ -27,7 +27,6 @@ export default {
   methods: {
     passImages(images) {
       this.images = images;
-      console.log(this.images);
     },
   },
 };

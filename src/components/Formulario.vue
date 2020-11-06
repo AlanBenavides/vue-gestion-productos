@@ -265,6 +265,7 @@
         Confirmar
       </button>
     </form>
+    <pre>{{ producto }}</pre>
   </section>
 </template>
 
@@ -281,7 +282,7 @@ import {
 
 const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\s]*$/);
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,.\s]*$/);
-const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/); //para precio unidad
+const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 
 const validate_date = (value) => {
   const date = new Date();
@@ -321,7 +322,7 @@ export default {
         descripcion: "",
         categoria: null,
         precio_unid: null,
-        unidad: null,
+        unidad: null, //for chech form
         cantidad: null,
         peso: null,
         unidad_med: null,
@@ -380,12 +381,40 @@ export default {
         this.producto.unidad_med = "";
       }
     },
-    submitForm() {
+    async submitForm() {
       if (!this.$v.producto.$invalid) {
-        console.log("datos correctos ", this.producto);
+        if (this.images.length == 0) alert("Registra por lo menos una imagen");
+        else {
+          const productId = await this.sendDataProduct();
+          await this.sendImage(productId);
+        }
       } else {
         console.log("datos incorrectos");
       }
+    },
+    async sendDataProduct() {
+      const response = await this.$http.post("products", {
+        nombre_prod: this.producto.nombre_prod,
+        descripcion: this.producto.descripcion,
+        categoria: this.producto.categoria,
+        precio_unid: this.producto.precio_unid,
+        unidad: this.producto.unidad ? null : this.producto.unidad,
+        cantidad: this.producto.cantidad ? null : this.producto.cantidad,
+        peso: this.producto.peso ? null : this.producto.peso,
+        unidad_med: this.producto.unidad_med ? null : this.producto.unidad_med,
+        fecha_venc:
+          this.producto.fecha_venc == "" ? null : this.producto.fecha_venc,
+      });
+      return response.data[0].cod_prod;
+    },
+    async sendImage(productId) {
+      this.images.forEach(async (image) => {
+        console.log(image);
+        await this.$http.post(`images`, {
+          cod_prod: productId,
+          imagen: image,
+        });
+      });
     },
   },
 };

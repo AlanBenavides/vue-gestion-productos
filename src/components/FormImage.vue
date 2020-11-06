@@ -53,55 +53,59 @@ export default {
     addFiles() {
       this.$refs.files.click();
     },
-    handleFilesUpload(){
-          let uploadedFiles = this.$refs.files.files;
-          var rep=uploadedFiles.length;
-            for( var i= 0; i < rep; i++ ){
-                let arch=uploadedFiles[i];
-                if ( /\.(jpe?g|png)$/i.test( arch.name ) ){
-                    if (arch.size > 1024*1024){
-                        alert(arch.name+' es muy pesado (> 1MB)');
-                        this.removeFile(this.files.length+i);
-                        return;
-                    }else{
-                        let reader = new FileReader();
-                        reader.readAsDataURL(arch)
-                        reader.onload = evt =>{
-                            let img = new Image();
-                            img.onload = () =>{
-                                if(img.width<640 || img.width>1366){
-                                    alert ('El ancho de '+ arch.name +' debe estar entre 640px y 1366px');
-                                    this.removeFile(this.files.length+i);
-                                    return;
-                                }else if (img.height<360 || img.height>768){
-                                    alert ('El alto de '+ arch.name +' debe estar entre 360px y 768px');
-                                    this.removeFile(this.files.length+i);
-                                    return;
-                                }else{
-                                  if (this.files.length>=4){
-                                    alert ('No puede ingresar más de 4 imagenes');
-                                    this.removeFile(this.files.length+i);
-                                    return;
-                                  }else{
-                                    this.createBase64Image(arch);
-                                    this.files.push( arch );
-                                    this.getImagePreviews();
-                                    this.$emit("sendimages", this.image64);
-                                  }
-                                    
-                                }
-                            }
-                            img.src=evt.target.result;
-                        }
-                        
-                        
-                    }
-                }else{
-                    alert (arch.name + ' no es un archivo jpg o png');
+    handleFilesUpload() {
+      let uploadedFiles = this.$refs.files.files;
+      var rep = uploadedFiles.length;
+      for (var i = 0; i < rep; i++) {
+        let arch = uploadedFiles[i];
+        if (/\.(jpe?g|png)$/i.test(arch.name)) {
+          if (arch.size > 1024 * 1024) {
+            alert(arch.name + " es muy pesado (> 1MB)");
+            this.removeFile(this.files.length + i);
+            return;
+          } else {
+            let reader = new FileReader();
+            reader.readAsDataURL(arch);
+            reader.onload = (evt) => {
+              let img = new Image();
+              img.onload = () => {
+                if (img.width < 640 || img.width > 1366) {
+                  alert(
+                    "El ancho de " +
+                      arch.name +
+                      " debe estar entre 640px y 1366px"
+                  );
+                  this.removeFile(this.files.length + i);
+                  return;
+                } else if (img.height < 360 || img.height > 768) {
+                  alert(
+                    "El alto de " +
+                      arch.name +
+                      " debe estar entre 360px y 768px"
+                  );
+                  this.removeFile(this.files.length + i);
+                  return;
+                } else {
+                  if (this.files.length >= 4) {
+                    alert("No puede ingresar más de 4 imagenes");
+                    this.removeFile(this.files.length + i);
+                    return;
+                  } else {
+                    this.createBase64Image(arch);
+                    this.files.push(arch);
+                    this.getImagePreviews();
+                    this.$emit("sendimages", this.image64);
+                  }
                 }
-                
-            }
-        },
+              };
+              img.src = evt.target.result;
+            };
+          }
+        } else {
+          alert(arch.name + " no es un archivo jpg o png");
+        }
+      }
+    },
     getImagePreviews() {
       for (let i = 0; i < this.files.length; i++) {
         if (/\.(jpe?g|png)$/i.test(this.files[i].name)) {
