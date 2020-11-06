@@ -15,7 +15,9 @@
         <div v-for="(file, key) in files" :key="key" class="file-listing">
           {{ file.name }}
           <img class="preview" v-bind:ref="'image' + parseInt(key)" /><br />
-          <span class="remove-file" v-on:click="removeFile(key)">eliminar</span>
+          <span class="remove-file" v-on:click="removeFile(key, 2)"
+            >eliminar</span
+          >
         </div>
       </div>
     </div>
@@ -59,9 +61,16 @@ export default {
       for (var i = 0; i < rep; i++) {
         let arch = uploadedFiles[i];
         if (/\.(jpe?g|png)$/i.test(arch.name)) {
+          for (var j = 0; j < this.files.length; j++) {
+            if (arch.name == this.files[j].name) {
+              alert(arch.name + " ya fue subido");
+              this.removeFile(this.files.length + i, 1);
+              return;
+            }
+          }
           if (arch.size > 1024 * 1024) {
             alert(arch.name + " es muy pesado (> 1MB)");
-            this.removeFile(this.files.length + i);
+            this.removeFile(this.files.length + i, 1);
             return;
           } else {
             let reader = new FileReader();
@@ -75,7 +84,7 @@ export default {
                       arch.name +
                       " debe estar entre 640px y 1366px"
                   );
-                  this.removeFile(this.files.length + i);
+                  this.removeFile(this.files.length + i, 1);
                   return;
                 } else if (img.height < 360 || img.height > 768) {
                   alert(
@@ -83,12 +92,12 @@ export default {
                       arch.name +
                       " debe estar entre 360px y 768px"
                   );
-                  this.removeFile(this.files.length + i);
+                  this.removeFile(this.files.length + i, 1);
                   return;
                 } else {
                   if (this.files.length >= 4) {
                     alert("No puede ingresar más de 4 imagenes");
-                    this.removeFile(this.files.length + i);
+                    this.removeFile(this.files.length + i, 1);
                     return;
                   } else {
                     this.createBase64Image(arch);
@@ -121,9 +130,12 @@ export default {
         }
       }
     },
-    removeFile(key) {
+    removeFile(key, type) {
       this.files.splice(key, 1);
       this.getImagePreviews();
+      if (type == 2) {
+        this.image64.splice(key, 1);
+      }
     },
     createBase64Image(fileObject) {
       const reader = new FileReader();
