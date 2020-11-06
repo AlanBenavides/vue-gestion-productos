@@ -78,10 +78,17 @@ export default {
                                     this.removeFile(this.files.length+i);
                                     return;
                                 }else{
+                                  if (this.files.length>=4){
+                                    alert ('No puede ingresar más de 4 imagenes');
+                                    this.removeFile(this.files.length+i);
+                                    return;
+                                  }else{
                                     this.createBase64Image(arch);
                                     this.files.push( arch );
                                     this.getImagePreviews();
                                     this.$emit("sendimages", this.image64);
+                                  }
+                                    
                                 }
                             }
                             img.src=evt.target.result;
