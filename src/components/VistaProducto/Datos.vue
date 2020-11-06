@@ -28,7 +28,7 @@
         }}</span>
       </p>
       <p class="datos_info">
-        Categoria: <span class="datos_resaltados">Alimentos</span>
+        Categoria: <span class="datos_resaltados">{{ datos.nombre_cat }}</span>
       </p>
       <p class="datos_info">Sobre este producto:</p>
       <p class="datos_info datos_descripcion">
