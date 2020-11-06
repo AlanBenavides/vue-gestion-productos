@@ -27,6 +27,9 @@ export default {
   --color: #edf0f5;
   --color-btn: #2a323d;
   --color-fuente: #a09bb0;
+  --background: #e8ecf1;
+  --font-color-secondary: #7a7a7a;
+  --font-color-primary: #3b4754;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

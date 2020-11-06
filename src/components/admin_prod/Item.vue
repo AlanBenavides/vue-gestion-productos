@@ -1,23 +1,21 @@
 <template>
-  <div class="item">
-    <img :src="imagen" :alt="nombre"  width="300"/>
+  <router-link :to="`/producto/${id_product}`" class="item">
+    <img :src="imagen" :alt="nombre" width="300" />
     <h5>{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
-    <p>
-      Descripcion:<br />{{descripcion}}
-    </p>
+    <p>Descripcion:<br />{{ descripcion }}</p>
     <p>Añadido el {{ parseDate() }}</p>
-  </div>
+  </router-link>
 </template>
 
 <script>
 export default {
   name: "Item",
-  props: ["id_product","nombre", "precio", "descripcion", "fecha"],
-  data: function() {
+  props: ["id_product", "nombre", "precio", "descripcion", "fecha"],
+  data: function () {
     return {
-      imagen: '',
-    }
+      imagen: "",
+    };
   },
   methods: {
     parseDate() {
@@ -28,12 +26,12 @@ export default {
       return `${day}-${month}-${year}`;
     },
   },
-  mounted: async function(){
+  mounted: async function () {
     const response = await this.$http.get(
       `images/${this.id_product}?cantidad=1`
     );
     const imageURL = response.data.datos[0].imagen;
-    this.imagen = 'data:image/jpg;base64,' + imageURL;
+    this.imagen = "data:image/jpg;base64," + imageURL;
   },
 };
 </script>
@@ -46,6 +44,9 @@ export default {
   flex-direction: column;
   text-align: start;
   cursor: pointer;
+  display: block;
+  text-decoration: none;
+  color: black;
 }
 
 .item > img {
