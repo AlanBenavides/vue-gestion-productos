@@ -94,7 +94,9 @@ export default {
   border: 2px solid var(--color-btn);
   padding: 5px 10px;
   height: 200px;
-  overflow: auto;
+  max-width: 100%;
+  overflow-y: auto;
+  word-wrap: break-word;
 }
 
 .datos_precio {

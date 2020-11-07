@@ -179,9 +179,9 @@
           />
           <div
             class="formulario_check-error"
-            v-if="!$v.producto.cantidad.minValue"
+            v-if="!$v.producto.cantidad.between"
           >
-            Debe ser mayor a 0.
+            Ingrese valores enteros entre (1-1000).
           </div>
           <div
             class="formulario_check-error"
@@ -275,7 +275,6 @@ import {
   helpers,
   maxLength,
   between,
-  minValue,
   integer,
 } from "vuelidate/lib/validators";
 
@@ -355,7 +354,7 @@ export default {
         alpha2,
       },
       cantidad: {
-        minValue: minValue(1),
+        between: between(1, 1000),
         integer,
         alpha2,
       },
@@ -452,6 +451,8 @@ export default {
 .formulario textarea {
   resize: none;
   background-color: transparent;
+  word-wrap: break-word;
+  overflow-y: auto;
 }
 
 .formulario input,

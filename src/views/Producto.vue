@@ -56,11 +56,12 @@ export default {
 <style scoped>
 .producto {
   display: grid;
-  grid-template-rows: 50px auto;
+  grid-template-rows: auto auto;
   grid-template-columns: 60% 40%;
   gap: 1rem;
   margin: 3rem 6rem;
   margin-top: 0;
+  word-wrap: break-word;
 }
 
 .producto_tittle {
@@ -71,7 +72,6 @@ export default {
   font-weight: 700;
   font-size: 2rem;
   display: block;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
