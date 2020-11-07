@@ -51,7 +51,7 @@
 
       <div class="formulario_group">
         <label
-          ><div class="formulario_name">Descripcion:</div>
+          ><div class="formulario_name">Descripción:</div>
           <textarea
             :style="
               $v.producto.descripcion.$invalid
@@ -90,7 +90,7 @@
 
       <div>
         <label
-          ><div class="formulario_name">Categoria:</div>
+          ><div class="formulario_name">Categoría:</div>
           <input
             :style="
               $v.producto.categoria.$invalid
@@ -105,6 +105,12 @@
           v-if="!$v.producto.categoria.required"
         >
           Campo requerido.
+        </div>
+         <div
+          class="formulario_check-error"
+          v-if="!$v.producto.categoria.alpha3"
+        >
+          No se aceptan caracteres especiales.
         </div>
         <datalist id="categorias">
           <option value="Farmacia"></option>
@@ -223,8 +229,8 @@
             <option value="Galones">Galones</option>
             <option value="Onzas">Onzas</option>
           </select>
-          <div class="formulario_check-error" v-if="!$v.producto.peso.minValue">
-            Debe ser mayor a 0.10.
+          <div class="formulario_check-error" v-if="!$v.producto.peso.between">
+            Ingrese valores entre (0.10-100).
           </div>
           <div
             class="formulario_check-error"
@@ -282,6 +288,7 @@ import {
 const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\s]*$/);
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,.\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
+const alpha3 =helpers.regex("alpha3", /^[a-zA-Z\s]*$/);
 
 const validate_date = (value) => {
   const date = new Date();
@@ -345,6 +352,7 @@ export default {
       },
       categoria: {
         required,
+        alpha3
       },
       precio_unid: {
         required,
@@ -358,7 +366,8 @@ export default {
         alpha2,
       },
       peso: {
-        minValue: minValue(0.1),
+       
+        between: between(0.1, 100),
         validate_decimales,
         alpha2,
       },
