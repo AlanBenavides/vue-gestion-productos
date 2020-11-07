@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Mi primera app en vue" />
+    <HelloWorld msg="Gestion de productos" />
   </div>
 </template>
 
