@@ -50,7 +50,7 @@
         <li
           :class="`page-item ${this.pagina >= this.pagCount ? 'disabled' : ''}`"
         >
-          <a class="page-link" href="#" @click="nextPag">Next</a>
+          <a class="page-link" href="#" @click="nextPag">Siguiente</a>
         </li>
       </ul>
     </nav>
@@ -77,7 +77,7 @@ export default {
       orderButtons: [
         {
           order: "nombre_prod",
-          type: "Alfabeticamente",
+          type: "Alfabéticamente",
         },
         {
           order: "fecha_adic",

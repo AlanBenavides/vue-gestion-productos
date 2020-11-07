@@ -28,13 +28,12 @@
         }}</span>
       </p>
       <p class="datos_info">
-        Categoria: <span class="datos_resaltados">{{ datos.nombre_cat }}</span>
+        Categoría: <span class="datos_resaltados">{{ datos.nombre_cat }}</span>
       </p>
       <p class="datos_info">Sobre este producto:</p>
       <p class="datos_info datos_descripcion">
         {{ datos.descripcion }}
       </p>
-      <button class="datos_button">Añadir al carrito</button>
     </div>
   </section>
 </template>
@@ -74,15 +73,6 @@ export default {
   padding: 0.5rem 2rem;
   padding-bottom: 3rem;
   border-radius: 15px;
-}
-
-.datos_button {
-  padding: 0.7rem 2rem;
-  color: white;
-  border: none;
-  background-color: var(--color-btn);
-  display: block;
-  margin-left: auto;
 }
 
 .datos_resaltados {

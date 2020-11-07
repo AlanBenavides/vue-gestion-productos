@@ -106,7 +106,7 @@
         >
           Campo requerido.
         </div>
-         <div
+        <div
           class="formulario_check-error"
           v-if="!$v.producto.categoria.alpha3"
         >
@@ -238,12 +238,6 @@
           >
             Maximo 2 decimales!
           </div>
-          <div
-            class="formulario_check-error"
-            v-if="!$v.producto.peso.validate_decimales"
-          >
-            Maximo 2 decimales!
-          </div>
           <div class="formulario_check-error" v-if="!$v.producto.peso.alpha2">
             Ingrese un valor numérico.
           </div>
@@ -288,7 +282,7 @@ import {
 const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\s]*$/);
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,.\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
-const alpha3 =helpers.regex("alpha3", /^[a-zA-Z\s]*$/);
+const alpha3 = helpers.regex("alpha3", /^[a-zA-Z\s]*$/);
 
 const validate_date = (value) => {
   const date = new Date();
@@ -352,7 +346,7 @@ export default {
       },
       categoria: {
         required,
-        alpha3
+        alpha3,
       },
       precio_unid: {
         required,
@@ -366,7 +360,6 @@ export default {
         alpha2,
       },
       peso: {
-       
         between: between(0.1, 100),
         validate_decimales,
         alpha2,
@@ -390,30 +383,41 @@ export default {
       }
     },
     async submitForm() {
-      if (!this.$v.producto.$invalid) {
-        if (this.images.length == 0) alert("Registra por lo menos una imagen");
-        else {
-          const productId = await this.sendDataProduct();
-          await this.sendImage(productId);
-          alert("Producto creado exitosamente");
+      try {
+        if (!this.$v.producto.$invalid) {
+          if (this.images.length == 0)
+            alert("Registra por lo menos una imagen");
+          else {
+            const productId = await this.sendDataProduct();
+            await this.sendImage(productId);
+            alert("Producto creado exitosamente");
+          }
+        } else {
+          alert("Rellene todos los datos correctamente");
         }
-      } else {
-        alert("Rellene todos los datos correctamente");
+      } catch (error) {
+        alert(error);
       }
     },
     async sendDataProduct() {
-      const response = await this.$http.post("products", {
-        nombre_prod: this.producto.nombre_prod,
-        descripcion: this.producto.descripcion,
-        categoria: this.producto.categoria,
-        precio_unid: this.producto.precio_unid,
-        cantidad: !this.producto.cantidad ? null : this.producto.cantidad,
-        peso: this.producto.peso ? null : this.producto.peso,
-        unidad_med: this.producto.unidad_med ? null : this.producto.unidad_med,
-        fecha_venc:
-          this.producto.fecha_venc == "" ? null : this.producto.fecha_venc,
-      });
-      return response.data[0].cod_prod;
+      try {
+        const response = await this.$http.post("products", {
+          nombre_prod: this.producto.nombre_prod,
+          descripcion: this.producto.descripcion,
+          categoria: this.producto.categoria,
+          precio_unid: this.producto.precio_unid,
+          cantidad: !this.producto.cantidad ? null : this.producto.cantidad,
+          peso: this.producto.peso ? null : this.producto.peso,
+          unidad_med: this.producto.unidad_med
+            ? null
+            : this.producto.unidad_med,
+          fecha_venc:
+            this.producto.fecha_venc == "" ? null : this.producto.fecha_venc,
+        });
+        return response.data[0].cod_prod;
+      } catch (error) {
+        throw new Error("El nombre del producto esta repetido");
+      }
     },
     async sendImage(productId) {
       this.images.forEach(async (image) => {
