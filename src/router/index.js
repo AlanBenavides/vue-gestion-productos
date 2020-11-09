@@ -29,6 +29,11 @@ const routes = [
     name: "Registro_Producto",
     component: () => import("@/views/RegistroProducto.vue"),
   },
+  {
+    path: "/registro_promocion",
+    name: "Registro de promocion",
+    component: () => import("@/views/RegistroPromocion.vue"),
+  }
 ];
 
 const router = new VueRouter({

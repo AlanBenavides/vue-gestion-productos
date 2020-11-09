@@ -1,0 +1,421 @@
+<template>
+    <div class="formulario">
+        <form
+        class="formulario_form"
+        @submit.prevent="submitForm"
+        autocomplete="off"
+        >
+            <div class="formulario_group">
+                <label>
+                    <div class="formulario_name">Nombre de promoción:</div>
+                    <input
+                        :style="
+                        $v.producto.nombre_prod.$invalid
+                            ? 'border:1px solid red '
+                            : 'border:1px solid green '
+                        "
+                        type="text"
+                        required
+                        v-model="producto.nombre_prod"
+                    />
+                </label>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.nombre_prod.alpha"
+                >
+                No se aceptan caracteres especiales.
+                </div>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.nombre_prod.minLength"
+                >
+                Debe tener una longitud no menor a
+                {{ $v.producto.nombre_prod.$params.minLength.min }}.
+                </div>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.nombre_prod.required"
+                >
+                Campo requerido.
+                </div>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.nombre_prod.maxLength"
+                >
+                Nombre muy largo maximo
+                {{ $v.producto.nombre_prod.$params.maxLength.max }}
+                caracteres.
+                </div>
+            </div>
+
+            <div class="formulario_group">
+                <label>
+                    <div class="formulario_name">Descripción:</div>
+                    <textarea
+                        :style="
+                        $v.producto.descripcion.$invalid
+                            ? 'border:1px solid red '
+                            : 'border:1px solid green '
+                        "
+                        v-model="producto.descripcion"
+                        cols="50"
+                        rows="10"
+                        maxlength="1000"
+                    />
+                </label>
+                <div class="formulario_check-error1">
+                    {{ `${producto.descripcion.length}/1000` }} caracteres.
+                </div>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.descripcion.alpha1"
+                >
+                No se aceptan caracteres especiales.
+                </div>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.descripcion.maxLength"
+                >
+                Descripcion muy larga maximo
+                {{ $v.producto.descripcion.$params.maxLength.max }} caracteres.
+                </div>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.descripcion.required"
+                >
+                Campo requerido.
+                </div>
+            </div>
+
+            <div class="formulario_group">
+                <label>
+                    <div class="formulario_name">Precio(Bs.):</div>
+                    <input
+                        type="text"
+                        v-model="producto.precio_unid"
+                        :style="
+                        $v.producto.precio_unid.$invalid
+                            ? 'border:1px solid red '
+                            : 'border:1px solid green '
+                        "
+                    />
+                </label>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.precio_unid.required"
+                >
+                Campo requerido.
+                </div>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.precio_unid.between"
+                >
+                Campo invalido (0.10-10000).
+                </div>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.precio_unid.validate_decimales"
+                >
+                Maximo 2 decimales!
+                </div>
+                <div
+                    class="formulario_check-error"
+                    v-if="!$v.producto.precio_unid.alpha2"
+                >
+                Ingrese un valor numérico.
+                </div>
+            </div>
+            <div class="formulario_group">
+                <label>
+                    <div class="formulario_name">Inicio de promoción:</div>
+                    <input
+                        type="date"
+                        value="DD/MM/AA"
+                        onkeydown="return false"
+                        v-model="producto.fecha_venc"
+                    />
+                </label>
+                <div
+                    class="formulario_check-error-center"
+                    v-if="!$v.producto.fecha_venc.validate_date"
+                >
+                fecha invalida
+                </div>
+            </div>
+            <div class="formulario_group">
+                <label>
+                    <div class="formulario_name">Fin de promoción:</div>
+                    <input
+                        type="date"
+                        value="DD/MM/AA"
+                        onkeydown="return false"
+                        v-model="producto.fecha_venc"
+                    />
+                </label>
+                <div
+                    class="formulario_check-error-center"
+                    v-if="!$v.producto.fecha_venc.validate_date"
+                >
+                fecha invalida
+                </div>
+            </div>
+        </form>
+    </div>    
+</template>
+
+<script>
+import {
+  required,
+  minLength,
+  helpers,
+  maxLength,
+  between,
+  integer,
+} from "vuelidate/lib/validators";
+
+const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\s]*$/);
+const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,.\s]*$/);
+const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
+const alpha3 = helpers.regex("alpha3", /^[a-zA-Z\s]*$/);
+
+const validate_date = (value) => {
+  const date = new Date();
+  const dd = date.getDate();
+  const mm = date.getMonth() + 1;
+  const yyyy = date.getFullYear();
+  const yyvalue = parseInt(value.slice(0, 4));
+  const mmvalue = parseInt(value.slice(5, 7));
+  const ddvalue = parseInt(value.slice(8, 10));
+  return (
+    !helpers.req(value) ||
+    !(yyvalue < yyyy) &
+      !(yyvalue == yyyy && mmvalue < mm) &
+      !(yyyy == yyvalue && mm == mmvalue && ddvalue < dd)
+  );
+};
+const validate_decimales = (value) => {
+  const datovalue = String(value);
+
+  if (datovalue.indexOf(".") > 0) {
+    const parts = datovalue.split(".");
+    const dato = String(parts[1]);
+
+    return !helpers.req(value) || !(dato.length > 2);
+  } else {
+    return true;
+  }
+};
+
+export default {
+  name: "Form",
+  data() {
+    return {
+      disabled: false,
+      producto: {
+        nombre_prod: null,
+        descripcion: "",
+        categoria: null,
+        precio_unid: null,
+        unidad: null, //for chech form
+        cantidad: null,
+        peso: null,
+        unidad_med: null,
+        fecha_venc: "",
+      },
+    };
+  },
+  props: ["images"],
+  validations: {
+    producto: {
+      nombre_prod: {
+        required,
+        minLength: minLength(2),
+        maxLength: maxLength(30),
+        alpha,
+      },
+      descripcion: {
+        required,
+        maxLength: maxLength(1000),
+        alpha1,
+      },
+      categoria: {
+        required,
+        alpha3,
+      },
+      precio_unid: {
+        required,
+        between: between(0.1, 10000),
+        validate_decimales,
+        alpha2,
+      },
+      cantidad: {
+        between: between(1, 1000),
+        integer,
+        alpha2,
+      },
+      peso: {
+        between: between(0.1, 100),
+        validate_decimales,
+        alpha2,
+      },
+      fecha_venc: {
+        validate_date,
+      },
+    },
+  },
+  methods: {
+    selectCantidad() {
+      this.disabled = !this.disabled;
+      if (!this.disabled) {
+        this.producto.peso = null;
+        this.producto.unidad_med = null;
+        this.producto.cantidad = "";
+      } else {
+        this.producto.cantidad = null;
+        this.producto.peso = "";
+        this.producto.unidad_med = "";
+      }
+    },
+    async submitForm() {
+      try {
+        if (!this.$v.producto.$invalid) {
+          if (this.images.length == 0)
+            alert("Registra por lo menos una imagen");
+          else {
+            const productId = await this.sendDataProduct();
+            await this.sendImage(productId);
+            alert("Producto creado exitosamente");
+          }
+        } else {
+          alert("Rellene todos los datos correctamente");
+        }
+      } catch (error) {
+        alert(error);
+      }
+    },
+    async sendDataProduct() {
+      try {
+        const response = await this.$http.post("products", {
+          nombre_prod: this.producto.nombre_prod,
+          descripcion: this.producto.descripcion,
+          categoria: this.producto.categoria,
+          precio_unid: this.producto.precio_unid,
+          cantidad: !this.producto.cantidad ? null : this.producto.cantidad,
+          peso: this.producto.peso ? null : this.producto.peso,
+          unidad_med: this.producto.unidad_med
+            ? null
+            : this.producto.unidad_med,
+          fecha_venc:
+            this.producto.fecha_venc == "" ? null : this.producto.fecha_venc,
+        });
+        return response.data[0].cod_prod;
+      } catch (error) {
+        throw new Error("El nombre del producto esta repetido");
+      }
+    },
+    async sendImage(productId) {
+      this.images.forEach(async (image) => {
+        await this.$http.post(`images`, {
+          cod_prod: productId,
+          imagen: image,
+        });
+      });
+    },
+  },
+};
+</script>
+
+<style>
+
+.formulario_tittle {
+  text-align: left;
+  color: #919ca9;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.formulario_form {
+  background-color: #edf0f4;
+  padding: 2rem;
+  text-align: left;
+}
+
+.formulario label {
+  display: block;
+}
+
+.formulario textarea {
+  resize: none;
+  background-color: transparent;
+  word-wrap: break-word;
+  overflow-y: auto;
+}
+
+.formulario input,
+.formulario textarea,
+.formulario select {
+  border: none;
+  border: 2px solid #8b8b8b;
+  border-radius: 6px;
+  padding: 5px 7px;
+}
+
+.formulario select {
+  height: 38px;
+  margin-left: 1rem;
+}
+
+.formulario input[type="date"] {
+  display: block;
+  margin: auto;
+  margin-top: 10px;
+  margin-bottom: 2rem;
+  width: 60%;
+  text-align: center;
+}
+
+.formulario legend {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
+
+.formulario_name {
+  color: #919ca9;
+}
+
+.formulario_name-span {
+  padding-left: 1rem;
+}
+
+.formulario_group {
+  margin: 1rem;
+  margin-left: 0;
+}
+
+.formulario_group:first-child {
+  margin-top: 0;
+}
+
+.formulario_check-error {
+  color: red;
+}
+
+.formulario_check-error-center {
+  text-align: center;
+  color: red;
+}
+
+.formulario_button {
+  margin: auto;
+  display: block;
+  background-color: rgb(51, 51, 51);
+  padding: 13px 100px;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+}
+.formulario_check-error1 {
+  color: black;
+  text-align: right;
+}
+</style>
