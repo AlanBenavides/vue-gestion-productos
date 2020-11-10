@@ -1,9 +1,13 @@
 <template>
+<div><h1 class="titulo" >Registro de descuento</h1>
   <section class="producto">
-    <h1 class="producto_tittle">{{ product.datos[0].nombre_prod }}:</h1>
+  
+   
     
     <Datos class="producto_datos" :datos="product.datos[0]" />
+  
   </section>
+  </div>
 </template>
 
 <script>
@@ -44,27 +48,28 @@ export default {
 </script>
 
 <style scoped>
+
+
 .producto {
   display: grid;
   grid-template-rows: auto auto;
-  grid-template-columns: 60% 40%;
+  grid-template-columns: 50% 50%;
   gap: 1rem;
   margin: 3rem 6rem;
   margin-top: 0;
   word-wrap: break-word;
 }
 
-.producto_tittle {
-  grid-column: 2/3;
-  grid-row: 1/2;
-  text-align: left;
+.titulo {
+  
+  text-align: center;
   color: var(--font-color-secondary);
   font-weight: 700;
   font-size: 2rem;
   display: block;
   text-overflow: ellipsis;
-}
 
+}
 .producto_datos {
   grid-column: 2/3;
   grid-row: 2/3;
@@ -74,4 +79,5 @@ export default {
   grid-column: 1/2;
   grid-row: 2/3;
 }
+
 </style>

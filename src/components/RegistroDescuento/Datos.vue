@@ -1,37 +1,130 @@
 <template>
-  <section class="datos">
-  
+  <section class="datos"> 
+ 
     <div class="datos_container">
     <form>
+    
+       <h2 class="producto_tittle">{{datos.nombre_prod }}:</h2>
       <p class="datos_info">
         Precio Actual:
         <span class="datos_resaltados datos_resaltados-block datos_precio"
           >{{ datos.precio_unid }}Bs.</span
         >
       </p>
-      <div>
+      <div >
         <p>Descuento en porcentaje:</p>
-        <input type="number"/> %
+        <input type="text" v-model="descuento.porcentaje"/> %
+         
+          <br/>
+          <div class="formulario_check-error" 
+            
+            v-if="!$v.descuento.porcentaje.alpha2"
+          >
+            Ingrese un valor entero numérico.
+          </div>
+          <div class="formulario_check-error" 
+            
+            v-if="!$v.descuento.porcentaje.between"
+          >
+            Por favor, ingrese un valor entre (5-75)
+          </div>
+           <div class="formulario_check-error" 
+            
+            v-if="!$v.descuento.porcentaje.required"
+          >
+            Campo requerido
+          </div><br/>
+        
         <p>Unidades a comprar:</p>
-        <input type="number"/> 
+        <input type="text" v-model="descuento.cantidad"/> <br />
+        <div class="formulario_check-error" 
+            
+            v-if="!$v.descuento.cantidad.required"
+          >
+            Campo requerido.
+          </div>
+          <div class="formulario_check-error" 
+            
+            v-if="!$v.descuento.cantidad.minValue"
+          >
+            Ingrese un valor mayor a 0.
+          </div>
+          <div class="formulario_check-error" 
+            
+            v-if="!$v.descuento.cantidad.alpha2"
+          >
+            Ingrese un valor numerico.
+          </div>
       </div>
-      <p>Precio con descuento:</p>
-      <button class="formulario_button">
+      <div class="precio_descuento">
+      <br />
+      <label>Precio con descuento: </label>
+      <span  >{{  
+          transformPrice(datos.precio_unid)
+        }} Bs.</span>
+    </div>
+      <div>
+      <br/>
+       <button class="formulario_button">
         Aplicar descuento
       </button>
+      </div>
+     
       </form>
+     
     </div>
   </section>
 </template>
 
 <script>
+import {
+ between,helpers,required,minValue
+} from "vuelidate/lib/validators";
+const alpha2 = helpers.regex("alpha1", /^[0-9\s]*$/);
+
 export default {
   name: "Datos",
   props: ["datos"],
   data: function () {
-    return {};
+    return {
+        descuento: {
+        porcentaje:"",
+        cantidad:null
+      },
+    };
   },
+  validations:{
+      descuento:{
+         porcentaje:{
+          
+          between: between(5, 75),
+          alpha2,
+          required
+       },
+       cantidad:{
+           minValue: minValue(1),
+           alpha2,
+           required
+       }
+      }
+ 
+  },
+
   methods: {
+    transformPrice(value) {
+      const price = value;
+      
+      const newPrice=(price * this.descuento.porcentaje)/100; 
+     
+      console.log(` descuento${newPrice}`);
+      const result=(price-newPrice).toFixed(2);
+      return  `${result}`;
+
+      
+      
+
+
+    },
    
   },
 };
@@ -47,6 +140,7 @@ export default {
 .datos_info {
   margin: 2rem;
   margin-left: 0;
+ 
 }
 
 .datos_container {
@@ -69,29 +163,38 @@ export default {
   display: inline;
 }
 
-.datos_descripcion {
-  background-color: #e8eaf6;
-  color: var(--color-btn);
-  border: 2px solid var(--color-btn);
-  padding: 5px 10px;
-  height: 200px;
-  max-width: 100%;
-  overflow-y: auto;
-  word-wrap: break-word;
-}
-
 .datos_precio {
   margin: 10px;
   margin-left: 0;
   font-size: 1.4rem;
 }
 .formulario_button {
-  margin: auto;
+  margin:auto;
   display: block;
   background-color: rgb(51, 51, 51);
-  padding: 13px 100px;
+  padding: 13px 40px;
   color: white;
   font-size: 20px;
   font-weight: 700;
+  text-align: right;
 }
+.formulario_check-error{
+    color: red;
+}
+.precio_descuento{
+    color: green;
+}
+
+.producto_tittle {
+  grid-column: 2/3;
+  grid-row: 1/2;
+  text-align: left;
+  color: var(--font-color-secondary);
+  font-weight: 700;
+  font-size: 2rem;
+  display: block;
+  text-overflow: ellipsis;
+}
+
+
 </style>
