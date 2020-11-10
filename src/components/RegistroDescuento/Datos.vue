@@ -1,40 +1,25 @@
 <template>
   <section class="datos">
+  
     <div class="datos_container">
+    <form>
       <p class="datos_info">
-        Precio por unidad:
+        Precio Actual:
         <span class="datos_resaltados datos_resaltados-block datos_precio"
           >{{ datos.precio_unid }}Bs.</span
         >
       </p>
       <div>
-        <p v-if="datos.peso" class="datos_info datos_both">
-          Peso: <span class="datos_resaltados">{{ datos.peso }}</span>
-        </p>
-        <p v-if="datos.unidad_med" class="datos_info datos_both">
-          Unidad de medida:
-          <span class="datos_resaltados">{{ datos.unidad_med }}</span>
-        </p>
+        <p>Descuento en porcentaje:</p>
+        <input type="number"/> %
+        <p>Unidades a comprar:</p>
+        <input type="number"/> 
       </div>
-      <p v-if="datos.cantidad" class="datos_info">
-        Cantidad:
-        {{ datos.cantidad }}
-        <span class="datos_resaltados"> unidad/es</span>
-      </p>
-      <p v-if="datos.fecha_venc" class="datos_info">
-        Fecha de vencimiento:
-        <span class="datos_resaltados">{{
-          transformDate(datos.fecha_venc)
-        }}</span>
-      </p>
-      <p class="datos_info">
-        Categoría: <span class="datos_resaltados">{{ datos.nombre_cat }}</span>
-      </p>
-      <p class="datos_info">Sobre este producto:</p>
-      <p class="datos_info datos_descripcion">
-        {{ datos.descripcion }}
-      </p>
-      
+      <p>Precio con descuento:</p>
+      <button class="formulario_button">
+        Aplicar descuento
+      </button>
+      </form>
     </div>
   </section>
 </template>
@@ -47,12 +32,7 @@ export default {
     return {};
   },
   methods: {
-    transformDate(value) {
-      const date = new Date(value);
-      return `${date.getDate() + 1}/${
-        date.getMonth() + 1
-      }/${date.getFullYear()}`;
-    },
+   
   },
 };
 </script>
@@ -104,5 +84,14 @@ export default {
   margin: 10px;
   margin-left: 0;
   font-size: 1.4rem;
+}
+.formulario_button {
+  margin: auto;
+  display: block;
+  background-color: rgb(51, 51, 51);
+  padding: 13px 100px;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
 }
 </style>
