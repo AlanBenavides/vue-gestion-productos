@@ -1,7 +1,11 @@
 <template>
 <div><h1 class="titulo" >Registro de descuento</h1>
   <section class="producto">
-  
+  <Galeria
+      class="producto_galeria"
+      :name="product.datos[0].nombre_prod"
+      :imagenes="images"
+    />
    
     
     <Datos class="producto_datos" :datos="product.datos[0]" />
@@ -13,11 +17,12 @@
 <script>
 import Datos from "@/components/RegistroDescuento/Datos.vue";
 
-
+import Galeria from "@/components/RegistroDescuento/Galeria.vue";
 export default {
   name: "Descuento",
   components: {
     Datos,
+    Galeria,
     
   },
   data: function () {
@@ -29,20 +34,28 @@ export default {
           },
         ],
       },
+      images: [1],
       
     };
   },
   mounted: async function () {
-    const response2 = await this.$http.get(
+    const response1 = await this.$http.get(
       `/products/${this.$route.params.id}`
     );
-    
-    this.product = response2.data;
-    console.log(this.product);
+    const response2 = await this.$http.get(
+      `/images/${this.$route.params.id}?cantidad=1`
+    );
+    this.product = response1.data;
+    this.images = response2.data.datos;
+    this.convertToBase64();
     
   },
   methods: {
-    
+    convertToBase64() {
+      this.images = this.images.map(
+        (imagen) => `data:image/[jpg/png];base64,${imagen.imagen}`
+      );
+    },
   },
 };
 </script>
