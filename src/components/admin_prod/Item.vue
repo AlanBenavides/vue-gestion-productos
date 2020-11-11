@@ -46,9 +46,9 @@ export default {
   flex-direction: column;
   text-align: start;
   cursor: pointer;
-  display: block;
   text-decoration: none;
   color: black;
+  white-space:normal;
 }
 
 .item > img {
