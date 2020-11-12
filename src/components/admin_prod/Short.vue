@@ -20,9 +20,7 @@
       <div
         v-for="product in products"
         :key="product.cod_prod"
-        :class="`short-product ${
-          product.cod_prod == produtSelect ? 'short-product_select' : ''
-        }`"
+        :class="`short-product ${itemSelected(product.cod_prod)}`"
         @click="selectProduct(product.cod_prod)"
       >
         <Item
@@ -62,6 +60,7 @@ import Item from "@/components/admin_prod/Item.vue";
 
 export default {
   name: "Short",
+  props: ["multipleSelect"],
   components: {
     Item,
   },
@@ -102,8 +101,27 @@ export default {
       this.getProducts();
     },
     selectProduct(id) {
-      this.produtSelect = id;
-      this.$store.commit("changeSelection", id);
+      if(this.multipleSelect){
+        if(this.$store.state.groupIDselected.includes(id)){
+          this.$store.commit("deleteID", id);
+        }else{
+          this.$store.commit("addID", id);
+        }
+      }else{
+        if(this.produtSelect == id){
+          this.produtSelect = -1;
+        }else{
+          this.produtSelect = id;
+        }
+        this.$store.commit("changeSelection", this.produtSelect);
+      }
+    },
+    itemSelected(id){
+      if(this.multipleSelect){
+        return this.$store.state.groupIDselected.includes(id) ? 'short-product_select' : '';
+      }else{
+        return id == this.produtSelect ? 'short-product_select' : '';
+      }
     },
     async getProducts() {
       const response = await this.$http.get(
@@ -137,7 +155,7 @@ export default {
       this.pagina = index;
       this.selectProduct(-1);
       this.getProducts();
-    },
+    }
   },
   mounted: async function () {
     await this.getProducts(this.pagina, this.orden);

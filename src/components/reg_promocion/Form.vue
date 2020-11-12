@@ -160,11 +160,14 @@
                 </div>
                 <div
                   class="formulario_check-error-center"
-                  v-if="!$v.promocion.fecha_fin.validate_date"
+                  v-if="!$v.promocion.fecha_fin.validate_end_date"
                 >
                 La promoción termina antes de empezar
                 </div>
             </div>
+            <button :disabled="$v.promocion.$invalid" class="formulario_button">
+              Confirmar
+            </button>
         </form>
     </div>    
 </template>
@@ -184,20 +187,19 @@ const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,.\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 
 const validate_date = (value) => {
-  const date = new Date();
-  const dd = date.getDate();
-  const mm = date.getMonth() + 1;
-  const yyyy = date.getFullYear();
-  const yyvalue = parseInt(value.slice(0, 4));
-  const mmvalue = parseInt(value.slice(5, 7));
-  const ddvalue = parseInt(value.slice(8, 10));
-  return (
-    !helpers.req(value) ||
-    !(yyvalue < yyyy) &
-      !(yyvalue == yyyy && mmvalue < mm) &
-      !(yyyy == yyvalue && mm == mmvalue && ddvalue < dd)
-  );
+  const today_date = new Date();
+  const input_date = new Date(Date.parse(value));
+  return today_date < input_date;
 };
+
+const validate_end_date = (value, vm) => {
+  if(!vm.fecha_inicio || !value){
+    return true;
+  }
+  const start_date = new Date(Date.parse(vm.fecha_inicio));
+  const end_date = new Date(Date.parse(value));
+  return start_date < end_date;
+}
 
 const validate_decimales = (value) => {
   const datovalue = String(value);
@@ -214,6 +216,7 @@ const validate_decimales = (value) => {
 
 export default {
   name: "Form",
+  props: ['imagen'],
   data() {
     return {
       disabled: false,
@@ -244,18 +247,19 @@ export default {
         required,
         between: between(0.1, 10000),
         validate_decimales,
-        alpha2,
+        alpha2
       },
       cantidad: {
         between: between(1, 1000),
         integer,
-        alpha2,
+        alpha2
       },
       fecha_inicio: {
-        validate_date,
+        validate_date
       },
       fecha_fin: {
         validate_date,
+        validate_end_date
       }
     },
   },
@@ -263,11 +267,11 @@ export default {
     async submitForm() {
       try {
         if (!this.$v.promocion.$invalid) {
-          if (this.images.length == 0)
+          if (this.images == '')
             alert("Registra la imagen de la promoción");
           else {
-            const productId = await this.sendDataProduct();
-            await this.sendImage(productId);
+            const promId = await this.sendDataProm();
+            await this.sendImage(promId);
             alert("Promoción creada exitosamente");
           }
         } else {
@@ -277,28 +281,33 @@ export default {
         alert(error);
       }
     },
-    async sendDataProduct() {
+    async sendDataProm() {
       try {
-        const response = await this.$http.post("products", {
+        console.log("Info");
+        console.log(this.promocion.nombre_prom);
+        console.log(this.promocion.descripcion);
+        console.log(this.promocion.precio_unid);
+        console.log(this.promocion.fecha_inicio);
+        console.log(this.promocion.fecha_fin);
+        /*const response = await this.$http.post("products", {
           nombre_prom: this.promocion.nombre_prom,
           descripcion: this.promocion.descripcion,
           precio_unid: this.promocion.precio_unid,
-          cantidad: !this.promocion.cantidad ? null : this.promocion.cantidad,
-          fecha_venc:
-            this.promocion.fecha_venc == "" ? null : this.promocion.fecha_venc,
+          cantidad: this.promocion.cantidad,
+          fecha_inicio: this.promocion.fecha_inicio,
+          fecha_fin: this.promocion.fecha_fin,
         });
-        return response.data[0].cod_prod;
+        return response.data[0].cod_prod;*/
       } catch (error) {
         throw new Error("El nombre de la promoción esta repetido");
       }
     },
-    async sendImage(productId) {
-      this.images.forEach(async (image) => {
-        await this.$http.post(`images`, {
-          cod_prod: productId,
-          imagen: image,
-        });
-      });
+    async sendImage(promId) {
+      console.log(promId + this.imagen);
+        /*await this.$http.post(`images`, {
+          cod_prom: promId,
+          imagen: this.imagen,
+        });*/
     },
   },
 };

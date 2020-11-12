@@ -1,9 +1,9 @@
 <template>
     <div>
-        <ProductList :IDproductos="[10,6,13]"></ProductList>
+        <ProductList></ProductList>
         <div>
-            <ImageAdd class="inline-elem"></ImageAdd>
-            <Form class="inline-elem"></Form>
+            <ImageAdd class="inline-elem" @send-image="passImage($event)"></ImageAdd>
+            <Form class="inline-elem" :image="imagen"></Form>
         </div>
     </div>
 </template>
@@ -15,7 +15,17 @@ import ImageAdd from "@/components/reg_promocion/ImageAdd.vue";
 
 export default {
     name: 'RegistroPromocion',
-    components: {Form, ProductList, ImageAdd}, 
+    components: {Form, ProductList, ImageAdd},
+    data() {
+        return {
+            imagen:''
+        }
+    },
+    methods:{
+        passImage(newImage){
+            this.imagen = newImage;
+        }
+    }
 }
 </script>
 <style>
