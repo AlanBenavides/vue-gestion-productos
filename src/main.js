@@ -18,15 +18,24 @@ const store = new Vuex.Store({
       state.idSelected = newId;
     },
     addID(state, newID){
+      
       if(state.groupIDselected.length < 5){
         state.groupIDselected.push(newID);
       }
+      
     },
     deleteID(state, ID){
       const index = state.groupIDselected.indexOf(ID);
       if(index > -1){
         state.groupIDselected.splice(index, 1);
       }
+    },
+    updateGroup(state, newGroup){
+      state.groupIDselected.splice(0, state.groupIDselected.length);
+      for(let id of newGroup){
+        state.groupIDselected.push = id;
+      }
+     
     }
   },
 });

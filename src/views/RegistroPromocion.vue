@@ -1,6 +1,10 @@
 <template>
     <div>
         <ProductList></ProductList>
+        <div class="formulario_check-error-center"
+            v-if="this.$store.state.groupIDselected.length < 2">
+            Seleccione 2 productos como mínimo
+        </div>
         <div>
             <ImageAdd class="inline-elem" @send-image="passImage($event)"></ImageAdd>
             <Form class="inline-elem" :image="imagen"></Form>
@@ -28,8 +32,9 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 .inline-elem{
     display: inline-block;
+    vertical-align: top;
 }
 </style>

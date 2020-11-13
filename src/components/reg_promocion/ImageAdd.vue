@@ -2,7 +2,7 @@
     <div class="image-container">
         <p>Foto de la promoción</p>
         <div class="image-add">
-            <img class="img-prom" :src="imagen" alt="">
+            <img class="img-prom" :src="imagen"  @click="addFiles()" alt="">
         </div>
         <input
             type="file"
@@ -12,9 +12,6 @@
             class="images_input"
             @change="getImage()"
         />
-        <button class="button-img">
-            <img src="@/assets/add_image.png" @click="addFiles()" alt="" width="50">
-        </button>
         <span class="formulario_check-error" v-if="!$v.image.required">
             Coloque una fotografia
         </span>
@@ -43,7 +40,9 @@ export default {
         getImage(){
             let uploadedFile = this.$refs.files.files;
             let arch = uploadedFile[0];
-
+            if(arch == undefined){
+                return;
+            }
             if (/\.(jpe?g|png)$/i.test(arch.name)) {
             
                 if (arch.size > 1024 * 1024) {
@@ -116,6 +115,7 @@ export default {
     transform: translate(-50%, -50%);
     max-width: 500px;
     max-height: 400px;
+    cursor: pointer;
 }
 
 .images_input{

@@ -126,6 +126,44 @@
                 </div>
             </div>
             <div class="formulario_group">
+              <label>
+                <div class="formulario_name">Cantidad:</div>
+                <input
+                  type="text"
+                  v-model="promocion.cantidad"
+                  :style="
+                    $v.promocion.cantidad.$invalid
+                        ? 'border:1px solid red '
+                        : 'border:1px solid green '
+                    "
+                />
+              </label>
+              <div
+                class="formulario_check-error"
+                v-if="!$v.promocion.cantidad.required"
+              >
+                Campo requerido.
+              </div>
+              <div
+                class="formulario_check-error"
+                v-if="!$v.promocion.cantidad.between"
+              >
+                Ingrese valores enteros entre (1-1000).
+              </div>
+              <div
+                class="formulario_check-error"
+                v-if="!$v.promocion.cantidad.integer"
+              >
+                Solo se aceptan valores enteros.
+              </div>
+              <div
+                class="formulario_check-error"
+                v-if="!$v.promocion.cantidad.alpha2"
+              >
+                Ingrese un valor numérico
+              </div>
+            </div>
+            <div class="formulario_group">
                 <label>
                     <div class="formulario_name">Inicio de promoción:</div>
                     <input
@@ -165,7 +203,8 @@
                 La promoción termina antes de empezar
                 </div>
             </div>
-            <button :disabled="$v.promocion.$invalid" class="formulario_button">
+            <button :disabled="$v.promocion.$invalid || image == ''" class="formulario_button"
+            :class="isAllValid">
               Confirmar
             </button>
         </form>
@@ -214,9 +253,13 @@ const validate_decimales = (value) => {
   }
 };
 
+const min_products = (value) => {
+    return value.length > 1;
+}
+
 export default {
   name: "Form",
-  props: ['imagen'],
+  props: ['image'],
   data() {
     return {
       disabled: false,
@@ -227,6 +270,7 @@ export default {
         cantidad: null,
         fecha_inicio: "",
         fecha_fin: "",
+        product_list: this.$store.state.groupIDselected,
       },
     };
   },
@@ -250,6 +294,7 @@ export default {
         alpha2
       },
       cantidad: {
+        required,
         between: between(1, 1000),
         integer,
         alpha2
@@ -260,19 +305,22 @@ export default {
       fecha_fin: {
         validate_date,
         validate_end_date
+      },
+      product_list: {
+        min_products
       }
-    },
+    }
   },
   methods: {
     async submitForm() {
       try {
         if (!this.$v.promocion.$invalid) {
-          if (this.images == '')
+          if (this.image == '')
             alert("Registra la imagen de la promoción");
           else {
             const promId = await this.sendDataProm();
             await this.sendImage(promId);
-            alert("Promoción creada exitosamente");
+            alert("Nueva promoción creada exitosamente");
           }
         } else {
           alert("Rellene todos los datos correctamente");
@@ -287,8 +335,10 @@ export default {
         console.log(this.promocion.nombre_prom);
         console.log(this.promocion.descripcion);
         console.log(this.promocion.precio_unid);
+        console.log(this.promocion.cantidad);
         console.log(this.promocion.fecha_inicio);
         console.log(this.promocion.fecha_fin);
+        console.log(this.$store.state.groupIDselected);
         /*const response = await this.$http.post("products", {
           nombre_prom: this.promocion.nombre_prom,
           descripcion: this.promocion.descripcion,
@@ -310,6 +360,11 @@ export default {
         });*/
     },
   },
+  computed: {
+    isAllValid(){
+      return this.$v.promocion.$invalid || this.image == '' ? 'form_button_disabled' : ''
+    }
+  }
 };
 </script>
 
@@ -402,6 +457,10 @@ export default {
   font-size: 20px;
   font-weight: 700;
 }
+.form_button_disabled {
+  background-color: gray;
+}
+
 .formulario_check-error1 {
   color: black;
   text-align: right;
