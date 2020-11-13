@@ -2,7 +2,7 @@
   <section class="datos"> 
  
     <div class="datos_container">
-    <form>
+    <form  @submit.prevent="submitForm">
     
        <h2 class="producto_tittle">{{datos.nombre_prod }}:</h2>
       <p class="datos_info">
@@ -36,7 +36,8 @@
           </div><br/>
         
         <p>Unidades a comprar:</p>
-        <input type="text" v-model="descuento.cantidad"/> <br />
+        <input name="numero" type="text" v-model="descuento.cantidad" /> <br />
+      
         <div class="formulario_check-error" 
             
             v-if="!$v.descuento.cantidad.required"
@@ -45,9 +46,9 @@
           </div>
           <div class="formulario_check-error" 
             
-            v-if="!$v.descuento.cantidad.minValue"
+            v-if="!$v.descuento.cantidad.between"
           >
-            Ingrese un valor mayor a 0.
+            Ingrese un valor entre(1-1000).
           </div>
           <div class="formulario_check-error" 
             
@@ -59,26 +60,26 @@
       <div class="precio_descuento">
       <br />
       <label>Precio con descuento: </label>
-      <span  >{{  
+      <span v-if="!this.$v.descuento.$invalid" >{{  
           transformPrice(datos.precio_unid)
         }} Bs.</span>
     </div>
       <div>
       <br/>
-       <button class="formulario_button">
+       <button :disabled="$v.descuento.$invalid" class="formulario_button">
         Aplicar descuento
       </button>
       </div>
      
       </form>
-     
+     {{descuento}}
     </div>
   </section>
 </template>
 
 <script>
 import {
- between,helpers,required,minValue
+ between,helpers,required
 } from "vuelidate/lib/validators";
 const alpha2 = helpers.regex("alpha1", /^[0-9\s]*$/);
 
@@ -96,13 +97,12 @@ export default {
   validations:{
       descuento:{
          porcentaje:{
-          
           between: between(5, 75),
           alpha2,
           required
        },
        cantidad:{
-           minValue: minValue(1),
+           between: between(1, 1000),
            alpha2,
            required
        }
@@ -119,12 +119,33 @@ export default {
       console.log(` descuento${newPrice}`);
       const result=(price-newPrice).toFixed(2);
       return  `${result}`;
-
-      
-      
-
-
     },
+    async submitForm() {
+      try {
+        if (!this.$v.descuento.$invalid) {
+            //const productId = await this.sendDataDiscounts();??
+            alert("Descuento creado exitosamente");
+          
+        } else {
+          alert("Rellene todos los datos correctamente");
+        }
+      } catch (error) {
+        alert(error);
+      }
+    },
+    /*async sendDataDiscounts() {
+      try {
+        const response = await this.$http.post("discounts", {
+          porcentaje:this.descuento.porcentaje,
+          cantidad_req: this.descuento.cantidad
+          
+        });
+        return response.data[0].cod_prod;
+      } catch (error) {
+        throw new Error("descuento rep");
+      }
+      console.log();
+    },*/
     
    
   },

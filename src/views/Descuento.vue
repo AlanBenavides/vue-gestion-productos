@@ -31,6 +31,7 @@ export default {
         datos: [
           {
             nombre_prod: "",
+            cantidad:"",
           },
         ],
       },
