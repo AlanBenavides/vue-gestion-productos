@@ -1,16 +1,15 @@
 <template>
-<div><h1 class="titulo" >Registro de descuento</h1>
-  <section class="producto">
-  <Galeria
-      class="producto_galeria"
-      :name="product.datos[0].nombre_prod"
-      :imagenes="images"
-    />
-   
-    
-    <Datos class="producto_datos" :datos="product.datos[0]" />
-  
-  </section>
+  <div>
+    <h1 class="titulo">Registro de descuento</h1>
+    <section class="producto">
+      <Galeria
+        class="producto_galeria"
+        :name="product.datos[0].nombre_prod"
+        :imagenes="images"
+      />
+
+      <Datos class="producto_datos" :datos="product.datos[0]" />
+    </section>
   </div>
 </template>
 
@@ -23,7 +22,6 @@ export default {
   components: {
     Datos,
     Galeria,
-    
   },
   data: function () {
     return {
@@ -31,12 +29,11 @@ export default {
         datos: [
           {
             nombre_prod: "",
-            cantidad:"",
+            cantidad: "",
           },
         ],
       },
       images: [1],
-      
     };
   },
   mounted: async function () {
@@ -49,7 +46,6 @@ export default {
     this.product = response1.data;
     this.images = response2.data.datos;
     this.convertToBase64();
-    
   },
   methods: {
     convertToBase64() {
@@ -62,27 +58,23 @@ export default {
 </script>
 
 <style scoped>
-
-
 .producto {
   display: grid;
   grid-template-rows: auto auto;
   grid-template-columns: 50% 50%;
-  gap: 1rem;
+
   margin: 3rem 6rem;
   margin-top: 0;
   word-wrap: break-word;
 }
 
 .titulo {
-  
   text-align: center;
   color: var(--font-color-secondary);
   font-weight: 700;
   font-size: 2rem;
   display: block;
   text-overflow: ellipsis;
-
 }
 .producto_datos {
   grid-column: 2/3;
@@ -93,5 +85,4 @@ export default {
   grid-column: 1/2;
   grid-row: 2/3;
 }
-
 </style>

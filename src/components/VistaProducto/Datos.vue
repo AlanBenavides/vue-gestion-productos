@@ -34,7 +34,6 @@
       <p class="datos_info datos_descripcion">
         {{ datos.descripcion }}
       </p>
-      
     </div>
   </section>
 </template>

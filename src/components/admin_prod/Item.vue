@@ -3,6 +3,7 @@
     <router-link :to="`/producto/${id_product}`">
       <img :src="imagen" :alt="nombre" width="300" />
     </router-link>
+
     <h5>{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
     <p>Descripcion:<br />{{ descripcion }}</p>

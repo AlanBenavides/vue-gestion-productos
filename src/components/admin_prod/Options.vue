@@ -4,6 +4,18 @@
       <router-link to="/registro_producto" class="button"
         >Registro de Producto
       </router-link>
+
+      <button :disabled="$store.state.idSelected === -1" class="button">
+        <router-link
+          :to="
+            $store.state.idSelected !== -1
+              ? `/descuento_producto/${this.$store.state.idSelected}`
+              : ''
+          "
+        >
+          Aplicar descuento
+        </router-link>
+      </button>
       <button
         v-for="(button, index) in buttons"
         :key="index"
@@ -19,12 +31,10 @@
 <script>
 export default {
   name: "Options",
+  props: ["id_product"],
   data: function () {
     return {
       buttons: [
-        {
-          name: "Aplicar descuento",
-        },
         {
           name: "Editar producto",
         },

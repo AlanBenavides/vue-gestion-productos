@@ -1,9 +1,8 @@
 import Galeria from '@/components/Galeria.vue';
 <template>
   <section class="galeria">
- 
     <div>
-      <div >
+      <div>
         <img
           class="galeria_image-principal"
           :src="imagenes.slice(0, 1)"
@@ -11,7 +10,6 @@ import Galeria from '@/components/Galeria.vue';
           :alt="name"
         />
       </div>
-     
     </div>
   </section>
 </template>
@@ -20,15 +18,6 @@ import Galeria from '@/components/Galeria.vue';
 export default {
   name: "Galeria",
   props: ["imagenes", "name"],
-  data: function () {
-    return {
-      
-    };
-  },
-  
-  methods: {
-   
-  },
 };
 </script>
 
@@ -41,11 +30,8 @@ export default {
   border-radius: 15px;
 }
 
-
 .galeria_image {
   border-radius: 15px;
   place-self: center;
 }
-
-
 </style>
