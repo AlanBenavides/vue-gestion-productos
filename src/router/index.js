@@ -29,6 +29,11 @@ const routes = [
     name: "Registro_Producto",
     component: () => import("@/views/RegistroProducto.vue"),
   },
+  {
+    path: "/GaleryCli",
+    name: "GaleryCli",
+    component: () => import("@/views/GaleryCli.vue"),
+  },
 ];
 
 const router = new VueRouter({
