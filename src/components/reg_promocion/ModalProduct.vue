@@ -1,6 +1,6 @@
 <template>
     <div class="modal-produc">
-        <Short class="modal-pcontent" :multipleSelect="true"></Short>
+        <Short class="modal-pcontent" :multipleSelect="true" :onlyUnits="true"></Short>
     </div>
 </template>
 <script>

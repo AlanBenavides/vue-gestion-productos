@@ -21,7 +21,7 @@
         v-for="product in products"
         :key="product.cod_prod"
         :class="`short-product ${itemSelected(product.cod_prod)}`"
-        @click="selectProduct(product.cod_prod)"
+        @click="selectProduct(product.cod_prod, product.cantidad)"
       >
         <Item
           :id_product="product.cod_prod"
@@ -60,7 +60,7 @@ import Item from "@/components/admin_prod/Item.vue";
 
 export default {
   name: "Short",
-  props: ["multipleSelect"],
+  props: ["multipleSelect", "onlyUnits"],
   components: {
     Item,
   },
@@ -100,12 +100,12 @@ export default {
       this.selectProduct(-1);
       this.getProducts();
     },
-    selectProduct(id) {
+    selectProduct(id, cantidad) {
       if(this.multipleSelect){
-        if(this.$store.state.groupIDselected.includes(id)){
+        if(id in this.$store.state.groupIDselected){
           this.$store.commit("deleteID", id);
         }else{
-          this.$store.commit("addID", id);
+          this.$store.commit("addID", [id, cantidad]);
         }
       }else{
         if(this.produtSelect == id){
@@ -118,15 +118,15 @@ export default {
     },
     itemSelected(id){
       if(this.multipleSelect){
-        return this.$store.state.groupIDselected.includes(id) ? 'short-product_select' : '';
+        return id in this.$store.state.groupIDselected ? 'short-product_select' : '';
       }else{
         return id == this.produtSelect ? 'short-product_select' : '';
       }
     },
     async getProducts() {
-      const response = await this.$http.get(
-        `products?criterio=${this.orden}&page=${this.pagina}&limit=${10}`
-      );
+      let query = `products?criterio=${this.orden}&page=${this.pagina}&limit=10`;
+      query = !this.onlyUnits ? query : query+"&onlyUnits=1";
+      const response = await this.$http.get(query);
 
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);

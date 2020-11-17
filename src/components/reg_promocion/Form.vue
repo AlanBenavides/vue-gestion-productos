@@ -177,7 +177,7 @@
                     class="formulario_check-error-center"
                     v-if="!$v.promocion.fecha_inicio.validate_date"
                 >
-                fecha invalida
+                Fecha fuera de límite
                 </div>
             </div>
             <div class="formulario_group">
@@ -194,7 +194,7 @@
                     class="formulario_check-error-center"
                     v-if="!$v.promocion.fecha_fin.validate_date"
                 >
-                fecha invalida
+                Fecha fuera de límite
                 </div>
                 <div
                   class="formulario_check-error-center"
@@ -227,8 +227,10 @@ const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 
 const validate_date = (value) => {
   const today_date = new Date();
+  const three_years_after = new Date().setFullYear(today_date.getFullYear() + 3);
   const input_date = new Date(Date.parse(value));
-  return today_date < input_date;
+  input_date.setDate(input_date.getDate() + 1);
+  return today_date <= input_date && input_date < three_years_after;
 };
 
 const validate_end_date = (value, vm) => {
@@ -237,6 +239,8 @@ const validate_end_date = (value, vm) => {
   }
   const start_date = new Date(Date.parse(vm.fecha_inicio));
   const end_date = new Date(Date.parse(value));
+  start_date.setDate(start_date.getDate() + 1);
+  end_date.setDate(end_date.getDate() + 1);
   return start_date < end_date;
 }
 
@@ -254,7 +258,7 @@ const validate_decimales = (value) => {
 };
 
 const min_products = (value) => {
-    return value.length > 1;
+    return Object.keys(value).length > 1;
 }
 
 export default {
@@ -318,6 +322,13 @@ export default {
           if (this.image == '')
             alert("Registra la imagen de la promoción");
           else {
+            for(let id in this.$store.state.groupIDselected){
+              if(this.promocion.cantidad*this.$store.state.groupIDselected[id][0]
+                > this.$store.state.groupIDselected[id][1]){
+                  alert("No existen suficientes productos para esta promoción.");
+                  return;
+              }
+            }
             const promId = await this.sendDataProm();
             await this.sendImage(promId);
             alert("Nueva promoción creada exitosamente");
@@ -331,14 +342,18 @@ export default {
     },
     async sendDataProm() {
       try {
-        console.log("Info");
-        console.log(this.promocion.nombre_prom);
-        console.log(this.promocion.descripcion);
-        console.log(this.promocion.precio_unid);
-        console.log(this.promocion.cantidad);
-        console.log(this.promocion.fecha_inicio);
-        console.log(this.promocion.fecha_fin);
-        console.log(this.$store.state.groupIDselected);
+        let to_send = {
+          nombre_prom: this.promocion.nombre_prom,
+          descripcion: this.promocion.descripcion,
+          precio_unid: this.promocion.precio_unid,
+          cantidad: this.promocion.cantidad,
+          fecha_inicio: this.promocion.fecha_inicio,
+          fecha_fin: this.promocion.fecha_fin,
+          products: this.$store.state.groupIDselected
+        }
+        console.log("Enviando datos de promocion");
+        console.log("codigo en src/components/reg_prom/Form.vue desde linea 354");
+        console.log(to_send);
         /*const response = await this.$http.post("products", {
           nombre_prom: this.promocion.nombre_prom,
           descripcion: this.promocion.descripcion,
@@ -346,14 +361,19 @@ export default {
           cantidad: this.promocion.cantidad,
           fecha_inicio: this.promocion.fecha_inicio,
           fecha_fin: this.promocion.fecha_fin,
+          products: this.$store.state.groupIDselected
         });
-        return response.data[0].cod_prod;*/
+        return response.data[0].cod_prom;*/
+        console.log("esperando de respuesta el id de la promocion para enviar imagen");
+        console.log("ejemplo de id 4 en este caso");
+        return 4;
       } catch (error) {
         throw new Error("El nombre de la promoción esta repetido");
       }
     },
     async sendImage(promId) {
-      console.log(promId + this.imagen);
+      console.log("enviado imagen para promocion " + promId);
+      console.log(this.image);
         /*await this.$http.post(`images`, {
           cod_prom: promId,
           imagen: this.imagen,

@@ -11,31 +11,26 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     idSelected: -1,
-    groupIDselected: []
+    groupIDselected: {}
   },
   mutations: {
     changeSelection(state, newId) {
       state.idSelected = newId;
     },
     addID(state, newID){
-      
-      if(state.groupIDselected.length < 5){
-        state.groupIDselected.push(newID);
+      if(Object.keys(state.groupIDselected).length < 5){
+        Vue.set(state.groupIDselected, newID[0], [1, newID[1]]);
       }
-      
     },
     deleteID(state, ID){
-      const index = state.groupIDselected.indexOf(ID);
-      if(index > -1){
-        state.groupIDselected.splice(index, 1);
-      }
+      Vue.delete(state.groupIDselected, ID);
     },
     updateGroup(state, newGroup){
-      state.groupIDselected.splice(0, state.groupIDselected.length);
-      for(let id of newGroup){
-        state.groupIDselected.push = id;
+      Object.keys(state.groupIDselected).forEach(function(key) { delete state.groupIDselected[key]; });
+
+      for(let id in newGroup){
+        Vue.set(state.groupIDselected, id, newGroup[id]);
       }
-     
     }
   },
 });

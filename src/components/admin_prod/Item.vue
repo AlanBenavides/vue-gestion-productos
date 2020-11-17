@@ -1,11 +1,11 @@
 <template>
   <div class="item">
     <router-link :to="`/producto/${id_product}`">
-      <img :src="imagen" :alt="nombre" width="300" />
+      <img class="img-item" :src="imagen" :alt="nombre"/>
     </router-link>
-    <h5>{{ nombre }}</h5>
+    <h5 class="one-line">{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
-    <p>Descripcion:<br />{{ descripcion }}</p>
+    <p class="three-lines">Descripcion:<br />{{ descripcion }}</p>
     <p>Añadido el {{ parseDate() }}</p>
   </div>
 </template>
@@ -51,12 +51,24 @@ export default {
   white-space:normal;
 }
 
-.item > img {
-  margin-bottom: 1rem;
+.img-item {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
 }
 
-.item > h5 {
+.one-line {
   padding: 0.5rem;
   padding-left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.three-lines{
+  line-height: 1.5em;
+  height: 4.5em;
+  word-wrap: break-word;
+  overflow: hidden;
 }
 </style>

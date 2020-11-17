@@ -11,17 +11,23 @@
                     :descripcion="product.descripcion"
                     :fecha="product.fecha_adic">
                 </Item>
+                <label>Cantidad: </label>
+                <input type="number" min="1" 
+                :max="product.cantidad"
+                v-model.number="cant_products[product.cod_prod][0]"
+                @change="upCounts(product.cod_prod)"
+                />
             </div>
         </div>
         <div class="it-container" v-if="this.products.length < 5">
             <h6>Nuevo Producto</h6>            
-            <div class="it-add" @click="showProducts()">
+            <div class="it-add" @click="showModal=!showModal;">
                 <img class="im-add" src="@/assets/add-product.png" alt="" width="340">
             </div>          
         </div>
         <ModalProduct v-if="this.showModal"></ModalProduct>
-        <button class="modl-button term" @click="showProducts(); getProducts()" v-if="this.showModal">Añadir productos</button>
-        <button class="modl-button ext" @click="showProducts(); updateProducts()" v-if="this.showModal">X</button>
+        <button class="modl-button term" @click="addProducts()" v-if="this.showModal">Añadir productos</button>
+        <button class="modl-button ext" @click="updateProducts()" v-if="this.showModal">X</button>
     </div>
 </template>
 <script>
@@ -35,33 +41,44 @@ export default {
     data: () => {
         return {
             showModal: false,
-            products: []
+            products: [],
+            cant_products: {},
         }
     },
     methods: {
-        showProducts() {
-            this.showModal = !this.showModal;
+        addProducts(){
+            if(Object.keys(this.$store.state.groupIDselected).length > 0){
+                this.getProducts();
+                this.showModal = !this.showModal;
+                alert("Productos añadidos.");
+            }else{
+                alert("No tienes productos seleccionados.");
+            }
         },
         async getProducts(){
             let newProducts = [];
-            for(let productID of this.$store.state.groupIDselected){
+            let newCantProducts = {};
+            for(let productID in this.$store.state.groupIDselected){
                 const response = await this.$http.get(
                     `products/${productID}`
                 );
                 newProducts.push(response.data.datos[0]);
+                newCantProducts[productID] = [this.$store.state.groupIDselected[productID][0],
+                response.data.datos[0].cantidad];
             }
             this.products = newProducts;
+            this.cant_products = newCantProducts;
         },
         deleteProduct(id){
             this.$store.commit("deleteID", id);
             this.getProducts();
         },
         updateProducts(){
-            let old_ids = []
-            for(let product of this.products){
-                old_ids.push = product.cod_prod;
-            }
-            this.$store.commit('updateGroup', old_ids)
+            this.$store.commit('updateGroup', this.cant_products);
+            this.showModal = !this.showModal;
+        },
+        upCounts(id){
+            this.$store.state.groupIDselected[id] = this.cant_products[id]
         }
     },
     mounted(){
@@ -75,7 +92,7 @@ export default {
 <style scoped>
 .product-list{
     width: 96%;
-    height: 700px;
+    height: 750px;
     margin: 32px 2%;
     background-color:#D0D3D4;
     white-space: nowrap;
@@ -90,7 +107,7 @@ export default {
 }
 .it-add{
     width: 370px;
-    height: 600px;
+    height: 650px;
     margin: 32px;
     margin-top: 5px;
     border-radius: 20px;

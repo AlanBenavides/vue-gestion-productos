@@ -1,8 +1,10 @@
 <template>
     <div>
+        <h2><strong>Registro de Promoción</strong></h2>
+        <h3 class="left"><strong>Paquete de productos:</strong></h3>
         <ProductList></ProductList>
         <div class="formulario_check-error-center"
-            v-if="this.$store.state.groupIDselected.length < 2">
+            v-if="isMoreThanTwo">
             Seleccione 2 productos como mínimo
         </div>
         <div>
@@ -29,6 +31,11 @@ export default {
         passImage(newImage){
             this.imagen = newImage;
         }
+    },
+    computed: {
+        isMoreThanTwo(){
+            return Object.keys(this.$store.state.groupIDselected).length < 2
+        }
     }
 }
 </script>
@@ -36,5 +43,9 @@ export default {
 .inline-elem{
     display: inline-block;
     vertical-align: top;
+}
+.left{
+    padding-left: 2%;
+    text-align: left;
 }
 </style>
