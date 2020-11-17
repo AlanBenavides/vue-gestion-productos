@@ -107,7 +107,7 @@ export default {
     },
     async getProducts() {
       const response = await this.$http.get(
-        `products?criterio=${this.orden}&page=${this.pagina}&limit=${10}`
+        `products?criterio=${this.orden}&categoria&page=${this.pagina}&limit=${10}`
       );
 
       const data = response.data;
