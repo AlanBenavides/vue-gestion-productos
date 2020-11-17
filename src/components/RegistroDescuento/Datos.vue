@@ -88,6 +88,7 @@ export default {
       descuento: {
         porcentaje: "",
         cantidad: null,
+        hayDescuento: false,
       },
     };
   },
@@ -130,15 +131,26 @@ export default {
     },
     async sendDataDiscounts() {
       try {
-        await this.$http.post("discounts", {
-          cod_prod: this.datos.cod_prod,
-          porcentaje: this.descuento.porcentaje,
-          cantidad_req: this.descuento.cantidad,
-        });
+        if (this.hayDescuento) {
+          await this.$http.put(`discounts/${this.datos.cod_prod}`, {
+            porcentaje: this.descuento.porcentaje,
+            cantidad_req: this.descuento.cantidad,
+          });
+        } else {
+          await this.$http.post("discounts", {
+            cod_prod: this.datos.cod_prod,
+            porcentaje: this.descuento.porcentaje,
+            cantidad_req: this.descuento.cantidad,
+          });
+        }
       } catch (error) {
         throw new Error("descuento rep");
       }
     },
+  },
+  mounted: async function () {
+    const response = await this.$http.get(`discounts/${this.$route.params.id}`);
+    this.hayDescuento = response.data.datos.length > 0;
   },
 };
 </script>

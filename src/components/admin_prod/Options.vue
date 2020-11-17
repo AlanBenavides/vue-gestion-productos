@@ -5,16 +5,12 @@
         >Registro de Producto
       </router-link>
 
-      <button :disabled="$store.state.idSelected === -1" class="button">
-        <router-link
-          :to="
-            $store.state.idSelected !== -1
-              ? `/descuento_producto/${this.$store.state.idSelected}`
-              : ''
-          "
-        >
-          Aplicar descuento
-        </router-link>
+      <button
+        :disabled="$store.state.idSelected === -1"
+        class="button"
+        @click="hayCantidad"
+      >
+        Aplicar descuento
       </button>
       <button
         v-for="(button, index) in buttons"
@@ -46,6 +42,21 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    async hayCantidad() {
+      const id = this.$store.state.idSelected;
+      const cantidad = await this.obtenerCantidad(id);
+      if (cantidad) {
+        this.$router.push(`/descuento_producto/${id}`);
+      } else {
+        alert("No se puede aplicar un descuento a este producto.");
+      }
+    },
+    async obtenerCantidad(id) {
+      const response = await this.$http.get(`products/${id}`);
+      return response.data.datos[0].cantidad;
+    },
   },
 };
 </script>
