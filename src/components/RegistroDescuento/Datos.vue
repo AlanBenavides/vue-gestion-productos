@@ -71,7 +71,7 @@
           </button>
         </div>
       </form>
-      {{ descuento }}
+      
     </div>
   </section>
 </template>
