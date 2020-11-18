@@ -329,8 +329,8 @@ export default {
                   return;
               }
             }
-            const promId = await this.sendDataProm();
-            await this.sendImage(promId);
+            await this.sendDataProm();
+            //await this.sendImage(promId);
             alert("Nueva promoción creada exitosamente");
           }
         } else {
@@ -354,31 +354,33 @@ export default {
         console.log("Enviando datos de promocion");
         console.log("codigo en src/components/reg_prom/Form.vue desde linea 354");
         console.log(to_send);
-        /*const response = await this.$http.post("products", {
-          nombre_prom: this.promocion.nombre_prom,
-          descripcion: this.promocion.descripcion,
-          precio_unid: this.promocion.precio_unid,
-          cantidad: this.promocion.cantidad,
-          fecha_inicio: this.promocion.fecha_inicio,
+        await this.$http.post("promotions", {
+          nombr_prom: this.promocion.nombre_prom,
+          descrip_prom: this.promocion.descripcion,
+          precio_prom: this.promocion.precio_unid,
+          cantidad_prom: this.promocion.cantidad,
+          fecha_ini: this.promocion.fecha_inicio,
           fecha_fin: this.promocion.fecha_fin,
-          products: this.$store.state.groupIDselected
+          products: this.$store.state.groupIDselected,
+          imagen_prom:this.image
         });
-        return response.data[0].cod_prom;*/
+        //return response.data[0].cod_prom;
         console.log("esperando de respuesta el id de la promocion para enviar imagen");
         console.log("ejemplo de id 4 en este caso");
-        return 4;
+        //*return 4;
       } catch (error) {
+        console.log(error)
         throw new Error("El nombre de la promoción esta repetido");
       }
     },
-    async sendImage(promId) {
+    /*async sendImage(promId) {
       console.log("enviado imagen para promocion " + promId);
       console.log(this.image);
-        /*await this.$http.post(`images`, {
+        await this.$http.post(`images`, {
           cod_prom: promId,
           imagen: this.imagen,
-        });*/
-    },
+        });
+    },*/
   },
   computed: {
     isAllValid(){
