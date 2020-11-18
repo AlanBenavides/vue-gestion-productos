@@ -58,7 +58,14 @@ export default {
       return response.data.datos[0].cantidad;
     },
   },
+  mounted:function(){
+     this.$store.commit("changeSelection", -1);
+
+
+
+  }
 };
+
 </script>
 
 <style scoped>

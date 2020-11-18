@@ -30,7 +30,7 @@
             class="formulario_check-error"
             v-if="!$v.descuento.porcentaje.required"
           >
-            Campo requerido
+            Campo requerido.
           </div>
           <br />
 
@@ -44,17 +44,18 @@
           >
             Campo requerido.
           </div>
-          <div
-            class="formulario_check-error"
-            v-if="!$v.descuento.cantidad.between"
-          >
-            Ingrese un valor entre(1-1000).
-          </div>
+          
           <div
             class="formulario_check-error"
             v-if="!$v.descuento.cantidad.alpha2"
           >
             Ingrese un valor numerico.
+          </div>
+          <div
+            class="formulario_check-error"
+            v-if="!$v.descuento.cantidad.between"
+          >
+            Ingrese un valor entre(1-1000).
           </div>
         </div>
         <div class="precio_descuento">
@@ -144,7 +145,7 @@ export default {
           });
         }
       } catch (error) {
-        throw new Error("descuento rep");
+        throw new Error("Algo salio mal");
       }
     },
   },
@@ -207,6 +208,8 @@ export default {
 }
 .precio_descuento {
   color: green;
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
 .producto_tittle {
