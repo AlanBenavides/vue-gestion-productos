@@ -7,30 +7,32 @@
       <router-link to="" class="button" tag="button" :disabled="this.$store.state.idSelected[0] == -1">
             {{buttons[0].name}}
       </router-link>
-      <router-link to="" class="button" tag="button" :disabled="this.$store.state.idSelected[0] == -1">
+      <button
+        :disabled="$store.state.idSelected === -1"
+        class="button"
+        @click="hayCantidad"
+      >
+        Aplicar descuento
+      </button>
+      <router-link to="/registro_promocion" class="button" tag="button" :disabled="canAddToProm">
             {{buttons[1].name}}
       </router-link>
-      <router-link to="/registro_promocion" class="button" tag="button" :disabled="canAddToProm">
+      <router-link to="" class="button" tag="button" :disabled="this.$store.state.idSelected[0] == -1">
             {{buttons[2].name}}
       </router-link>
-      <router-link to="" class="button" tag="button" :disabled="this.$store.state.idSelected[0] == -1">
-            {{buttons[3].name}}
-      </router-link>
-    </ul>
+     </ul>
   </aside>
 </template>
 
 <script>
 export default {
   name: "Options",
+  props: ["id_product"],
   data: function () {
     return {
       buttons: [
         {
-          name: "Aplicar descuento",
-        },
-        {
-          name: "Editar",
+          name: "Editar producto",
         },
         {
           name: "Añadir a promocion",
@@ -46,11 +48,28 @@ export default {
       if (this.$store.state.idSelected[0] == -1){
         return false;
       }
-
       return this.$store.state.idSelected[1] == null;
-    }
+  }
+  methods: {
+    async hayCantidad() {
+      const id = this.$store.state.idSelected;
+      const cantidad = await this.obtenerCantidad(id);
+      if (cantidad) {
+        this.$router.push(`/descuento_producto/${id}`);
+      } else {
+        alert("No se puede aplicar un descuento a este producto.");
+      }
+    },
+    async obtenerCantidad(id) {
+      const response = await this.$http.get(`products/${id}`);
+      return response.data.datos[0].cantidad;
+    },
+  },
+  mounted:function(){
+     this.$store.commit("changeSelection", -1);
   }
 };
+
 </script>
 
 <style scoped>
