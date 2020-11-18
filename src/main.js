@@ -10,7 +10,7 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    idSelected: -1,
+    idSelected: [-1,0],
     groupIDselected: {}
   },
   mutations: {

@@ -37,7 +37,6 @@ import Item from "@/components/admin_prod/Item.vue";
 export default {
     name: "ProductList",
     components: {ModalProduct, Item},
-    props: ["IDpreSelect"],
     data: () => {
         return {
             showModal: false,
@@ -82,8 +81,8 @@ export default {
         }
     },
     mounted(){
-        if(this.IDpreSelect){
-            this.$store.commit("addID", parseInt(this.IDpreSelect));
+        if(this.$store.state.idSelected[0] != -1){
+            this.$store.commit("addID", this.$store.state.idSelected);
         }
         this.getProducts();
     }
