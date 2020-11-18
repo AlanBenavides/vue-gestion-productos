@@ -50,7 +50,7 @@ export default {
           name: "Editar producto",
         },
         {
-          name: "Añadir a promocion",
+          name: "Crear promocion",
         },
         {
           name: "Eliminar",
@@ -59,7 +59,7 @@ export default {
     };
   },
   mounted: function () {
-    this.$store.commit("changeSelection", -1);
+    this.$store.commit("changeSelection", [-1, 0]);
   },
   computed: {
     canAddToProm() {
