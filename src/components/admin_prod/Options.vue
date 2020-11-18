@@ -1,10 +1,12 @@
 <template>
   <aside>
     <ul class="options btn-group-vertical">
-      <router-link to="/registro_producto" class="button"
+      <router-link to="/registro_producto" class="button" tag="button"
         >Registro de Producto
       </router-link>
-
+      <router-link to="" class="button" tag="button" :disabled="this.$store.state.idSelected[0] == -1">
+            {{buttons[0].name}}
+      </router-link>
       <button
         :disabled="$store.state.idSelected === -1"
         class="button"
@@ -12,15 +14,13 @@
       >
         Aplicar descuento
       </button>
-      <button
-        v-for="(button, index) in buttons"
-        :key="index"
-        class="button"
-        :disabled="$store.state.idSelected === -1"
-      >
-        {{ button.name }}
-      </button>
-    </ul>
+      <router-link to="/registro_promocion" class="button" tag="button" :disabled="canAddToProm">
+            {{buttons[1].name}}
+      </router-link>
+      <router-link to="" class="button" tag="button" :disabled="this.$store.state.idSelected[0] == -1">
+            {{buttons[2].name}}
+      </router-link>
+     </ul>
   </aside>
 </template>
 
@@ -38,11 +38,18 @@ export default {
           name: "Añadir a promocion",
         },
         {
-          name: "Eliminar producto",
+          name: "Eliminar",
         },
       ],
     };
   },
+  computed: {
+    canAddToProm(){
+      if (this.$store.state.idSelected[0] == -1){
+        return false;
+      }
+      return this.$store.state.idSelected[1] == null;
+  }
   methods: {
     async hayCantidad() {
       const id = this.$store.state.idSelected;
@@ -60,9 +67,6 @@ export default {
   },
   mounted:function(){
      this.$store.commit("changeSelection", -1);
-
-
-
   }
 };
 

@@ -1,27 +1,33 @@
 <template>
   <div class="item">
-    <router-link :to="`/producto/${id_product}`">
+    <router-link to="">
       <img class="img-item" :src="imagen" :alt="nombre"/>
     </router-link>
     <h5 class="one-line">{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
     <p class="three-lines">Descripcion:<br />{{ descripcion }}</p>
-    <p>Añadido el {{ parseDate() }}</p>
+    <p>Inicia el {{ parseDate("ini") }}</p>
+    <p>Termina el {{ parseDate("fin") }}</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Item",
-  props: ["id_product", "nombre", "precio", "descripcion", "fecha"],
+  name: "ItemProm",
+  props: ["id_prom", "nombre", "precio", "descripcion", "fecha_ini", "fecha_fin"],
   data: function () {
     return {
       imagen: "",
     };
   },
   methods: {
-    parseDate() {
-      const date = new Date(this.fecha);
+    parseDate(type) {
+      let date;
+      if(type=="ini"){
+          date = new Date(this.fecha_ini);
+      }else{
+          date = new Date(this.fecha_fin);
+      }
       const day = date.getDate() + 1;
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
@@ -30,9 +36,9 @@ export default {
   },
   mounted: async function () {
     const response = await this.$http.get(
-      `images/${this.id_product}?cantidad=1`
+    `promotions/image/${this.id_prom}`
     );
-    const imageURL = response.data.datos[0].imagen;
+    const imageURL = response.data.datos[0].imagen_prom;
     this.imagen = "data:image/jpg;base64," + imageURL;
   },
 };
