@@ -15,7 +15,7 @@ const store = new Vuex.Store({
   },
   mutations: {
     changeSelection(state, newId) {
-      state.idSelected = newId;
+      state.idSelected[0] = newId;
     },
     addID(state, newID){
       if(Object.keys(state.groupIDselected).length < 5){

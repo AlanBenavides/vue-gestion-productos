@@ -33,7 +33,7 @@ const routes = [
     path: "/registro_promocion",
     name: "Registro de promocion",
     component: () => import("@/views/RegistroPromocion.vue"),
-  }
+  },
   {
     path: "/descuento_producto/:id",
     name: "Descuento_Producto",

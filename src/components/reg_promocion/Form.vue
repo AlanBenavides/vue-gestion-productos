@@ -1,214 +1,217 @@
 <template>
-    <div class="formulario">
-        <form
-        class="formulario_form"
-        @submit.prevent="submitForm"
-        autocomplete="off"
+  <div class="formulario">
+    <form
+      class="formulario_form"
+      @submit.prevent="submitForm"
+      autocomplete="off"
+    >
+      <div class="formulario_group">
+        <label>
+          <div class="formulario_name">Nombre de promoción:</div>
+          <input
+            :style="
+              $v.promocion.nombre_prom.$invalid
+                ? 'border:1px solid red '
+                : 'border:1px solid green '
+            "
+            type="text"
+            required
+            v-model="promocion.nombre_prom"
+          />
+        </label>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.nombre_prom.alpha"
         >
-            <div class="formulario_group">
-                <label>
-                    <div class="formulario_name">Nombre de promoción:</div>
-                    <input
-                        :style="
-                        $v.promocion.nombre_prom.$invalid
-                            ? 'border:1px solid red '
-                            : 'border:1px solid green '
-                        "
-                        type="text"
-                        required
-                        v-model="promocion.nombre_prom"
-                    />
-                </label>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.nombre_prom.alpha"
-                >
-                No se aceptan caracteres especiales.
-                </div>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.nombre_prom.minLength"
-                >
-                Debe tener una longitud no menor a
-                {{ $v.promocion.nombre_prom.$params.minLength.min }}.
-                </div>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.nombre_prom.required"
-                >
-                Campo requerido.
-                </div>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.nombre_prom.maxLength"
-                >
-                Nombre muy largo maximo
-                {{ $v.promocion.nombre_prom.$params.maxLength.max }}
-                caracteres.
-                </div>
-            </div>
+          No se aceptan caracteres especiales.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.nombre_prom.minLength"
+        >
+          Debe tener una longitud no menor a
+          {{ $v.promocion.nombre_prom.$params.minLength.min }}.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.nombre_prom.required"
+        >
+          Campo requerido.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.nombre_prom.maxLength"
+        >
+          Nombre muy largo maximo
+          {{ $v.promocion.nombre_prom.$params.maxLength.max }}
+          caracteres.
+        </div>
+      </div>
 
-            <div class="formulario_group">
-                <label>
-                    <div class="formulario_name">Descripción:</div>
-                    <textarea
-                        :style="
-                        $v.promocion.descripcion.$invalid
-                            ? 'border:1px solid red '
-                            : 'border:1px solid green '
-                        "
-                        v-model="promocion.descripcion"
-                        cols="50"
-                        rows="10"
-                        maxlength="1000"
-                    />
-                </label>
-                <div class="formulario_check-error1">
-                    {{ `${promocion.descripcion.length}/1000` }} caracteres.
-                </div>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.descripcion.alpha1"
-                >
-                No se aceptan caracteres especiales.
-                </div>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.descripcion.maxLength"
-                >
-                Descripcion muy larga maximo
-                {{ $v.promocion.descripcion.$params.maxLength.max }} caracteres.
-                </div>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.descripcion.required"
-                >
-                Campo requerido.
-                </div>
-            </div>
+      <div class="formulario_group">
+        <label>
+          <div class="formulario_name">Descripción:</div>
+          <textarea
+            :style="
+              $v.promocion.descripcion.$invalid
+                ? 'border:1px solid red '
+                : 'border:1px solid green '
+            "
+            v-model="promocion.descripcion"
+            cols="50"
+            rows="10"
+            maxlength="1000"
+          />
+        </label>
+        <div class="formulario_check-error1">
+          {{ `${promocion.descripcion.length}/1000` }} caracteres.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.descripcion.alpha1"
+        >
+          No se aceptan caracteres especiales.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.descripcion.maxLength"
+        >
+          Descripcion muy larga maximo
+          {{ $v.promocion.descripcion.$params.maxLength.max }} caracteres.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.descripcion.required"
+        >
+          Campo requerido.
+        </div>
+      </div>
 
-            <div class="formulario_group">
-                <label>
-                    <div class="formulario_name">Precio(Bs.):</div>
-                    <input
-                        type="text"
-                        v-model="promocion.precio_unid"
-                        :style="
-                        $v.promocion.precio_unid.$invalid
-                            ? 'border:1px solid red '
-                            : 'border:1px solid green '
-                        "
-                    />
-                </label>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.precio_unid.required"
-                >
-                Campo requerido.
-                </div>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.precio_unid.between"
-                >
-                Campo invalido (0.10-10000).
-                </div>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.precio_unid.validate_decimales"
-                >
-                Maximo 2 decimales!
-                </div>
-                <div
-                    class="formulario_check-error"
-                    v-if="!$v.promocion.precio_unid.alpha2"
-                >
-                Ingrese un valor numérico.
-                </div>
-            </div>
-            <div class="formulario_group">
-              <label>
-                <div class="formulario_name">Cantidad:</div>
-                <input
-                  type="text"
-                  v-model="promocion.cantidad"
-                  :style="
-                    $v.promocion.cantidad.$invalid
-                        ? 'border:1px solid red '
-                        : 'border:1px solid green '
-                    "
-                />
-              </label>
-              <div
-                class="formulario_check-error"
-                v-if="!$v.promocion.cantidad.required"
-              >
-                Campo requerido.
-              </div>
-              <div
-                class="formulario_check-error"
-                v-if="!$v.promocion.cantidad.between"
-              >
-                Ingrese valores enteros entre (1-1000).
-              </div>
-              <div
-                class="formulario_check-error"
-                v-if="!$v.promocion.cantidad.integer"
-              >
-                Solo se aceptan valores enteros.
-              </div>
-              <div
-                class="formulario_check-error"
-                v-if="!$v.promocion.cantidad.alpha2"
-              >
-                Ingrese un valor numérico
-              </div>
-            </div>
-            <div class="formulario_group">
-                <label>
-                    <div class="formulario_name">Inicio de promoción:</div>
-                    <input
-                        type="date"
-                        value="DD/MM/AA"
-                        onkeydown="return false"
-                        v-model="promocion.fecha_inicio"
-                    />
-                </label>
-                <div
-                    class="formulario_check-error-center"
-                    v-if="!$v.promocion.fecha_inicio.validate_date"
-                >
-                Fecha fuera de límite
-                </div>
-            </div>
-            <div class="formulario_group">
-                <label>
-                    <div class="formulario_name">Fin de promoción:</div>
-                    <input
-                        type="date"
-                        value="DD/MM/AA"
-                        onkeydown="return false"
-                        v-model="promocion.fecha_fin"
-                    />
-                </label>
-                <div
-                    class="formulario_check-error-center"
-                    v-if="!$v.promocion.fecha_fin.validate_date"
-                >
-                Fecha fuera de límite
-                </div>
-                <div
-                  class="formulario_check-error-center"
-                  v-if="!$v.promocion.fecha_fin.validate_end_date"
-                >
-                La promoción termina antes de empezar
-                </div>
-            </div>
-            <button :disabled="$v.promocion.$invalid || image == ''" class="formulario_button"
-            :class="isAllValid">
-              Confirmar
-            </button>
-        </form>
-    </div>    
+      <div class="formulario_group">
+        <label>
+          <div class="formulario_name">Precio(Bs.):</div>
+          <input
+            type="text"
+            v-model="promocion.precio_unid"
+            :style="
+              $v.promocion.precio_unid.$invalid
+                ? 'border:1px solid red '
+                : 'border:1px solid green '
+            "
+          />
+        </label>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.precio_unid.required"
+        >
+          Campo requerido.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.precio_unid.between"
+        >
+          Campo invalido (0.10-10000).
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.precio_unid.validate_decimales"
+        >
+          Maximo 2 decimales!
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.precio_unid.alpha2"
+        >
+          Ingrese un valor numérico.
+        </div>
+      </div>
+      <div class="formulario_group">
+        <label>
+          <div class="formulario_name">Cantidad:</div>
+          <input
+            type="text"
+            v-model="promocion.cantidad"
+            :style="
+              $v.promocion.cantidad.$invalid
+                ? 'border:1px solid red '
+                : 'border:1px solid green '
+            "
+          />
+        </label>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.cantidad.required"
+        >
+          Campo requerido.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.cantidad.between"
+        >
+          Ingrese valores enteros entre (1-1000).
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.cantidad.integer"
+        >
+          Solo se aceptan valores enteros.
+        </div>
+        <div
+          class="formulario_check-error"
+          v-if="!$v.promocion.cantidad.alpha2"
+        >
+          Ingrese un valor numérico
+        </div>
+      </div>
+      <div class="formulario_group">
+        <label>
+          <div class="formulario_name">Inicio de promoción:</div>
+          <input
+            type="date"
+            value="DD/MM/AA"
+            onkeydown="return false"
+            v-model="promocion.fecha_inicio"
+          />
+        </label>
+        <div
+          class="formulario_check-error-center"
+          v-if="!$v.promocion.fecha_inicio.validate_date"
+        >
+          Fecha fuera de límite
+        </div>
+      </div>
+      <div class="formulario_group">
+        <label>
+          <div class="formulario_name">Fin de promoción:</div>
+          <input
+            type="date"
+            value="DD/MM/AA"
+            onkeydown="return false"
+            v-model="promocion.fecha_fin"
+          />
+        </label>
+        <div
+          class="formulario_check-error-center"
+          v-if="!$v.promocion.fecha_fin.validate_date"
+        >
+          Fecha fuera de límite
+        </div>
+        <div
+          class="formulario_check-error-center"
+          v-if="!$v.promocion.fecha_fin.validate_end_date"
+        >
+          La promoción termina antes de empezar
+        </div>
+      </div>
+      <button
+        :disabled="$v.promocion.$invalid || image == ''"
+        class="formulario_button"
+        :class="isAllValid"
+      >
+        Confirmar
+      </button>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -227,14 +230,16 @@ const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 
 const validate_date = (value) => {
   const today_date = new Date();
-  const three_years_after = new Date().setFullYear(today_date.getFullYear() + 3);
+  const three_years_after = new Date().setFullYear(
+    today_date.getFullYear() + 3
+  );
   const input_date = new Date(Date.parse(value));
   input_date.setDate(input_date.getDate() + 1);
   return today_date <= input_date && input_date < three_years_after;
 };
 
 const validate_end_date = (value, vm) => {
-  if(!vm.fecha_inicio || !value){
+  if (!vm.fecha_inicio || !value) {
     return true;
   }
   const start_date = new Date(Date.parse(vm.fecha_inicio));
@@ -242,7 +247,7 @@ const validate_end_date = (value, vm) => {
   start_date.setDate(start_date.getDate() + 1);
   end_date.setDate(end_date.getDate() + 1);
   return start_date < end_date;
-}
+};
 
 const validate_decimales = (value) => {
   const datovalue = String(value);
@@ -258,12 +263,12 @@ const validate_decimales = (value) => {
 };
 
 const min_products = (value) => {
-    return Object.keys(value).length > 1;
-}
+  return Object.keys(value).length > 1;
+};
 
 export default {
   name: "Form",
-  props: ['image'],
+  props: ["image"],
   data() {
     return {
       disabled: false,
@@ -295,42 +300,43 @@ export default {
         required,
         between: between(0.1, 10000),
         validate_decimales,
-        alpha2
+        alpha2,
       },
       cantidad: {
         required,
         between: between(1, 1000),
         integer,
-        alpha2
+        alpha2,
       },
       fecha_inicio: {
-        validate_date
+        validate_date,
       },
       fecha_fin: {
         validate_date,
-        validate_end_date
+        validate_end_date,
       },
       product_list: {
-        min_products
-      }
-    }
+        min_products,
+      },
+    },
   },
   methods: {
     async submitForm() {
       try {
         if (!this.$v.promocion.$invalid) {
-          if (this.image == '')
-            alert("Registra la imagen de la promoción");
+          if (this.image == "") alert("Registra la imagen de la promoción");
           else {
-            for(let id in this.$store.state.groupIDselected){
-              if(this.promocion.cantidad*this.$store.state.groupIDselected[id][0]
-                > this.$store.state.groupIDselected[id][1]){
-                  alert("No existen suficientes productos para esta promoción.");
-                  return;
+            for (let id in this.$store.state.groupIDselected) {
+              if (
+                this.promocion.cantidad *
+                  this.$store.state.groupIDselected[id][0] >
+                this.$store.state.groupIDselected[id][1]
+              ) {
+                alert("No existen suficientes productos para esta promoción.");
+                return;
               }
             }
             await this.sendDataProm();
-            //await this.sendImage(promId);
             alert("Nueva promoción creada exitosamente");
           }
         } else {
@@ -342,18 +348,6 @@ export default {
     },
     async sendDataProm() {
       try {
-        let to_send = {
-          nombre_prom: this.promocion.nombre_prom,
-          descripcion: this.promocion.descripcion,
-          precio_unid: this.promocion.precio_unid,
-          cantidad: this.promocion.cantidad,
-          fecha_inicio: this.promocion.fecha_inicio,
-          fecha_fin: this.promocion.fecha_fin,
-          products: this.$store.state.groupIDselected
-        }
-        console.log("Enviando datos de promocion");
-        console.log("codigo en src/components/reg_prom/Form.vue desde linea 354");
-        console.log(to_send);
         await this.$http.post("promotions", {
           nombr_prom: this.promocion.nombre_prom,
           descrip_prom: this.promocion.descripcion,
@@ -362,36 +356,24 @@ export default {
           fecha_ini: this.promocion.fecha_inicio,
           fecha_fin: this.promocion.fecha_fin,
           products: this.$store.state.groupIDselected,
-          imagen_prom:this.image
+          imagen_prom: this.image,
         });
-        //return response.data[0].cod_prom;
-        console.log("esperando de respuesta el id de la promocion para enviar imagen");
-        console.log("ejemplo de id 4 en este caso");
-        //*return 4;
       } catch (error) {
-        console.log(error)
         throw new Error("El nombre de la promoción esta repetido");
       }
     },
-    /*async sendImage(promId) {
-      console.log("enviado imagen para promocion " + promId);
-      console.log(this.image);
-        await this.$http.post(`images`, {
-          cod_prom: promId,
-          imagen: this.imagen,
-        });
-    },*/
   },
   computed: {
-    isAllValid(){
-      return this.$v.promocion.$invalid || this.image == '' ? 'form_button_disabled' : ''
-    }
-  }
+    isAllValid() {
+      return this.$v.promocion.$invalid || this.image == ""
+        ? "form_button_disabled"
+        : "";
+    },
+  },
 };
 </script>
 
 <style>
-
 .formulario_tittle {
   text-align: left;
   color: #919ca9;

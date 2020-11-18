@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <router-link to="">
-      <img class="img-item" :src="imagen" :alt="nombre"/>
+      <img class="img-item" :src="imagen" :alt="nombre" />
     </router-link>
     <h5 class="one-line">{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
@@ -14,7 +14,14 @@
 <script>
 export default {
   name: "ItemProm",
-  props: ["id_prom", "nombre", "precio", "descripcion", "fecha_ini", "fecha_fin"],
+  props: [
+    "id_prom",
+    "nombre",
+    "precio",
+    "descripcion",
+    "fecha_ini",
+    "fecha_fin",
+  ],
   data: function () {
     return {
       imagen: "",
@@ -23,10 +30,10 @@ export default {
   methods: {
     parseDate(type) {
       let date;
-      if(type=="ini"){
-          date = new Date(this.fecha_ini);
-      }else{
-          date = new Date(this.fecha_fin);
+      if (type == "ini") {
+        date = new Date(this.fecha_ini);
+      } else {
+        date = new Date(this.fecha_fin);
       }
       const day = date.getDate() + 1;
       const month = date.getMonth() + 1;
@@ -35,9 +42,7 @@ export default {
     },
   },
   mounted: async function () {
-    const response = await this.$http.get(
-    `promotions/image/${this.id_prom}`
-    );
+    const response = await this.$http.get(`promotions/image/${this.id_prom}`);
     const imageURL = response.data.datos[0].imagen_prom;
     this.imagen = "data:image/jpg;base64," + imageURL;
   },
@@ -54,7 +59,7 @@ export default {
   cursor: pointer;
   text-decoration: none;
   color: black;
-  white-space:normal;
+  white-space: normal;
 }
 
 .img-item {
@@ -71,7 +76,7 @@ export default {
   text-overflow: ellipsis;
 }
 
-.three-lines{
+.three-lines {
   line-height: 1.5em;
   height: 4.5em;
   word-wrap: break-word;

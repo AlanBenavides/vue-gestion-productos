@@ -4,23 +4,38 @@
       <router-link to="/registro_producto" class="button" tag="button"
         >Registro de Producto
       </router-link>
-      <router-link to="" class="button" tag="button" :disabled="this.$store.state.idSelected[0] == -1">
-            {{buttons[0].name}}
+      <router-link
+        to="/registro_promocion"
+        class="button"
+        tag="button"
+        :disabled="canAddToProm"
+      >
+        {{ buttons[1].name }}
+      </router-link>
+      <router-link
+        to=""
+        class="button"
+        tag="button"
+        :disabled="$store.state.idSelected[0] == -1"
+      >
+        {{ buttons[0].name }}
       </router-link>
       <button
-        :disabled="$store.state.idSelected === -1"
+        :disabled="$store.state.idSelected[0] == -1"
         class="button"
         @click="hayCantidad"
       >
         Aplicar descuento
       </button>
-      <router-link to="/registro_promocion" class="button" tag="button" :disabled="canAddToProm">
-            {{buttons[1].name}}
+      <router-link
+        to=""
+        class="button"
+        tag="button"
+        :disabled="this.$store.state.idSelected[0] == -1"
+      >
+        {{ buttons[2].name }}
       </router-link>
-      <router-link to="" class="button" tag="button" :disabled="this.$store.state.idSelected[0] == -1">
-            {{buttons[2].name}}
-      </router-link>
-     </ul>
+    </ul>
   </aside>
 </template>
 
@@ -43,16 +58,18 @@ export default {
       ],
     };
   },
+  mounted: function () {
+    this.$store.commit("changeSelection", -1);
+  },
   computed: {
-    canAddToProm(){
-      if (this.$store.state.idSelected[0] == -1){
-        return false;
-      }
+    canAddToProm() {
+      if (this.$store.state.idSelected[0] == -1) return false;
       return this.$store.state.idSelected[1] == null;
-  }
+    },
+  },
   methods: {
     async hayCantidad() {
-      const id = this.$store.state.idSelected;
+      const id = this.$store.state.idSelected[0];
       const cantidad = await this.obtenerCantidad(id);
       if (cantidad) {
         this.$router.push(`/descuento_producto/${id}`);
@@ -65,11 +82,7 @@ export default {
       return response.data.datos[0].cantidad;
     },
   },
-  mounted:function(){
-     this.$store.commit("changeSelection", -1);
-  }
 };
-
 </script>
 
 <style scoped>
