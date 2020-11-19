@@ -3,7 +3,7 @@
     <a href="#" class="navbar-brand"
       ><i class="fa fa-cube"></i>Online<b>Store</b></a
     >
-    <InputSearch class="justify-content-center" />
+
     <div class="navbar-nav">
       <div>
         <a href="#" class="nav-link"
@@ -16,13 +16,8 @@
 </template>
 
 <script>
-import InputSearch from "@/components/InputSearch.vue";
-
 export default {
   name: "Nav",
-  components: {
-    InputSearch,
-  },
 };
 </script>
 
@@ -30,8 +25,5 @@ export default {
 .navbar {
   display: flex;
   justify-content: space-between;
-}
-
-.navbar_center {
 }
 </style>
