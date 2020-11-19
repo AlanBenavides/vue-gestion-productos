@@ -3,8 +3,10 @@
         <div>
             <div class="promos_container">
                 <h1 class="promos_header">Promociones:</h1>
-                <p v-for="datos in items" :key="datos.nombr_prom" class="promos_list">
-                    {{ datos.nombr_prom }}
+                <p v-if="datos[0].nombr_prom" class="datos_promo">
+                    <span v-for="datos in items" :key="datos[0]" class="promos_list">
+                    {{key.nombr_prom}}
+                    </span>
                 </p>
             </div>
         </div>
@@ -33,5 +35,12 @@ export default {
   padding: 0.5rem 2rem;
   padding-bottom: 3rem;
   border-radius: 15px;
+}
+
+.promos_list {
+    text-align: left;
+    font-size: 1rem;
+    margin: 2rem;
+    margin-left: 0;
 }
 </style>
