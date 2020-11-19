@@ -1,18 +1,19 @@
 <template>
   <div class="item">
     <router-link :to="`/producto/${id_product}`">
-      <img class="img-item" :src="imagen" :alt="nombre"/>
+      <img :src="imagen" :alt="nombre" width="180" />
     </router-link>
-    <h5 class="one-line">{{ nombre }}</h5>
+    <h5>{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
-    <p class="three-lines">Descripcion:<br/>{{ descripcion }}</p>
+    <p>Descripcion:<br />{{ descripcion }}</p>
+    <p>Añadido el {{ parseDate() }}</p>
   </div>
 </template>
 
 <script>
 export default {
   name: "Item",
-  props: ["tipo", "id_product", "nombre", "precio", "descripcion", "fecha"],
+  props: ["id_product", "nombre", "precio", "descripcion", "fecha"],
   data: function () {
     return {
       imagen: "",
@@ -28,11 +29,10 @@ export default {
     },
   },
   mounted: async function () {
-    let query = this.tipo == "producto" || this.tipo == "descuento" ? "images/": "promotions/image/"
-    query += `${this.id_product}?cantidad=1`;
-    const response = await this.$http.get(query);
-
-    const imageURL = this.tipo == "producto" || this.tipo == "descuento" ? response.data.datos[0].imagen : response.data.datos[0].imagen_prom;
+    const response = await this.$http.get(
+      `images/${this.id_product}?cantidad=1`
+    );
+    const imageURL = response.data.datos[0].imagen;
     this.imagen = "data:image/jpg;base64," + imageURL;
   },
 };
@@ -51,24 +51,12 @@ export default {
   color: black;
 }
 
-.img-item {
-  width: 180px;
-  height: 180px;
-  object-fit: contain;
+.item > img {
+  margin-bottom: 1rem;
 }
 
-.one-line {
+.item > h5 {
   padding: 0.5rem;
   padding-left: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.three-lines{
-  line-height: 1.5em;
-  height: 4.5em;
-  word-wrap: break-word;
-  overflow: hidden;
 }
 </style>

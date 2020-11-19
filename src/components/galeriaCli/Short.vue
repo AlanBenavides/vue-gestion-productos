@@ -1,102 +1,108 @@
 <template>
   <div>
-    
-    <h4>Ordenar por:</h4>
-    <template v-if="!promos">
-    <div>
-      <aside class="short-buttonlist">
-        
-        <button
+    <div class="options-inline">
+      <div>
+        <p>Categorias:</p>
+        <!-- lista de categorias -->
+      </div>
+      <div>
+        <p style="text-align: right">Ordenar por:</p>
+        <aside>
+          <button
           v-for="(button, index) in orderButtons"
           :key="index"
           @click="selectOrder(button.order)"
           :class="`short-button ${
-            orden == button.order ? 'short-button_select' : ''
+              orden == button.order ? 'short-button_select' : ''
           }`"
-        >
+          >
           {{ button.type }}
-        </button>
-      </aside>
+          </button>
+        </aside>
       </div>
-    </template>
-      <div>
-      <aside class="short-buttontipe">
-        <button
+    </div>
+      <div class="options-inline">
+        <aside>
+          <button
           v-for="(button2, index) in tipeButtons"
           :key="index"
           @click="selectTipe(button2.order)"
           :class="`short-button ${
-            tipo == button2.order ? 'short-button_select' : ''
+              tipo == button2.order ? 'short-button_select' : ''
           }`"
-        >
+          >
           {{ button2.type }}
-        </button>
-      </aside>
-    </div>
-     <nav>
-          <div class="cont">
-              <label>Buscar</label>
-              <input type="search" placeholder="en la tienda" title="Buscar">
-          </div>
-      </nav>
+          </button>
+        </aside>
+        <div class="search">
+          <button
+            class="search_button"
+            @click="search()"
+          >
+            <img src="@/assets/search-24px.svg" alt="search" />
+          </button>
+          <input
+            spellcheck="false"
+            class="search_input"
+            maxlength="30"
+            type="search"
+            size="30"
+            placeholder="Buscar"
+            v-model="expresion"
+            @keyup.enter="search()"
+          />
+        </div>
+      </div>
+    
     <template v-if="products">
     <div class="short-list">
-      <div
-        v-for="product in products"
-        :key="product.cod_prod"
-        :class="`short-product ${
-          product.cod_prod == produtSelect ? 'short-product_select' : ''
-        }`"
-        @click="selectProduct(product.cod_prod)"
-      >
-        <Item
-          :id_product="product.cod_prod"
-          :nombre="product.nombre_prod"
-          :precio="product.precio_unid"
-          :descripcion="product.descripcion"
-          :fecha="product.fecha_adic"
-        />
-      </div>
+        <div
+            v-for="product in products"
+            :key="product.cod_prod"
+            class="short-product"
+        >
+            <Item
+            tipo="producto"
+            :id_product="product.cod_prod"
+            :nombre="product.nombre_prod"
+            :precio="product.precio_unid"
+            :descripcion="product.descripcion"
+            />
+        </div>
     </div>
     </template>
     <template v-if="promos">
     <div class="short-list">
-      <div
-        v-for="product in promos"
-        :key="product.cod_prom"
-        :class="`short-product ${
-          product.cod_prom == produtSelect ? 'short-product_select' : ''
-        }`"
-        @click="selectProduct(product.cod_prom)"
-      >
-        <Item
-          :id_product="product.cod_prom"
-          :nombre="product.nombr_prom"
-          :precio="product.precio_prom"
-          :descripcion="product.descrip_prom"
-          :fecha="product.fecha_ini"
-        />
-      </div>
+        <div
+            v-for="product in promos"
+            :key="product.cod_prom"
+            class="short-product"
+        >
+            <Item
+            tipo="promocion"
+            :id_product="product.cod_prom"
+            :nombre="product.nombr_prom"
+            :precio="product.precio_prom"
+            :descripcion="product.descrip_prom"
+            />
+        </div>
     </div>
     </template>
     <template v-if="descount">
     <div class="short-list">
-      <div
-        v-for="product in descount"
-        :key="product.cod_prod"
-        :class="`short-product ${
-          product.cod_prod == produtSelect ? 'short-product_select' : ''
-        }`"
-        @click="selectProduct(product.cod_prod)"
-      >
-        <Item
-          :id_product="product.cod_prod"
-          :nombre="product.nombre_prod"
-          :precio="product.precio_unid"
-          :descripcion="product.descripcion"
-          :fecha="product.fecha_adic"
-        />
-      </div>
+        <div
+            v-for="product in descount"
+            :key="product.cod_prod"
+            class="short-product"
+        >
+            <Item
+            tipo="descuento"
+            :id_product="product.cod_prod"
+            :nombre="product.nombre_prod"
+            :precio="product.precio_unid"
+            :descripcion="product.descripcion"
+            />
+        </div>
     </div>
     </template>
     <nav aria-label="Page navigation example">
@@ -128,20 +134,22 @@ import Item from "@/components/galeriaCli/Item.vue";
 export default {
   name: "Short",
   components: {
-    Item,
+    Item
   },
   data: function () {
     return {
       pagina: 1,
       pagCount: 1,
       orden: "nombre_prod",
-      tipo:"productos",
+      tipo:"producto",
       produtSelect: -1,
       products: [],
       promos: [],
       descount: [],
-      arrayNext: [],
-      arrayAnt: [],
+      expresion: "",
+      searchResults: undefined,
+      //arrayNext: [],
+      //arrayAnt: [],
       orderButtons: [
         {
           order: "nombre_prod",
@@ -162,15 +170,15 @@ export default {
       ],
       tipeButtons: [
         {
-          order: "productos",
+          order: "producto",
           type: "Productos",
         },
         {
-          order: "promociones",
+          order: "promocion",
           type: "Promociones",
         },
         {
-          order: "descuentos",
+          order: "descuento",
           type: "Descuentos",
         },
       ],
@@ -180,12 +188,11 @@ export default {
     selectOrder(order) {
       this.orden = order;
       this.pagina = 1;
-      this.selectProduct(-1);
-      if(this.tipo == "productos"){
+      if(this.tipo == "producto"){
       
         this.getProducts();
       }
-      else if(this.tipo == "promociones"){
+      else if(this.tipo == "promocion"){
         
         this.getPromos();
       }
@@ -194,83 +201,96 @@ export default {
         this.getDesc();
       }
     },
-    selectProduct(id) {
-      this.produtSelect = id;
-      this.$store.commit("changeSelection", id);
-    },
     selectTipe(tipo) {
       this.tipo = tipo;
-      if(this.tipo == "productos"){
+      this.pagina = 1;
+
+      if(this.tipo == "producto"){
       
         this.getProducts();
       }
-      else if(this.tipo == "promociones"){
+      else if(this.tipo == "promocion"){
         
         this.getPromos();
       }
       else{
-        
+
         this.getDesc();
       }
     },
     async getProducts() {
-      const response = await this.$http.get(
-        `products?criterio=${this.orden}&tipo=${this.tipo}&page=${this.pagina}&limit=${15}`
-      );
+      let response = null;
+      if(this.expresion == ''){
+        response = await this.$http.get(
+          `products?criterio=${this.orden}&tipo=productos&page=${this.pagina}&limit=${15}`
+        );
+      }else{
+        response = await this.$http.get(
+          `search?expresion=${this.expresion}&page=${this.pagina}&limit=15&table=producto`
+        );
+      }
       this.pagCount = 1;
-      this.arrayNext= [];
-      this.arrayAnt= [];
+      //this.arrayNext= [];
+      //this.arrayAnt= [];
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      if ((arrayCount / 10) % 10 == 0)
-        this.pagCount = Math.trunc(arrayCount / 10);
-      else this.pagCount = Math.trunc(arrayCount / 10) + 1;
+      this.setPageInterval(arrayCount, 15);
 
-      this.arrayNext = data.next;
-      this.arrayAnt = data.previus;
+      //this.arrayNext = data.next;
+      //this.arrayAnt = data.previus;
 
       this.products = data.results;
       this.promos = [];
       this.descount = [];
     },
     async getPromos() {
-      const response = await this.$http.get(
-        `promociones?criterio=${this.orden}&tipo=${this.tipo}&page=${this.pagina}&limit=${15}`
-      );
+      let response = null;
+      if(this.expresion == ''){
+        response = await this.$http.get(
+          `promociones?criterio=${this.orden}&tipo=promociones&page=${this.pagina}&limit=${15}`
+        );
+      }else{
+        response = await this.$http.get(
+          `search?expresion=${this.expresion}&page=${this.pagina}&limit=15&table=promocion`
+        );
+      }
       this.pagCount = 1;
-        this.arrayNext= [];
-        this.arrayAnt= [];
+      //this.arrayNext= [];
+      //this.arrayAnt= [];
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      if ((arrayCount / 10) % 10 == 0)
-        this.pagCount = Math.trunc(arrayCount / 10);
-      else this.pagCount = Math.trunc(arrayCount / 10) + 1;
+      this.setPageInterval(arrayCount,15);
 
-      this.arrayNext = data.next;
-      this.arrayAnt = data.previus;
+      //this.arrayNext = data.next;
+      //this.arrayAnt = data.previus;
 
       this.promos = data.results;
       this.descount = [];
       this.products = [];
     },
     async getDesc() {
-      const response = await this.$http.get(
-        `descuentos?criterio=${this.orden}&tipo=${this.tipo}&page=${this.pagina}&limit=${15}`
-      );
-        this.pagCount = 1;
-        this.arrayNext= [];
-        this.arrayAnt= [];
+      let response = null;
+      if(this.expresion == ''){
+        response = await this.$http.get(
+          `descuentos?criterio=${this.orden}&tipo=descuentos&page=${this.pagina}&limit=${15}`
+        );
+      }else{
+        response = await this.$http.get(
+          `search?expresion=${this.expresion}&page=${this.pagina}&limit=15&table=descuento`
+        );
+      }
+      this.pagCount = 1;
+      //this.arrayNext= [];
+      //this.arrayAnt= [];
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      if ((arrayCount / 10) % 10 == 0)
-        this.pagCount = Math.trunc(arrayCount / 10);
-      else this.pagCount = Math.trunc(arrayCount / 10) + 1;
+      this.setPageInterval(arrayCount, 15);
 
-      this.arrayNext = data.next;
-      this.arrayAnt = data.previus;
+      //this.arrayNext = data.next;
+      //this.arrayAnt = data.previus;
 
       this.descount = data.results;
       this.promos = [];
@@ -278,12 +298,11 @@ export default {
     },
     prevPag() {
       this.pagina--;
-      this.selectProduct(-1);
-      if(this.tipo == "productos"){
+      if(this.tipo == "producto"){
       
         this.getProducts();
       }
-      else if(this.tipo == "promociones"){
+      else if(this.tipo == "promocion"){
         
         this.getPromos();
       }
@@ -294,12 +313,11 @@ export default {
     },
     nextPag() {
       this.pagina++;
-      this.selectProduct(-1);
-      if(this.tipo == "productos"){
+      if(this.tipo == "producto"){
       
         this.getProducts();
       }
-      else if(this.tipo == "promociones"){
+      else if(this.tipo == "promocion"){
         
         this.getPromos();
       }
@@ -310,12 +328,11 @@ export default {
     },
     setPage(index) {
       this.pagina = index;
-      this.selectProduct(-1);
-      if(this.tipo == "productos"){
+      if(this.tipo == "producto"){
       
         this.getProducts();
       }
-      else if(this.tipo == "promociones"){
+      else if(this.tipo == "promocion"){
         
         this.getPromos();
       }
@@ -324,14 +341,50 @@ export default {
         this.getDesc();
       }
     },
+    setPageInterval(cant, limit){
+      if ((cant / limit) % limit == 0)
+        this.pagCount = Math.trunc(cant / limit);
+      else this.pagCount = Math.trunc(cant / limit) + 1;
+    },
+    showResults(searchResults){
+      if(this.tipo == "producto"){
+        this.products = searchResults;
+        this.promos = [];
+        this.descount = [];
+      }else if(this.tipo == "promocion"){
+        this.promos = searchResults;
+        this.products = [];
+        this.descount = [];
+      }else{
+        this.descount = searchResults;
+        this.promos = [];
+        this.products = [];
+      }
+    },
+    async search() {
+      this.pagina = 1;
+      if(this.tipo == "producto"){
+      
+        this.getProducts();
+      }
+      else if(this.tipo == "promocion"){
+        
+        this.getPromos();
+      }
+      else{
+        
+        this.getDesc();
+      }
+    }
   },
   mounted: async function () {
-    await this.getProducts(this.pagina, this.orden);
+    await this.getProducts();
   },
 };
 </script>
 
 <style scoped>
+
 h3 {
   text-align: start;
   font-size: 1rem;
@@ -342,18 +395,6 @@ h4 {
   margin-right: 2rem;
   font-size: 1rem;
   color: var(--font-color);
-}
-
-.short-buttonlist {
-  float: right;
-  margin-right: 2rem;
-  margin-bottom: 2rem;
-  
-}
-.short-buttontipe {
-  clear: right;
-  float: left;
-  margin-bottom: 2rem;
 }
 
 .short-button {
@@ -381,14 +422,11 @@ h4 {
   background-color: var(--secondary-color);
 }
 
-.short-list {
-  clear: left;
+.short-list { 
+  margin: 1em;
   display: grid;
   grid-template-columns: 250px 250px 250px 250px 250px;
   gap: 1rem;
-  padding-right: 4rem;
-  padding-bottom: 2rem;
-  justify-content: center;
 }
 
 .short-product {
@@ -401,34 +439,56 @@ h4 {
   box-shadow: 0px 0px 10px 0px #888;
 }
 
-nav{
-    width:100%;
-    height:60px;
-    border-bottom:4px;
-}
-
-.cont{
-    height:100%;
-    padding-top:0px;
-    float:right;
-}
 .cont label{
     color:#797d7f;
     font-size:12.9px;
 }
 
-input[type="search"]{
-    width:170px;
-    margin:10px;
-    padding:10px 16px;
-    border-radius:32px;
-    outline:none;
-    border:2px solid #ccd1d1;
-    /*background:#aeb6bf;*/
-    transition:all 0.5s;
+.options-inline {
+    margin: 1em;
+    display: flex;
+    justify-content: space-between;
 }
-input[type="search"]:focus{
-    background:#fff;
-    width:300px;
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+.search {
+  display: flex;
+}
+.search_input {
+  border: 1px solid black;
+  border-left: none;
+  border-radius: 15px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  width: 100%;
+  padding-left: 5px;
+  background-color: #fff;
+  outline: none;
+}
+.search_button {
+  height: 40px;
+  border: 1px solid black;
+  border-right: none;
+  background: transparent;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  background-color: #fff;
+  padding-left: 5px;
+}
+
+.search_button:focus {
+  outline: none;
+  box-shadow: none;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.search_button::-moz-focus-inner {
+  border: 0;
 }
 </style>
