@@ -2,7 +2,7 @@
   <div>
     
     <h4>Ordenar por:</h4>
-    <template v-if="!promos">
+
     <div>
       <aside class="short-buttonlist">
         
@@ -18,7 +18,7 @@
         </button>
       </aside>
       </div>
-    </template>
+
       <div>
       <aside class="short-buttontipe">
         <button
@@ -55,6 +55,7 @@
           :precio="product.precio_unid"
           :descripcion="product.descripcion"
           :fecha="product.fecha_adic"
+          :tipo="tipo"
         />
       </div>
     </div>
@@ -75,6 +76,7 @@
           :precio="product.precio_prom"
           :descripcion="product.descrip_prom"
           :fecha="product.fecha_ini"
+          :tipo="tipo"
         />
       </div>
     </div>
@@ -95,6 +97,8 @@
           :precio="product.precio_unid"
           :descripcion="product.descripcion"
           :fecha="product.fecha_adic"
+          :tipo="tipo"
+          :porcentaje="product.porcentaje"
         />
       </div>
     </div>
@@ -223,9 +227,11 @@ export default {
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      if ((arrayCount / 10) % 10 == 0)
-        this.pagCount = Math.trunc(arrayCount / 10);
-      else this.pagCount = Math.trunc(arrayCount / 10) + 1;
+      console.log(arrayCount % 15);
+
+      if (arrayCount % 15 == 0)
+        this.pagCount = Math.trunc(arrayCount / 15);
+      else this.pagCount = Math.trunc(arrayCount / 15) + 1;
 
       this.arrayNext = data.next;
       this.arrayAnt = data.previus;
@@ -244,9 +250,10 @@ export default {
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      if ((arrayCount / 10) % 10 == 0)
-        this.pagCount = Math.trunc(arrayCount / 10);
-      else this.pagCount = Math.trunc(arrayCount / 10) + 1;
+
+      if (arrayCount % 15 == 0)
+        this.pagCount = Math.trunc(arrayCount / 15);
+      else this.pagCount = Math.trunc(arrayCount / 15) + 1;
 
       this.arrayNext = data.next;
       this.arrayAnt = data.previus;
@@ -265,9 +272,9 @@ export default {
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      if ((arrayCount / 10) % 10 == 0)
-        this.pagCount = Math.trunc(arrayCount / 10);
-      else this.pagCount = Math.trunc(arrayCount / 10) + 1;
+      if (arrayCount % 15 == 0)
+        this.pagCount = Math.trunc(arrayCount / 15);
+      else this.pagCount = Math.trunc(arrayCount / 15) + 1;
 
       this.arrayNext = data.next;
       this.arrayAnt = data.previus;
