@@ -39,6 +39,11 @@ const routes = [
     name: "Descuento_Producto",
     component: () => import("@/views/Descuento.vue"),
   },
+  {
+    path: "/GaleryCli",
+    name: "GaleryCli",
+    component: () => import("@/views/GaleryCli.vue"),
+  },
 ];
 
 const router = new VueRouter({
