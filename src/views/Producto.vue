@@ -7,18 +7,21 @@
       :imagenes="images"
     />
     <Datos class="producto_datos" :datos="product.datos[0]" />
+    <Promos class="producto_promolist" :proms="promos"/>
   </section>
 </template>
 
 <script>
 import Datos from "@/components/VistaProducto/Datos.vue";
 import Galeria from "@/components/VistaProducto/Galeria.vue";
+import Promos from "@/components/VistaProducto/Promos.vue";
 
 export default {
   name: "Producto",
   components: {
     Datos,
     Galeria,
+    Promos
   },
   data: function () {
     return {
@@ -30,6 +33,7 @@ export default {
         ],
       },
       images: [1],
+      promos: [1],
     };
   },
   mounted: async function () {
@@ -39,9 +43,13 @@ export default {
     const response2 = await this.$http.get(
       `/images/${this.$route.params.id}?cantidad=1`
     );
+    const response3 = await this.$http.get(
+      `/products/promotions/${this.$route.params.id}`
+    );
     this.product = response1.data;
     this.images = response2.data.datos;
     this.convertToBase64();
+    this.promos = response3.data.datos;
   },
   methods: {
     convertToBase64() {
@@ -84,4 +92,11 @@ export default {
   grid-column: 1/2;
   grid-row: 2/3;
 }
+
+.producto_promolist {
+  grid-column:1/3;
+  grid-row: 3/3;
+}
+
+
 </style>
