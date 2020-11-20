@@ -2,13 +2,11 @@
     <section class="promos">
             <div class="promos_container">
                 <h1 class="promos_header">Promociones:</h1>
-                <p v-if="proms.length >= 1" class="datos_promo">
                     <ul>
                     <li v-for="(prom, index) in proms" :key="index" class="promos_list">
                         <router-link to="/"> {{ prom.nombr_prom }} </router-link>
                     </li>
                     </ul>
-                </p>
             </div>
     </section>
 </template>

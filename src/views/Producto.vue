@@ -7,7 +7,10 @@
       :imagenes="images"
     />
     <Datos class="producto_datos" :datos="product.datos[0]" />
-    <Promos class="producto_promolist" :proms="promos"/>
+    <span v-if="promos.length>=1" class="producto_promolist">
+      <Promos class="producto_promolist" :proms="promos"/>
+    </span>
+    
   </section>
 </template>
 
