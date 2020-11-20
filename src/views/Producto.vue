@@ -7,7 +7,7 @@
       :imagenes="images"
     />
     <Datos class="producto_datos" :datos="product.datos[0]" />
-    <Promos class="producto_promolist" :datos="promos.datos"/>
+    <Promos class="producto_promolist" :proms="promos"/>
   </section>
 </template>
 
@@ -33,9 +33,7 @@ export default {
         ],
       },
       images: [1],
-      promos: {
-        datos:[],
-      },
+      promos: [1],
     };
   },
   mounted: async function () {
@@ -50,8 +48,8 @@ export default {
     );
     this.product = response1.data;
     this.images = response2.data.datos;
-    this.promos = response3.data;
     this.convertToBase64();
+    this.promos = response3.data.datos;
   },
   methods: {
     convertToBase64() {

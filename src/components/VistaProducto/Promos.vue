@@ -3,10 +3,12 @@
         <div>
             <div class="promos_container">
                 <h1 class="promos_header">Promociones:</h1>
-                <p v-if="datos[0].nombr_prom" class="datos_promo">
-                    <span v-for="datos in items" :key="datos[0]" class="promos_list">
-                    {{key.nombr_prom}}
-                    </span>
+                <p v-if="proms.length >= 1" class="datos_promo">
+                    <ul>
+                    <li v-for="(prom, index) in proms" :key="index" class="promos_list">
+                        <router-link to="/"> {{ prom.nombr_prom }} </router-link>
+                    </li>
+                    </ul>
                 </p>
             </div>
         </div>
@@ -14,13 +16,16 @@
 </template>
 
 <script>
+
 export default {
     name: "Promos",
-    props: ["datos"],
+    props: ["proms"],
     data: function(){
-        return {};
+        return {
+        };
     },
 };
+
 </script>
 
 <style scoped>
