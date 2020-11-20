@@ -10,13 +10,9 @@
      <h1 class="producto_tittle">{{ promos.datos[0].nombr_prom }}:</h1>
      
       <Datos class="producto_datos" :datos="promos.datos[0]" />
-
+      <Productos class="productolist_datos" :proms="products"/>
     </section>
-    <section >
-    
-      <Productos class="producto_datos" :proms="products"/>
-    
-    </section>
+ 
   </div>
 </template>
 
@@ -57,7 +53,7 @@ export default {
       `/promotions/products/${this.$route.params.id}`
     );
     
-    this.products = response3.data;
+    this.products = response3.data.datos;
     
    
     //promotions/products/:id
@@ -104,7 +100,11 @@ export default {
   grid-column: 2/3;
   grid-row: 2/3;
 }
-
+.productolist_datos{
+  grid-column:1/3;
+  grid-row: 3/3;
+ 
+}
 /*.producto_galeria {
   grid-column: 1/2;
   grid-row: 2/3;

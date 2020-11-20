@@ -1,20 +1,20 @@
 <template>
-    <section >
-        <div>
-            <section class="promos_container">
+    <section class="prods" >
+        <div class="prods_container">
+        
             <div >
-               <h2 class="abajo">Lista de productos:</h2></div>
+               <h2 class="titulo">Lista de productos:</h2></div>
                     <section class="listado">
                      <ul>
-                    <li v-for="(prom, index) in proms.datos" :key="index" >
-                        <router-link class="promos_list " to="/"> {{ prom.nombre_prod }}</router-link>
-                        <label class="producto_tittle">Precio:{{prom.precio_unid}}</label>
+                    <li v-for="(prod, index) in proms" :key="index" >
+                        <router-link class="promos_list " to="/"> {{ prod.nombre_prod }}</router-link>
+                        <label class="producto_tittle">Precio:{{prod.precio_unid}}</label>
                       
                         
                     </li>
                     </ul>
-                   </section>
-            </section>
+                 </section>
+        
         </div>
     </section>
 </template>
@@ -39,9 +39,22 @@ export default {
 
 
 
+.prods_container {
+  background-color: var(--background);
+  padding: 0.5rem 2rem;
+  padding-bottom: 3rem;
+  border-radius: 15px;
+  
+}
 
+.prods {
+  text-align: default;
+  font-size: 1.1rem;
+  font-weight: 700;
+ 
+}
 
-.abajo{
+.titulo{
    
     text-align: left;
   color: var(--font-color-secondary);
@@ -51,20 +64,8 @@ export default {
   text-overflow: ellipsis;
 }
 
-.promos {
-  text-align: left;
-  font-size: 1.1rem;
-  font-weight: 700;
- 
-}
 
-.promos_container {
-  background-color: var(--background);
-  padding: 0.5rem 2rem;
-  padding-bottom: 3rem;
-  border-radius: 15px;
-  
-}
+
 
 
 .listado{
@@ -78,11 +79,12 @@ export default {
   grid-template-columns: 60% 40%;
 }
 .promos_list {
-    text-align: left;
+    text-align:left;
     font-size: 1rem;
     margin: 2rem;
     margin-left: 0;
-  
+  grid-column: 1/2;
+  grid-row: 2/3;
    
    
 }
