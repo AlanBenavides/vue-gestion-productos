@@ -12,24 +12,24 @@
       <Datos class="producto_datos" :datos="promos.datos[0]" />
 
     </section>
-    <section>
-    <div class="abajo">
-    <h2>Lista de productos:</h2>
-     <div>{{ products.datos[0].nombre_prod}}</div>
-     
-    </div>
+    <section >
+    
+      <Productos class="producto_datos" :proms="products"/>
+    
     </section>
   </div>
 </template>
 
 <script>
 import Datos from "@/components/vistaPromo/Datos.vue";
+import Productos from "@/components/vistaPromo/Productos.vue";
 
 //import Galeria from "@/components/vistaPromo/Galeria.vue";
 export default {
   name: "VistaPromo",
   components: {
    Datos,
+  Productos,
     //Galeria,
   },
   data: function () {
@@ -43,15 +43,8 @@ export default {
           },
         ],
       },
-       products: {
-        datos: [
-          {
-            nombre_prod:""
-          
-         
-          },
-        ],
-      },
+      
+      products: [1],
     // images: [1],
     };
   },
@@ -63,7 +56,10 @@ export default {
      const response3 = await this.$http.get(
       `/promotions/products/${this.$route.params.id}`
     );
+    
     this.products = response3.data;
+    
+   
     //promotions/products/:id
     /*const response2 = await this.$http.get(
       `/promotions/image/${this.$route.params.id}`
@@ -113,13 +109,8 @@ export default {
   grid-column: 1/2;
   grid-row: 2/3;
 }*/
-.abajo{
-   
-    text-align: left;
-  color: var(--font-color-secondary);
-  font-weight: 700;
-  font-size: 1.5rem;
-  display: block;
-  text-overflow: ellipsis;
+
+.nueva{
+  background: red;
 }
 </style>
