@@ -102,6 +102,10 @@ export default {
 .productolist_datos{
   grid-column:1/3;
   grid-row: 3/3;
+  background-color: var(--background);
+  padding: 0.5rem 2rem;
+  padding-bottom: 3rem;
+  border-radius:15px
 }
 
 /*.producto_galeria {

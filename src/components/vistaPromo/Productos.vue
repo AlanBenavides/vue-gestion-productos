@@ -56,11 +56,15 @@ ul.no-bullets{
 }
 .price{
   background-color: var(--background);
-    font-size: 1.2rem;
+  
     display: inline-flex;
     align-items: right;
-    left:30%;
+    left:20%;
     position: absolute;
+    font-weight: 600;
+  font-size: 1.5rem;
+  
+  text-overflow: ellipsis;
 }
 
 </style>
