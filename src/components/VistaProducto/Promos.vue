@@ -1,6 +1,5 @@
 <template>
     <section class="promos">
-        <div>
             <div class="promos_container">
                 <h1 class="promos_header">Promociones:</h1>
                 <p v-if="proms.length >= 1" class="datos_promo">
@@ -11,7 +10,6 @@
                     </ul>
                 </p>
             </div>
-        </div>
     </section>
 </template>
 
@@ -48,4 +46,5 @@ export default {
     margin: 2rem;
     margin-left: 0;
 }
+
 </style>

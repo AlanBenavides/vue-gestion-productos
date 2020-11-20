@@ -94,7 +94,9 @@ export default {
 }
 
 .producto_promolist {
-  grid-column:auto;
+  grid-column:1/3;
   grid-row: 3/3;
 }
+
+
 </style>
