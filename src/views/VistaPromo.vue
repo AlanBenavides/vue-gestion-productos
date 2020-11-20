@@ -2,14 +2,21 @@
   <div>
    
     <section class="producto">
+    <!--<Galeria
+      class="producto_galeria"
+      
+      :imagenes="images"
+    />-->
      <h1 class="producto_tittle">{{ promos.datos[0].nombr_prom }}:</h1>
-
+     
       <Datos class="producto_datos" :datos="promos.datos[0]" />
 
     </section>
     <section>
     <div class="abajo">
     <h2>Lista de productos:</h2>
+     <div>{{ products.datos[0].nombre_prod}}</div>
+     
     </div>
     </section>
   </div>
@@ -18,7 +25,7 @@
 <script>
 import Datos from "@/components/vistaPromo/Datos.vue";
 
-//import Galeria from "@/components/RegistroDescuento/Galeria.vue";
+//import Galeria from "@/components/vistaPromo/Galeria.vue";
 export default {
   name: "VistaPromo",
   components: {
@@ -31,11 +38,21 @@ export default {
         datos: [
           {
           
-            nombr_prom:""
+            nombr_prom:"",
+            
           },
         ],
       },
-    //  images: [1],
+       products: {
+        datos: [
+          {
+            nombre_prod:""
+          
+         
+          },
+        ],
+      },
+    // images: [1],
     };
   },
   mounted: async function () {
@@ -43,11 +60,15 @@ export default {
       `/promotions/${this.$route.params.id}`
     );
     this.promos = response1.data;
-    //'/promotions/:id',
-   /* const response2 = await this.$http.get(
-      `/images/${this.$route.params.id}?cantidad=1`
+     const response3 = await this.$http.get(
+      `/promotions/products/${this.$route.params.id}`
     );
-    this.product = response1.data;
+    this.products = response3.data;
+    //promotions/products/:id
+    /*const response2 = await this.$http.get(
+      `/promotions/image/${this.$route.params.id}`
+    );
+    
     this.images = response2.data.datos;
     this.convertToBase64();*/
   },
