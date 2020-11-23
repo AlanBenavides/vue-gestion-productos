@@ -11,19 +11,26 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     idSelected: [-1,0],
-    groupIDselected: {}
+    groupIDselected: {},
+    auth: false
   },
   mutations: {
-    changeSelection(state, newId) {
-      state.idSelected[0] = newId;
-    },
     addID(state, newID){
       if(Object.keys(state.groupIDselected).length < 5){
         Vue.set(state.groupIDselected, newID[0], [1, newID[1]]);
       }
     },
+    changeSelection(state, newId) {
+      state.idSelected[0] = newId;
+    },
     deleteID(state, ID){
       Vue.delete(state.groupIDselected, ID);
+    },
+    login(state){
+      state.auth = true
+    },
+    logout(state){
+      state.auth = false
     },
     updateGroup(state, newGroup){
       Object.keys(state.groupIDselected).forEach(function(key) { delete state.groupIDselected[key]; });
@@ -44,3 +51,5 @@ new Vue({
   router,
   render: (h) => h(App),
 }).$mount("#app");
+
+export default store
