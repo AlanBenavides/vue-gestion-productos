@@ -3,11 +3,9 @@
             <div class="prods_cotainer">
                <h2 class="prod_header">Lista de productos:</h2>
                     <ul class="no-bullets">
-                    <li v-for="(prod, index) in prods" :key="index">
-                      <div class="prods_list">
+                    <li v-for="(prod, index) in prods" :key="index" class="prods_list">
                         <router-link :to="`/producto/${prod.cod_prod}`"> {{ prod.nombre_prod }} </router-link> 
                         <div class="price"> Precio: {{prod.precio_unid}} </div>
-                      </div>
                     </li>
                     </ul>
             </div>
@@ -56,13 +54,13 @@ ul.no-bullets{
 }
 .price{
   background-color: var(--background);
-  
+  color:#444444;
     display: inline-flex;
     align-items: right;
-    left:20%;
+    left:25%;
     position: absolute;
     font-weight: 600;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   
   text-overflow: ellipsis;
 }

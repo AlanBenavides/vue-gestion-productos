@@ -35,6 +35,11 @@ ul.no-bullets{
   margin: 0;
   padding: 0;
 }
+.promos_header{
+    color:#7a7a7a;
+    font-weight: 700;
+    font-size: 1.7rem;
+}
 .promos_container {
   background-color: var(--background);
   padding: 0.5rem 2rem;
@@ -48,5 +53,6 @@ ul.no-bullets{
     margin: 2rem;
     margin-left: 0;
 }
+
 
 </style>
