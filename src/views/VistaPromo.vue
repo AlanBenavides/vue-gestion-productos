@@ -2,11 +2,11 @@
   <div>
    
     <section class="producto">
-    <!--<Galeria
+    <Galeria
       class="producto_galeria"
       
       :imagenes="images"
-    />-->
+    />
      <h1 class="producto_tittle">{{ promos.datos[0].nombr_prom }}:</h1>
      
       <Datos class="producto_datos" :datos="promos.datos[0]" />
@@ -20,13 +20,13 @@
 import Datos from "@/components/vistaPromo/Datos.vue";
 import Productos from "@/components/vistaPromo/Productos.vue";
 
-//import Galeria from "@/components/vistaPromo/Galeria.vue";
+import Galeria from "@/components/vistaPromo/Galeria.vue";
 export default {
   name: "VistaPromo",
   components: {
    Datos,
   Productos,
-    //Galeria,
+    Galeria,
   },
   data: function () {
     return {
@@ -41,7 +41,7 @@ export default {
       },
       
       products: [1],
-    // images: [1],
+    images: [1],
     };
   },
   mounted: async function () {
@@ -56,20 +56,19 @@ export default {
     this.products = response3.data.datos;
     
    
-    //promotions/products/:id
-    /*const response2 = await this.$http.get(
+   
+    const response2 = await this.$http.get(
       `/promotions/image/${this.$route.params.id}`
     );
     
-    this.images = response2.data.datos;
-    this.convertToBase64();*/
+    this.images = response2.data.datos[0].imagen_prom;
+    
+    this.convertToBase64();
   },
   methods: {
-    /*convertToBase64() {
-      this.images = this.images.map(
-        (imagen) => `data:image/[jpg/png];base64,${imagen.imagen}`
-      );
-    },*/
+    convertToBase64() {
+      this.images=`data:image/[jpg/png];base64,${this.images}`
+    },
   },
 };
 </script>
@@ -107,10 +106,10 @@ export default {
   grid-row: 3/3;
 }
 
-/*.producto_galeria {
+.producto_galeria {
   grid-column: 1/2;
   grid-row: 2/3;
-}*/
+}
 
 .nueva{
   background: red;
