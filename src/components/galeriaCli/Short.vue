@@ -1,7 +1,19 @@
 <template>
   <div>
-    
-    <h4>Ordenar por:</h4>
+    <h3>Categoria:</h3>
+
+    <div class="short-selectlist">
+        <select class="form-control" v-model="categoria" @change="selectCategoria(categoria)">
+            <option value="">Todos</option>
+            <!--<option v-for="cate in arrayCategoria" :key="cate.id" :value="cate.id" v-text="cate.nombre"></option>
+            -->
+            <option value="Farmacia">Farmacia</option>
+            <option value="Entretenimiento">Entretenimiento</option>
+            <option value="Alimentos">Alimentos</option>
+            <option value="Electronicos">Electronicos</option>
+            <option value="Ropa">Ropa</option>
+        </select>                                        
+    </div>
 
     <div>
       <aside class="short-buttonlist">
@@ -138,6 +150,7 @@ export default {
     return {
       pagina: 1,
       pagCount: 1,
+      categoria: '',
       orden: "nombre_prod",
       tipo:"productos",
       produtSelect: -1,
@@ -146,6 +159,7 @@ export default {
       descount: [],
       arrayNext: [],
       arrayAnt: [],
+      arrayCategoria:[],
       orderButtons: [
         {
           order: "nombre_prod",
@@ -181,6 +195,13 @@ export default {
     };
   },
   methods: {
+    selectCategoria(){
+      if(this.tipo == 'productos'){
+      this.getProducts();
+      }else if(this.tipo == 'descuentos'){
+        this.getDesc();
+      }
+    },
     selectOrder(order) {
       this.orden = order;
       this.pagina = 1;
@@ -190,7 +211,11 @@ export default {
         this.getProducts();
       }
       else if(this.tipo == "promociones"){
-        
+        if(this.orden == 'cantidad'){
+          this.orden = 'cantidad_prom'
+        }else if(this.orden == 'precio_unid'){
+          this.orden = 'precio_prom'
+        }
         this.getPromos();
       }
       else{
@@ -209,7 +234,11 @@ export default {
         this.getProducts();
       }
       else if(this.tipo == "promociones"){
-        
+        if(this.orden == 'cantidad'){
+          this.orden = 'cantidad_prom'
+        }else if(this.orden == 'precio_unid'){
+          this.orden = 'precio_prom'
+        }
         this.getPromos();
       }
       else{
@@ -219,7 +248,7 @@ export default {
     },
     async getProducts() {
       const response = await this.$http.get(
-        `products?criterio=${this.orden}&tipo=${this.tipo}&page=${this.pagina}&limit=${15}`
+        `products?criterio=${this.orden}&categoria=${this.categoria}&page=${this.pagina}&limit=${15}`
       );
       this.pagCount = 1;
       this.arrayNext= [];
@@ -239,14 +268,16 @@ export default {
       this.products = data.results;
       this.promos = [];
       this.descount = [];
+      
     },
     async getPromos() {
       const response = await this.$http.get(
-        `promociones?criterio=${this.orden}&tipo=${this.tipo}&page=${this.pagina}&limit=${15}`
+        `promotions?criterio=${this.orden}&tipo=${this.tipo}&page=${this.pagina}&limit=${15}`
       );
       this.pagCount = 1;
         this.arrayNext= [];
         this.arrayAnt= [];
+      this.categoria = ''; 
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
@@ -261,10 +292,15 @@ export default {
       this.promos = data.results;
       this.descount = [];
       this.products = [];
+      if(this.orden == 'cantidad_prom'){
+          this.orden = 'cantidad'
+        }else if(this.orden == 'precio_prom'){
+          this.orden = 'precio_unid'
+        }
     },
     async getDesc() {
       const response = await this.$http.get(
-        `descuentos?criterio=${this.orden}&tipo=${this.tipo}&page=${this.pagina}&limit=${15}`
+        `discounts?criterio=${this.orden}&categoria=${this.categoria}&page=${this.pagina}&limit=${15}`
       );
         this.pagCount = 1;
         this.arrayNext= [];
@@ -340,7 +376,8 @@ export default {
 
 <style scoped>
 h3 {
-  text-align: start;
+  margin-left: 4rem;
+  text-align: left;
   font-size: 1rem;
   color: var(--font-color);
 }
@@ -350,8 +387,14 @@ h4 {
   font-size: 1rem;
   color: var(--font-color);
 }
+.short-selectlist {
+  float: left;
+  margin-right: 2rem;
+  margin-left: 4rem;
+}
 
 .short-buttonlist {
+  clear: left;
   float: right;
   margin-right: 2rem;
   margin-bottom: 2rem;
@@ -361,6 +404,7 @@ h4 {
   clear: right;
   float: left;
   margin-bottom: 2rem;
+  margin-left: 4rem;
 }
 
 .short-button {
@@ -412,12 +456,14 @@ nav{
     width:100%;
     height:60px;
     border-bottom:4px;
+    
 }
 
 .cont{
     height:100%;
     padding-top:0px;
     float:right;
+    margin-right: 2rem;
 }
 .cont label{
     color:#797d7f;
