@@ -101,6 +101,7 @@
             :nombre="product.nombre_prod"
             :precio="product.precio_unid"
             :descripcion="product.descripcion"
+            :porcentaje="product.porcentaje"
             />
         </div>
     </div>
@@ -423,10 +424,10 @@ h4 {
 }
 
 .short-list { 
-  margin: 1em;
+  margin: 3em;
   display: grid;
-  grid-template-columns: 250px 250px 250px 250px 250px;
-  gap: 1rem;
+  grid-template-columns: 400px 400px 400px;
+  gap: 2rem;
 }
 
 .short-product {

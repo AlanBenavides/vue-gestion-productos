@@ -1,21 +1,28 @@
 <template>
   <div class="item">
-    <router-link :to="`/producto/${id_product}`">
+    <router-link :to="this.route">
       <img class="img-item" :src="imagen" :alt="nombre"/>
     </router-link>
     <h5 class="one-line">{{ nombre }}</h5>
-    <p>{{ precio }} Bs.</p>
+    <p v-if="tipo == 'descuento'">{{porcentaje}} % de descuento</p>
+    <p v-if="tipo != 'descuento'">{{ precio }} Bs.</p>
+    <p v-if="tipo == 'descuento'">
+      <strike>{{ precio }} Bs.</strike>
+    </p>
+    <p id="precio-nuevo" v-if="tipo == 'descuento'"> {{ precio - (precio * (porcentaje/100)) }} Bs</p>
     <p class="three-lines">Descripcion:<br/>{{ descripcion }}</p>
   </div>
 </template>
 
 <script>
+//import { Router } from 'express';
 export default {
   name: "Item",
-  props: ["tipo", "id_product", "nombre", "precio", "descripcion", "fecha"],
+  props: ["tipo", "id_product", "nombre", "precio", "descripcion", "fecha", "porcentaje"],
   data: function () {
     return {
       imagen: "",
+      route: ""
     };
   },
   methods: {
@@ -34,6 +41,8 @@ export default {
 
     const imageURL = this.tipo == "producto" || this.tipo == "descuento" ? response.data.datos[0].imagen : response.data.datos[0].imagen_prom;
     this.imagen = "data:image/jpg;base64," + imageURL;
+
+    this.route = this.tipo == "producto" || this.tipo == "descuento" ? `/producto/${this.id_product}` : `/vista_promo/${this.id_product}`
   },
 };
 </script>
@@ -51,9 +60,13 @@ export default {
   color: black;
 }
 
+strike {
+  color: red;
+}
+
 .img-item {
-  width: 180px;
-  height: 180px;
+  width: 300px;
+  height: 300px;
   object-fit: contain;
 }
 
@@ -70,5 +83,9 @@ export default {
   height: 4.5em;
   word-wrap: break-word;
   overflow: hidden;
+}
+
+#precio-nuevo{
+  color: #2AC817;
 }
 </style>
