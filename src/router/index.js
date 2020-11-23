@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import store from "../main";
+import store from "../main";
 
 Vue.use(VueRouter);
 
@@ -61,11 +61,14 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-//  if(to.matched.some(record => record.meta.requiresAuth) && store.state.auth) next()
- if(to.matched.some(record => record.meta.requiresAuth)) next()
- next()
-//  if(store.state.auth) next()
-  // next({ path: '/' })
+ if(to.matched.some(record => record.meta.requiresAuth)){
+   if(store.state.auth){
+     next()
+   }else{
+    next({ name: 'Home' })
+   }
+ } 
+ else next()
 })
 
 export default router;
