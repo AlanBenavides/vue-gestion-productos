@@ -7,6 +7,8 @@
                         <div class="disc_percent"> {{dis.porcentaje}}% </div>
                           por la compra de
                         <div class="disc_quant">{{dis.cantidad_req}} unidades</div>
+                        <div class="disc_quant">Precio : {{((dis.precio_unid-(dis.precio_unid*dis.porcentaje/100))*dis.cantidad_req).toFixed(2)}} Bs.</div>
+                        <div class="disc_quant">({{(dis.precio_unid-(dis.precio_unid*dis.porcentaje/100))}} Bs. c/u)</div>
                     </li>
                     </ul>
             </div>
@@ -22,6 +24,8 @@ export default {
         return {
         };
     },
+ 
+
 };
 
 </script>
