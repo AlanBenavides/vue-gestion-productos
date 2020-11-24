@@ -1,20 +1,21 @@
 <template>
   <div>
+    <template v-if="tipo!='promociones'">
     <h3>Categoria:</h3>
 
     <div class="short-selectlist">
         <select class="form-control" v-model="categoria" @change="selectCategoria(categoria)">
             <option value="">Todos</option>
-            <!--<option v-for="cate in arrayCategoria" :key="cate.id" :value="cate.id" v-text="cate.nombre"></option>
-            -->
-            <option value="Farmacia">Farmacia</option>
+            <option v-for="cate in arrayCategoria" :key="cate.index" :value="cate.nombre_cat" v-text="cate.nombre_cat"></option>
+            
+            <!--<option value="Farmacia">Farmacia</option>
             <option value="Entretenimiento">Entretenimiento</option>
             <option value="Alimentos">Alimentos</option>
             <option value="Electronicos">Electronicos</option>
-            <option value="Ropa">Ropa</option>
+            <option value="Ropa">Ropa</option>-->
         </select>                                        
     </div>
-
+    </template>
     <div>
       <aside class="short-buttonlist">
         
@@ -195,6 +196,14 @@ export default {
     };
   },
   methods: {
+    async getCategoriaCli(){
+      const response = await this.$http.get(
+        `productdiscounts`
+      );
+      const respuesta= response.data;
+      console.log(respuesta)
+      this.arrayCategoria = respuesta.datos;
+    },
     selectCategoria(){
       if(this.tipo == 'productos'){
       this.getProducts();
@@ -256,7 +265,7 @@ export default {
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      console.log(arrayCount % 15);
+      console.log(arrayCount);
 
       if (arrayCount % 15 == 0)
         this.pagCount = Math.trunc(arrayCount / 15);
@@ -370,6 +379,7 @@ export default {
   },
   mounted: async function () {
     await this.getProducts(this.pagina, this.orden);
+    this.getCategoriaCli();
   },
 };
 </script>
