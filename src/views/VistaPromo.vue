@@ -1,5 +1,4 @@
 <template>
-  <div>
    
     <section class="producto">
     <Galeria
@@ -12,8 +11,6 @@
       <Datos class="producto_datos" :datos="promos.datos[0]" />
       <Productos class="productolist_datos" :prods="products"/>
     </section>
- 
-  </div>
 </template>
 
 <script>
@@ -104,15 +101,15 @@ export default {
 .productolist_datos{
   grid-column:1/3;
   grid-row: 3/3;
+  background-color: var(--background);
+  padding: 0.5rem 2rem;
+  padding-bottom: 3rem;
+  border-radius:15px
 }
 
 .producto_galeria {
   grid-column: 1/2;
   grid-row: 2/3;
-}
-
-.nueva{
-  background: red;
 }
 
 </style>
