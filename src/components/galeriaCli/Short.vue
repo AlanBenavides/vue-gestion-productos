@@ -3,7 +3,16 @@
     <div class="options-inline">
       <div>
         <p>Categorias:</p>
-        <!-- lista de categorias -->
+        <select class="form-control" v-model="categoria" @change="selectCategoria()">
+          <option value="">Todos</option>
+          <!--<option v-for="cate in arrayCategoria" :key="cate.id" :value="cate.id" v-text="cate.nombre"></option>
+          -->
+          <option value="Farmacia">Farmacia</option>
+          <option value="Entretenimiento">Entretenimiento</option>
+          <option value="Alimentos">Alimentos</option>
+          <option value="Electronicos">Electronicos</option>
+          <option value="Ropa">Ropa</option>
+        </select> 
       </div>
       <div>
         <p style="text-align: right">Ordenar por:</p>
@@ -141,6 +150,7 @@ export default {
     return {
       pagina: 1,
       pagCount: 1,
+      categoria: '',
       orden: "nombre_prod",
       tipo:"producto",
       produtSelect: -1,
@@ -149,7 +159,7 @@ export default {
       descount: [],
       expresion: "",
       searchResults: undefined,
-      //arrayNext: [],
+      arrayCategoria: [],
       //arrayAnt: [],
       orderButtons: [
         {
@@ -186,6 +196,13 @@ export default {
     };
   },
   methods: {
+    selectCategoria(){
+      if(this.tipo == 'producto'){
+        this.getProducts();
+      }else if(this.tipo == 'descuento'){
+        this.getDesc();
+      }
+    },
     selectOrder(order) {
       this.orden = order;
       this.pagina = 1;
@@ -223,7 +240,7 @@ export default {
       let response = null;
       if(this.expresion == ''){
         response = await this.$http.get(
-          `products?criterio=${this.orden}&tipo=productos&page=${this.pagina}&limit=${15}`
+          `products?criterio=${this.orden}&categoria=${this.categoria}&page=${this.pagina}&limit=${15}`
         );
       }else{
         response = await this.$http.get(
@@ -275,7 +292,7 @@ export default {
       let response = null;
       if(this.expresion == ''){
         response = await this.$http.get(
-          `descuentos?criterio=${this.orden}&tipo=descuentos&page=${this.pagina}&limit=${15}`
+          `descuentos?criterio=${this.orden}&categoria=${this.categoria}&page=${this.pagina}&limit=${15}`
         );
       }else{
         response = await this.$http.get(
