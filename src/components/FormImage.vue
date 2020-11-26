@@ -17,7 +17,7 @@
         :class="`imagenes_list ${key == 0 ? 'imagenes_list-firt' : ''}`"
       >
         <img
-          class="imaneges_preview"
+          class="imagenes_preview"
           v-bind:ref="'image' + parseInt(key)"
           :height="key == 0 ? '360px' : '200px'"
         />
@@ -181,9 +181,12 @@ export default {
   margin-bottom: 2rem;
 }
 
-.imaneges_preview {
+.imagenes_preview {
   border: 1px solid #8b8b8b;
   border-radius: 15px;
+  max-width:95%;
+  max-height:auto;
+  align-items: center;
 }
 
 .imagenes_remove {

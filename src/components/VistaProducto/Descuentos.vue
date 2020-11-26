@@ -3,13 +3,12 @@
             <div class="disc_container">
                 <h1 class="disc_header">Descuento:</h1>
                 <ul class="no-bullets">
-                    <li v-for="(dis, index) in disc" :key="index" class="disc_info">
-                        <div class="disc_percent"> {{dis.porcentaje}}% </div>
-                          por la compra de
-                        <div class="disc_quant">{{dis.cantidad_req}} unidades</div>
-                        <div class="disc_quant">Precio : {{((dis.precio_unid-(dis.precio_unid*dis.porcentaje/100))*dis.cantidad_req).toFixed(2)}} Bs.</div>
-                        <div class="disc_quant">({{(dis.precio_unid-(dis.precio_unid*dis.porcentaje/100))}} Bs. c/u)</div>
-                    </li>
+                    <div v-for="(dis, index) in disc" :key="index" class="disc_info">
+                        <label class="disc_percent"> {{dis.porcentaje}}% </label>   por la compra de: <label class="disc_quant">  {{dis.cantidad_req}} unidades</label>
+                        <div class="disc_price_data">
+                             Precio: <label class="disc_price"> {{((dis.precio_unid-(dis.precio_unid*dis.porcentaje/100))*dis.cantidad_req).toFixed(2)}} Bs.</label> <label class="disc_unit_price">({{(dis.precio_unid-(dis.precio_unid*dis.porcentaje/100))}} Bs. c/u)</label>
+                        </div>                    
+                    </div>
                     </ul>
             </div>
     </section>
@@ -54,19 +53,37 @@ ul.no-bullets{
 }
 .disc_percent{
     color: #ff3823;
-    display: inline-flex;
+}
+
+.disc_price_data{
+    color:#232323;
+    left:50%;
+    position: absolute;
+    font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-block;
 }
 .disc_quant{
     color: #232323;
+}
+.disc_price{
+    color:#629c44;
+    font-weight: 600;
+  font-size: 1.1rem;
+  
 
 }
+.disc_unit_price{
+    color:#444444;
+
+}
+
 .disc_info {
     text-align: left;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin: 2rem;
     margin-left: 0;
     color: #7a7a7a;
-    display: inline-flex;
 }
 
 </style>

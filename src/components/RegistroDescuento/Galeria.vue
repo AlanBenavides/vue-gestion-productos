@@ -28,6 +28,9 @@ export default {
 
 .galeria_image-principal {
   border-radius: 15px;
+  max-width:95%;
+    max-height:95%;
+    align-items: center;
 }
 
 .galeria_image {
