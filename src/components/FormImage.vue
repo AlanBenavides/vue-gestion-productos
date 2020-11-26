@@ -184,9 +184,9 @@ export default {
 .imagenes_preview {
   border: 1px solid #8b8b8b;
   border-radius: 15px;
-  max-width:100%;
-    height:auto;
-    align-items: center;
+  max-width:95%;
+  max-height:auto;
+  align-items: center;
 }
 
 .imagenes_remove {

@@ -29,15 +29,12 @@ export default {
 .galeria_image-principal {
   border-radius: 15px;
   max-width:95%;
-   height:auto;
+    max-height:95%;
     align-items: center;
 }
 
 .galeria_image {
   border-radius: 15px;
   place-self: center;
-  max-width:95%;
-   height:auto;
-    align-items: center;
 }
 </style>

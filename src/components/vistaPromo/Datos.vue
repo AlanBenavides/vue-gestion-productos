@@ -120,4 +120,13 @@ export default {
   margin-left: 0;
   font-size: 1.4rem;
 }
+.formulario_button {
+  margin: auto;
+  display: block;
+  background-color: rgb(51, 51, 51);
+  padding: 13px 100px;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+}
 </style>

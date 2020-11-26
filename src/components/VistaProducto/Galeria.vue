@@ -87,8 +87,8 @@ export default {
 .galeria_image-principal {
   border-radius: 15px;
   max-width:95%;
-   height:auto;
-    align-items: center;
+  max-height:auto;
+  align-items: center;
 }
 
 .galeria_carrusel {
@@ -103,9 +103,9 @@ export default {
 .galeria_image {
   border-radius: 15px;
   place-self: center;
-  max-width:100%;
-   height:auto;
-    align-items: center;
+  max-width:95%;
+  max-height:auto;
+  align-items: center;
 }
 
 .galeria_button {
