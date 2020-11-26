@@ -181,7 +181,7 @@
             ><input
               type="radio"
               id="precio_unidades"
-              @click="selectCantidad"
+              @click="selectCantidad(false)"
               v-model="producto.unidad"
             />
             <span class="formulario_name formulario_name-span">Unidades</span>
@@ -218,7 +218,7 @@
               type="radio"
               value="peso"
               id="precio_peso"
-              @click="selectCantidad "
+              @click="selectCantidad(true)"
               v-model="producto.unidad"
             />
             <span class="formulario_name formulario_name-span">Peso</span>
@@ -386,8 +386,9 @@ export default {
     },
   },
   methods: {
-    selectCantidad() {
-      this.disabled = !this.disabled;
+    selectCantidad(disabled) {
+      
+      this.disabled = disabled;
       if (!this.disabled) {
         this.producto.peso = null;
         this.producto.unidad_med = null;
