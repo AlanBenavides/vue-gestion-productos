@@ -1,68 +1,77 @@
 <template>
   <section class="datos">
     <div class="datos_container">
-     
-      <p v-if="datos.peso" class="datos_info">
-        Precio por {{datos.unidad_med.slice(0,datos.unidad_med.length-1)}}:
+      <p class="datos_info">
+        Precio:
         <span class="datos_resaltados datos_resaltados-block datos_precio"
-          >{{ datos.precio_unid }}Bs.</span
+          >{{ datos.precio_prom }}Bs.</span
         >
-      </p>
-      <p v-if="datos.cantidad" class="datos_info">
-        Precio por unidad:
-        <span class="datos_resaltados datos_resaltados-block datos_precio"
-          >{{ datos.precio_unid }}Bs.</span
-        >
-      </p>
-      <div>
-        <p v-if="datos.peso" class="datos_info datos_both">
-          Peso: <span class="datos_resaltados">{{ datos.peso }}</span>
-        </p>
-        <p v-if="datos.unidad_med" class="datos_info datos_both">
-          Unidad de medida:
-          <span class="datos_resaltados">{{ datos.unidad_med }}</span>
-        </p>
-      </div>
-      <p v-if="datos.cantidad" class="datos_info">
+        
+     </p>
+     <p class="datos_info">
         Cantidad:
-        {{ datos.cantidad }}
-        <span class="datos_resaltados"> unidad/es</span>
+        {{ datos.cantidad_prom }}
+        <span class="datos_resaltados"> paquete(s)</span>
       </p>
-      <p v-if="datos.fecha_venc" class="datos_info">
-        Fecha de vencimiento:
+     <p class="datos_info">
+        Valido Hasta:
         <span class="datos_resaltados">{{
-          transformDate(datos.fecha_venc)
+          transformDate(datos.fecha_fin)
         }}</span>
       </p>
-      <p class="datos_info">
-        Categoría: <span class="datos_resaltados">{{ datos.nombre_cat }}</span>
-      </p>
-      <p class="datos_info">Sobre este producto:</p>
+      
+      <p class="datos_info">Descripcion:</p>
       <p class="datos_info datos_descripcion">
-        {{ datos.descripcion }}
+        {{ datos.descrip_prom }}
       </p>
+      <div>
+       <button  class="formulario_button">
+            Añadir al carrito
+          </button>
+      </div>
+
+     
+      
     </div>
   </section>
 </template>
 
 <script>
+
+
 export default {
+  
   name: "Datos",
   props: ["datos"],
   data: function () {
     return {};
   },
+  
   methods: {
-    transformDate(value) {
+        transformDate(value) {
       const date = new Date(value);
       return `${date.getDate() + 1}/${
         date.getMonth() + 1
       }/${date.getFullYear()}`;
     },
+  
+    /*async submitForm() {
+      try {
+        if (!this.$v.descuento.$invalid) {
+          await this.sendDataDiscounts();
+          alert("Descuento creado exitosamente");
+        } else {
+          alert("Rellene todos los datos correctamente");
+        }
+      } catch (error) {
+        alert(error);
+      }
+    },*/
+    
   },
+  
 };
 </script>
-
 <style scoped>
 .datos {
   text-align: left;
@@ -110,5 +119,14 @@ export default {
   margin: 10px;
   margin-left: 0;
   font-size: 1.4rem;
+}
+.formulario_button {
+  margin: auto;
+  display: block;
+  background-color: rgb(51, 51, 51);
+  padding: 13px 100px;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
 }
 </style>
