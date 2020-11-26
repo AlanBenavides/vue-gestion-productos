@@ -1,7 +1,14 @@
 <template>
   <section class="datos">
     <div class="datos_container">
-      <p class="datos_info">
+     
+      <p v-if="datos.peso" class="datos_info">
+        Precio por {{datos.unidad_med.slice(0,datos.unidad_med.length-1)}}:
+        <span class="datos_resaltados datos_resaltados-block datos_precio"
+          >{{ datos.precio_unid }}Bs.</span
+        >
+      </p>
+      <p v-if="datos.cantidad" class="datos_info">
         Precio por unidad:
         <span class="datos_resaltados datos_resaltados-block datos_precio"
           >{{ datos.precio_unid }}Bs.</span

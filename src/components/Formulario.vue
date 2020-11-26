@@ -123,7 +123,21 @@
 
       <div class="formulario_group">
         <label
-          ><div class="formulario_name">Precio por unidad (Bs.):</div>
+          ><p v-if="!producto.peso && !producto.cantidad" class="formulario_name">Precio (Bs.):</p>
+          
+          <p v-if="producto.peso" class="formulario_name">
+        Precio por {{producto.unidad_med.slice(0,producto.unidad_med.length-1)}}
+        <span
+          >(Bs):</span
+        >
+      </p>
+      <p v-if="producto.cantidad" class="formulario_name">
+        Precio por unidad
+        <span 
+          >(Bs):</span
+        >
+      </p>
+      
           <input
             type="text"
             v-model="producto.precio_unid"
@@ -166,6 +180,7 @@
           <label
             ><input
               type="radio"
+              id="precio_unidades"
               @click="selectCantidad"
               v-model="producto.unidad"
             />
@@ -202,7 +217,8 @@
             ><input
               type="radio"
               value="peso"
-              @click="selectCantidad"
+              id="precio_peso"
+              @click="selectCantidad "
               v-model="producto.unidad"
             />
             <span class="formulario_name formulario_name-span">Peso</span>
@@ -210,7 +226,7 @@
           <input
             type="text"
             step="0.25"
-            value="0.00"
+            
             :disabled="!disabled"
             v-model="producto.peso"
             class="formulario_peso"
@@ -310,6 +326,7 @@ const validate_decimales = (value) => {
     return true;
   }
 };
+ 
 
 export default {
   name: "Formulario",
@@ -381,6 +398,7 @@ export default {
         this.producto.unidad_med = "";
       }
     },
+   
     async submitForm() {
       try {
         if (!this.$v.producto.$invalid) {
@@ -426,6 +444,7 @@ export default {
         });
       });
     },
+   
   },
 };
 </script>
