@@ -7,7 +7,7 @@
     <p>{{ precio }} Bs.</p>
     <p v-if="porcentaje != null">{{porcentaje}} % de descuento por {{cantidad_req}} Ud.</p>
     <p v-if="porcentaje != null">
-      <strike>{{ precio }} Bs.</strike>   <strong id="precio-nuevo">{{ precio - (precio * (porcentaje/100)) }} Bs</strong>
+      <strike>{{ precio }} Bs.</strike>   <strong id="precio-nuevo">{{ (precio - (precio * (porcentaje/100))).toFixed(2) }} Bs</strong>
     </p>
     <p class="three-lines">Descripcion:<br/>{{ descripcion }}</p>
   </div>

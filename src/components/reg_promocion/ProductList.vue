@@ -123,7 +123,7 @@ export default {
 }
 
 .term{
-    bottom: 60px;
+    bottom: 20px;
     left: 50%;
     transform: translate(-80%);
 }

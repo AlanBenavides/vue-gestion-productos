@@ -5,8 +5,7 @@
         Precio:
         <span class="datos_resaltados datos_resaltados-block datos_precio"
           >{{ datos.precio_prom }}Bs.</span
-        >
-        
+        >  
      </p>
      <p class="datos_info">
         Cantidad:
@@ -19,34 +18,26 @@
           transformDate(datos.fecha_fin)
         }}</span>
       </p>
-      
       <p class="datos_info">Descripcion:</p>
       <p class="datos_info datos_descripcion">
         {{ datos.descrip_prom }}
       </p>
       <div>
-       <button  class="formulario_button">
+          <button  class="formulario_button">
             Añadir al carrito
           </button>
       </div>
-
-     
-      
     </div>
   </section>
 </template>
 
 <script>
-
-
 export default {
-  
   name: "Datos",
   props: ["datos"],
   data: function () {
     return {};
   },
-  
   methods: {
         transformDate(value) {
       const date = new Date(value);
@@ -54,20 +45,6 @@ export default {
         date.getMonth() + 1
       }/${date.getFullYear()}`;
     },
-  
-    /*async submitForm() {
-      try {
-        if (!this.$v.descuento.$invalid) {
-          await this.sendDataDiscounts();
-          alert("Descuento creado exitosamente");
-        } else {
-          alert("Rellene todos los datos correctamente");
-        }
-      } catch (error) {
-        alert(error);
-      }
-    },*/
-    
   },
   
 };

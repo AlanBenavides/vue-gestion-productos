@@ -67,12 +67,7 @@
         <div class="formulario_check-error1">
           {{ `${producto.descripcion.length}/1000` }} caracteres.
         </div>
-        <div
-          class="formulario_check-error"
-          v-if="!$v.producto.descripcion.alpha1"
-        >
-          No se aceptan caracteres especiales.
-        </div>
+       
         <div
           class="formulario_check-error"
           v-if="!$v.producto.descripcion.maxLength"
@@ -123,21 +118,23 @@
 
       <div class="formulario_group">
         <label
-          ><p v-if="!producto.peso && !producto.cantidad" class="formulario_name">Precio (Bs.):</p>
-          
+          ><p
+            v-if="!producto.peso && !producto.cantidad"
+            class="formulario_name"
+          >
+            Precio (Bs.):
+          </p>
+
           <p v-if="producto.peso" class="formulario_name">
-        Precio por {{producto.unidad_med.slice(0,producto.unidad_med.length-1)}}
-        <span
-          >(Bs):</span
-        >
-      </p>
-      <p v-if="producto.cantidad" class="formulario_name">
-        Precio por unidad
-        <span 
-          >(Bs):</span
-        >
-      </p>
-      
+            Precio por
+            {{ producto.unidad_med.slice(0, producto.unidad_med.length - 1) }}
+            <span>(Bs):</span>
+          </p>
+          <p v-if="producto.cantidad" class="formulario_name">
+            Precio por unidad
+            <span>(Bs):</span>
+          </p>
+
           <input
             type="text"
             v-model="producto.precio_unid"
@@ -226,7 +223,6 @@
           <input
             type="text"
             step="0.25"
-            
             :disabled="!disabled"
             v-model="producto.peso"
             class="formulario_peso"
@@ -281,6 +277,7 @@
         Confirmar
       </button>
     </form>
+    {{ producto }}
   </section>
 </template>
 
@@ -294,8 +291,9 @@ import {
   integer,
 } from "vuelidate/lib/validators";
 
-const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\s]*$/);
-const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,.\s]*$/);
+//const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ´\s]*$/);
+const alpha = helpers.regex("alpha", /^[0-9a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*['a-zA-ZÀ-ÿ\u00f1\u00d1]+$/);
+//const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,´.\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 const alpha3 = helpers.regex("alpha3", /^[a-zA-Z\s]*$/);
 
@@ -326,7 +324,6 @@ const validate_decimales = (value) => {
     return true;
   }
 };
- 
 
 export default {
   name: "Formulario",
@@ -358,7 +355,7 @@ export default {
       descripcion: {
         required,
         maxLength: maxLength(1000),
-        alpha1,
+      
       },
       categoria: {
         required,
@@ -387,7 +384,6 @@ export default {
   },
   methods: {
     selectCantidad(disabled) {
-      
       this.disabled = disabled;
       if (!this.disabled) {
         this.producto.peso = null;
@@ -399,7 +395,7 @@ export default {
         this.producto.unidad_med = "";
       }
     },
-   
+
     async submitForm() {
       try {
         if (!this.$v.producto.$invalid) {
@@ -424,11 +420,11 @@ export default {
           descripcion: this.producto.descripcion,
           categoria: this.producto.categoria,
           precio_unid: this.producto.precio_unid,
-          cantidad: !this.producto.cantidad ? null : this.producto.cantidad,
-          peso: this.producto.peso ? null : this.producto.peso,
+          cantidad: !this.producto.cantidad ? this.producto.cantidad : null,
+          peso: this.producto.peso ? this.producto.peso : null,
           unidad_med: this.producto.unidad_med
-            ? null
-            : this.producto.unidad_med,
+            ? this.producto.unidad_med
+            : null,
           fecha_venc:
             this.producto.fecha_venc == "" ? null : this.producto.fecha_venc,
         });
@@ -445,7 +441,6 @@ export default {
         });
       });
     },
-   
   },
 };
 </script>

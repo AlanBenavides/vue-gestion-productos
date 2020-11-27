@@ -6,7 +6,7 @@
                     <div v-for="(dis, index) in disc" :key="index" class="disc_info">
                         <label class="disc_percent"> {{dis.porcentaje}}% </label>   por la compra de: <label class="disc_quant">  {{dis.cantidad_req}} unidades</label>
                         <div class="disc_price_data">
-                             Precio: <label class="disc_price"> {{((dis.precio_unid-(dis.precio_unid*dis.porcentaje/100))*dis.cantidad_req).toFixed(2)}} Bs.</label> <label class="disc_unit_price">({{(dis.precio_unid-(dis.precio_unid*dis.porcentaje/100))}} Bs. c/u)</label>
+                             Precio: <label class="disc_price"> {{((dis.precio_unid-(dis.precio_unid*dis.porcentaje/100))*dis.cantidad_req).toFixed(2)}} Bs.</label> <label class="disc_unit_price">({{(dis.precio_unid-(dis.precio_unid*dis.porcentaje/100)).toFixed(2)}} Bs. c/u)</label>
                         </div>                    
                     </div>
                     </ul>

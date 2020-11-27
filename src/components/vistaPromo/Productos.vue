@@ -48,7 +48,7 @@ ul.no-bullets{
 }
 
 .prods_list {
-  background-color: var(--background);
+    background-color: var(--background);
     text-align: left;
     font-size: 1.2rem;
     margin: 2rem;
@@ -63,9 +63,8 @@ ul.no-bullets{
     left:37%;
     position: absolute;
     font-weight: 600;
-  font-size: 1rem;
-  
-  text-overflow: ellipsis;
+    font-size: 1.5rem;
+    text-overflow: ellipsis;
 }
 .price_value{
   color:#444444;
