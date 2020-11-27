@@ -1,38 +1,37 @@
 <template>
   <section class="datos">
     <div class="datos_container">
-     
       <p v-if="datos.peso" class="datos_info">
-        Precio por {{datos.unidad_med.slice(0,datos.unidad_med.length-1)}}:
-        <span class="datos_resaltados datos_resaltados-block datos_precio"
-          >{{ datos.precio_unid }}Bs.</span
-        >
+        Precio por {{ datos.unidad_med.slice(0, datos.unidad_med.length - 1) }}:
+        <span class="datos_unids datos_resaltados-block datos_precio">
+          {{ datos.precio_unid }}Bs.
+        </span>
       </p>
       <p v-if="datos.cantidad" class="datos_info">
         Precio por unidad:
-        <span class="datos_resaltados datos_resaltados-block datos_precio"
-          >{{ datos.precio_unid }}Bs.</span
-        >
+        <span class="datos_unids datos_resaltados-block datos_precio">
+          {{ datos.precio_unid }}Bs.
+        </span>
       </p>
       <div>
         <p v-if="datos.peso" class="datos_info datos_both">
-          Peso: <span class="datos_resaltados">{{ datos.peso }}</span>
-        </p>
-        <p v-if="datos.unidad_med" class="datos_info datos_both">
-          Unidad de medida:
-          <span class="datos_resaltados">{{ datos.unidad_med }}</span>
+          Peso:
+          <span class="datos_resaltados datos_unids">{{ datos.peso }}</span>
+          <span v-if="datos.unidad_med" class="datos_resaltados">
+            {{ datos.unidad_med }}
+          </span>
         </p>
       </div>
       <p v-if="datos.cantidad" class="datos_info">
         Cantidad:
-        {{ datos.cantidad }}
+        <span class="datos_unids">{{ datos.cantidad }}</span>
         <span class="datos_resaltados"> unidad/es</span>
       </p>
       <p v-if="datos.fecha_venc" class="datos_info">
-        Fecha de vencimiento:
-        <span class="datos_resaltados">{{
-          transformDate(datos.fecha_venc)
-        }}</span>
+        Valida hasta:
+        <span class="datos_resaltados">
+          {{ transformDate(datos.fecha_venc) }}
+        </span>
       </p>
       <p class="datos_info">
         Categoría: <span class="datos_resaltados">{{ datos.nombre_cat }}</span>
@@ -42,6 +41,7 @@
         {{ datos.descripcion }}
       </p>
     </div>
+    {{ datos }}
   </section>
 </template>
 
@@ -71,8 +71,8 @@ export default {
 }
 
 .datos_info {
-  margin: 2rem;
-  margin-left: 0;
+  margin: 2rem 0;
+  /* margin-left: 0; */
 }
 
 .datos_container {
@@ -108,7 +108,13 @@ export default {
 
 .datos_precio {
   margin: 10px;
+  margin-bottom: 0;
   margin-left: 0;
   font-size: 1.4rem;
+}
+
+.datos_unids {
+  color: #49494b !important;
+  font-size: 20px;
 }
 </style>
