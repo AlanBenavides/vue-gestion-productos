@@ -64,9 +64,8 @@ ul.no-bullets{
     left:37%;
     position: absolute;
     font-weight: 600;
-  font-size: 1rem;
-  
-  text-overflow: ellipsis;
+    font-size: 1.5rem;
+    text-overflow: ellipsis;
 }
 .price_value{
   color:#444444;
