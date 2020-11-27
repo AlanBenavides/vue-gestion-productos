@@ -18,7 +18,7 @@ export default {
     width: 100%;
     height: 100%;
     padding-top: 50px;
-    padding-bottom: 50px;
+    padding-bottom: 60px;
     position: fixed;
     background-color: rgba(0, 0, 0, 0.4);
     display: flex;

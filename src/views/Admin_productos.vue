@@ -2,8 +2,8 @@
   <section>
     <h1 class="admin_productos-title">Administración de productos</h1>
     <div class="admin_productos-container">
-      <Options class="admin_productos-options" />
-      <Short class="admin_productos-products" />
+      <Options class="admin_productos-options" :tipo="tipoSelect" />
+      <Short class="admin_productos-products" @tipo="tipoSelect=$event"/>
     </div>
   </section>
 </template>
@@ -18,6 +18,11 @@ export default {
     Options,
     Short,
   },
+  data(){
+    return{
+      tipoSelect: ''
+    }
+  }
 };
 </script>
 
