@@ -109,11 +109,11 @@ export default {
 
 .producto_promolist {
   grid-column:1/3;
-  grid-row: 4/3;
+  grid-row: 4/4;
 }
 .producto_disc {
   grid-column:1/3;
-  grid-row: 3/3;
+  grid-row: 3/4;
 }
 
 </style>

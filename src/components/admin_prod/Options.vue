@@ -21,7 +21,7 @@
         {{ buttons[0].name }}
       </router-link>
       <button
-        :disabled="$store.state.idSelected[0] == -1"
+        :disabled="canAddToProm"
         class="button"
         @click="hayCantidad"
       >
@@ -59,7 +59,7 @@ export default {
     };
   },
   mounted: function () {
-    this.$store.commit("changeSelection", -1);
+    this.$store.commit("changeSelection",[-1, 0]);
   },
   computed: {
     canAddToProm() {
@@ -70,12 +70,14 @@ export default {
   methods: {
     async hayCantidad() {
       const id = this.$store.state.idSelected[0];
-      const cantidad = await this.obtenerCantidad(id);
-      if (cantidad) {
+      
+      
+       if(id != -1 ){
         this.$router.push(`/descuento_producto/${id}`);
-      } else {
-        alert("No se puede aplicar un descuento a este producto.");
-      }
+       }else{
+         alert("Seleccione un producto")
+       }
+      
     },
     async obtenerCantidad(id) {
       const response = await this.$http.get(`products/${id}`);

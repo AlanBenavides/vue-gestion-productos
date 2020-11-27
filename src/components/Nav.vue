@@ -3,7 +3,6 @@
     <a href="#" class="navbar-brand"
       ><i class="fa fa-cube"></i>Online<b>Store</b></a
     >
-
     <div class="navbar-nav">
       <div>
         <button @click="changePass" class="nav-link">
@@ -16,6 +15,7 @@
 </template>
 
 <script>
+
 export default {
   name: "Nav",
   methods: {
@@ -32,6 +32,7 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+
 .nav-link {
   border: none;
   background: none;

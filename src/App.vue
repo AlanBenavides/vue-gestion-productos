@@ -4,7 +4,8 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/Admin_productos">Productos</router-link>
+      <router-link to="/Admin_productos">Productos</router-link> |
+      <router-link to="/GaleryCli">Galeria Cliente</router-link>
     </div>
     <router-view />
   </div>
