@@ -1,13 +1,10 @@
 <template>
-   
     <section class="producto">
-    <Galeria
+   <Galeria
       class="producto_galeria"
-      
       :imagenes="images"
     />
-     <h1 class="producto_tittle">{{ promos.datos[0].nombr_prom }}:</h1>
-     
+      <h1 class="producto_tittle">{{ promos.datos[0].nombr_prom }}:</h1>
       <Datos class="producto_datos" :datos="promos.datos[0]" />
       <Productos class="productolist_datos" :prods="products"/>
     </section>
@@ -16,14 +13,13 @@
 <script>
 import Datos from "@/components/vistaPromo/Datos.vue";
 import Productos from "@/components/vistaPromo/Productos.vue";
-
 import Galeria from "@/components/vistaPromo/Galeria.vue";
 export default {
   name: "VistaPromo",
   components: {
    Datos,
-  Productos,
-    Galeria,
+   Productos,
+   Galeria,
   },
   props:["idP"],
   data: function () {
@@ -31,15 +27,12 @@ export default {
       promos: {
         datos: [
           {
-          
             nombr_prom:"",
-            
           },
         ],
       },
-      
       products: [1],
-    images: [1],
+      images: [1],
     };
   },
   mounted: async function () {
@@ -48,20 +41,14 @@ export default {
       `/promotions/${idProm}`
     );
     this.promos = response1.data;
-     const response3 = await this.$http.get(
+    const response3 = await this.$http.get(
       `/promotions/products/${idProm}`
     );
-    
     this.products = response3.data.datos;
-    
-   
-   
     const response2 = await this.$http.get(
       `/promotions/image/${idProm}`
     );
-    
     this.images = response2.data.datos[0].imagen_prom;
-    
     this.convertToBase64();
   },
   methods: {

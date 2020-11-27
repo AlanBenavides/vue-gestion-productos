@@ -9,7 +9,6 @@ import Galeria from '@/components/Galeria.vue';
           height="360px"
           :alt="name"
         />
-       
       </div>
     </div>
   </section>
@@ -26,14 +25,12 @@ export default {
 .galeria {
   user-select: none;
 }
-
 .galeria_image-principal {
   border-radius: 15px;
   max-width:95%;
   max-height:auto;
   align-items: center;
 }
-
 .galeria_image {
   border-radius: 15px;
   place-self: center;

@@ -7,7 +7,6 @@
         :name="product.datos[0].nombre_prod"
         :imagenes="images"
       />
-
       <Datos class="producto_datos" :datos="product.datos[0]" />
     </section>
   </div>

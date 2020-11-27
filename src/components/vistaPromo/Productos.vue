@@ -48,23 +48,21 @@ ul.no-bullets{
 }
 
 .prods_list {
-  background-color: var(--background);
+    background-color: var(--background);
     text-align: left;
     font-size: 1.2rem;
     margin: 2rem;
     margin-left: 0;
 }
 .price{
-  background-color: var(--background);
-  
+    background-color: var(--background);
     display: inline-flex;
     align-items: right;
     left:20%;
     position: absolute;
     font-weight: 600;
-  font-size: 1.5rem;
-  
-  text-overflow: ellipsis;
+    font-size: 1.5rem;
+    text-overflow: ellipsis;
 }
 
 </style>
