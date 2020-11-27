@@ -20,11 +20,7 @@
       >
         {{ buttons[0].name }}
       </router-link>
-      <button
-        :disabled="$store.state.idSelected[0] == -1"
-        class="button"
-        @click="hayCantidad"
-      >
+      <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
       <router-link
@@ -70,11 +66,11 @@ export default {
   methods: {
     async hayCantidad() {
       const id = this.$store.state.idSelected[0];
-      const cantidad = await this.obtenerCantidad(id);
-      if (cantidad) {
+
+      if (id != -1) {
         this.$router.push(`/descuento_producto/${id}`);
       } else {
-        alert("No se puede aplicar un descuento a este producto.");
+        alert("Seleccione un producto");
       }
     },
     async obtenerCantidad(id) {
