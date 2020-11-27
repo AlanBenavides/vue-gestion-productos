@@ -38,6 +38,7 @@
           :precio="product.precio_unid"
           :descripcion="product.descripcion"
           :fecha="product.fecha_adic"
+          :clickeable="onlyUnits"
         />
       </div>
     </div>
@@ -111,7 +112,7 @@ export default {
         },
         {
           order: "fecha_adic",
-          orderProm: "fecha_adic",
+          orderProm: "fecha_ini",
           type: "Más recientes",
         },
         {
@@ -139,6 +140,7 @@ export default {
         return;
       }
       this.mostrar = show;
+      this.$emit("tipo", this.mostrar)
 
       for(let order_select of this.orderButtons){
         if(order_select.order == this.orden){
@@ -188,7 +190,7 @@ export default {
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      if ((arrayCount / 10) % 10 == 0)
+      if (arrayCount%10 == 0)
         this.pagCount = Math.trunc(arrayCount / 10);
       else this.pagCount = Math.trunc(arrayCount / 10) + 1;
 

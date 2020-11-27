@@ -224,8 +224,7 @@ import {
   integer,
 } from "vuelidate/lib/validators";
 
-const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\s]*$/);
-const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,.\s]*$/);
+const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\sáéíóúÁÉÍÓÚ]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 
 const validate_date = (value) => {
@@ -294,7 +293,6 @@ export default {
       descripcion: {
         required,
         maxLength: maxLength(1000),
-        alpha1,
       },
       precio_unid: {
         required,

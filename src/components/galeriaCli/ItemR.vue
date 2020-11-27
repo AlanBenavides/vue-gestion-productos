@@ -1,11 +1,11 @@
 <template>
   <div class="item">
-    <router-link :to="clickeable ? '' : `/producto/${id_product}`">
-      <img class="img-item" :src="imagen" :alt="nombre"/>
+    <router-link :to="`/producto/${id_product}`">
+      <img :src="imagen" :alt="nombre" width="180" />
     </router-link>
-    <h5 class="one-line">{{ nombre }}</h5>
+    <h5>{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
-    <p class="three-lines">Descripcion:<br />{{ descripcion }}</p>
+    <p>Descripcion:<br />{{ descripcion }}</p>
     <p>Añadido el {{ parseDate() }}</p>
   </div>
 </template>
@@ -13,7 +13,7 @@
 <script>
 export default {
   name: "Item",
-  props: ["id_product", "nombre", "precio", "descripcion", "fecha", "clickeable"],
+  props: ["id_product", "nombre", "precio", "descripcion", "fecha"],
   data: function () {
     return {
       imagen: "",
@@ -46,29 +46,17 @@ export default {
   flex-direction: column;
   text-align: start;
   cursor: pointer;
+  display: block;
   text-decoration: none;
   color: black;
-  white-space:normal;
 }
 
-.img-item {
-  width: 300px;
-  height: 300px;
-  object-fit: contain;
+.item > img {
+  margin-bottom: 1rem;
 }
 
-.one-line {
+.item > h5 {
   padding: 0.5rem;
   padding-left: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.three-lines{
-  line-height: 1.5em;
-  height: 4.5em;
-  word-wrap: break-word;
-  overflow: hidden;
 }
 </style>
