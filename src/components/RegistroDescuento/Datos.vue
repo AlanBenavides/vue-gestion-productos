@@ -94,6 +94,7 @@ export default {
         porcentaje: "",
         cantidad: null,
         hayDescuento: false,
+        
       },
     };
   },
@@ -153,6 +154,13 @@ export default {
   mounted: async function () {
     const response = await this.$http.get(`discounts/${this.$route.params.id}`);
     this.hayDescuento = response.data.datos.length > 0;
+    this.descuento.cantidad=response.data.datos[0].cantidad_req
+      this.descuento.porcentaje =parseInt(response.data.datos[0].porcentaje).toFixed(0)
+
+     
+    console.log(typeof this.descuento.porcentaje);
+    console.log(response);
+     console.log(this.descuento);
   },
 };
 </script>

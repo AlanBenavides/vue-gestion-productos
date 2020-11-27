@@ -14,7 +14,6 @@
 
 <script>
 import Datos from "@/components/RegistroDescuento/Datos.vue";
-
 import Galeria from "@/components/RegistroDescuento/Galeria.vue";
 export default {
   name: "Descuento",
@@ -55,7 +54,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .producto {
   display: grid;
@@ -66,7 +64,6 @@ export default {
   margin-top: 0;
   word-wrap: break-word;
 }
-
 .titulo {
   text-align: center;
   color: var(--font-color-secondary);
@@ -79,7 +76,6 @@ export default {
   grid-column: 2/3;
   grid-row: 2/3;
 }
-
 .producto_galeria {
   grid-column: 1/2;
   grid-row: 2/3;
