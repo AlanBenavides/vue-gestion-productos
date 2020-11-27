@@ -54,6 +54,7 @@ ul.no-bullets{
     margin: 2rem;
     margin-left: 0;
 }
+
 .price{
   color:#3b4754;
   background-color: var(--background);
@@ -63,8 +64,9 @@ ul.no-bullets{
     left:37%;
     position: absolute;
     font-weight: 600;
-    font-size: 1.5rem;
-    text-overflow: ellipsis;
+  font-size: 1rem;
+  
+  text-overflow: ellipsis;
 }
 .price_value{
   color:#444444;
@@ -73,5 +75,4 @@ ul.no-bullets{
   font-size: 1.5rem;
   margin-left:7%;
 }
-
 </style>
