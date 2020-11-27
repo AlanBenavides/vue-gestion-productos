@@ -5,10 +5,10 @@
     >
     <div class="navbar-nav">
       <div>
-        <a href="#" class="nav-link"
-          ><img src="@/assets/logo.png" height="30px" width="30px" /> Paula
-          Wilson <b class="caret"></b
-        ></a>
+        <button @click="changePass" class="nav-link">
+          <img src="@/assets/logo.png" height="30px" width="30px" /> Paula
+          Wilson <b class="caret"></b>
+        </button>
       </div>
     </div>
   </nav>
@@ -17,7 +17,13 @@
 <script>
 
 export default {
-  name: "Nav"
+  name: "Nav",
+  methods: {
+    changePass() {
+      if (this.$store.state.auth) this.$store.commit("logout");
+      else this.$store.commit("login");
+    },
+  },
 };
 </script>
 
@@ -27,4 +33,8 @@ export default {
   justify-content: space-between;
 }
 
+.nav-link {
+  border: none;
+  background: none;
+}
 </style>
