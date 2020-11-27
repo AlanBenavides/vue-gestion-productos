@@ -72,6 +72,7 @@ ul.no-bullets{
   display: inline-flex;
   font-weight: 600;
   font-size: 1.5rem;
+  margin-left:7%;
 }
 
 </style>
