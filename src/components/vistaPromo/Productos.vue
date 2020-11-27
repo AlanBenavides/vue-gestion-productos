@@ -6,7 +6,7 @@
                     <li v-for="(prod, index) in prods" :key="index">
                       <div class="prods_list">
                         <router-link :to="`/producto/${prod.cod_prod}`"> {{ prod.nombre_prod }} </router-link> 
-                        <div class="price"> Precio: {{prod.precio_unid}} </div>
+                        <div class="price"> Precio:  <h3 class="price_value">  {{prod.precio_unid}}Bs. </h3></div>
                       </div>
                     </li>
                     </ul>
@@ -55,16 +55,23 @@ ul.no-bullets{
     margin-left: 0;
 }
 .price{
+  color:#3b4754;
   background-color: var(--background);
   
     display: inline-flex;
     align-items: right;
-    left:20%;
+    left:37%;
     position: absolute;
     font-weight: 600;
-  font-size: 1.5rem;
+  font-size: 1rem;
   
   text-overflow: ellipsis;
+}
+.price_value{
+  color:#444444;
+  display: inline-flex;
+  font-weight: 600;
+  font-size: 1.5rem;
 }
 
 </style>
