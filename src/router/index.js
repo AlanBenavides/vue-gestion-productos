@@ -27,24 +27,28 @@ const routes = [{
         name: "Admin_productos",
         component: () =>
             import ("@/views/Admin_productos.vue"),
+        meta: { requiresAuth: true }
     },
     {
         path: "/registro_producto",
         name: "Registro_Producto",
         component: () =>
             import ("@/views/RegistroProducto.vue"),
+        meta: { requiresAuth: true }
     },
     {
         path: "/registro_promocion",
         name: "Registro de promocion",
         component: () =>
             import ("@/views/RegistroPromocion.vue"),
+        meta: { requiresAuth: true }
     },
     {
         path: "/descuento_producto/:id",
         name: "Descuento_Producto",
         component: () =>
             import ("@/views/Descuento.vue"),
+        meta: { requiresAuth: true }
     },
     {
         path: "/vista_promo/:id",
