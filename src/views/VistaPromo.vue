@@ -25,6 +25,7 @@ export default {
   Productos,
     Galeria,
   },
+  props:["idP"],
   data: function () {
     return {
       promos: {
@@ -42,12 +43,13 @@ export default {
     };
   },
   mounted: async function () {
+    const idProm=this.$route.params.id || this.idP
     const response1 = await this.$http.get(
-      `/promotions/${this.$route.params.id}`
+      `/promotions/${idProm}`
     );
     this.promos = response1.data;
      const response3 = await this.$http.get(
-      `/promotions/products/${this.$route.params.id}`
+      `/promotions/products/${idProm}`
     );
     
     this.products = response3.data.datos;
@@ -55,7 +57,7 @@ export default {
    
    
     const response2 = await this.$http.get(
-      `/promotions/image/${this.$route.params.id}`
+      `/promotions/image/${idProm}`
     );
     
     this.images = response2.data.datos[0].imagen_prom;
