@@ -1,25 +1,40 @@
 <template>
   <aside>
     <ul class="options btn-group-vertical">
-      <router-link to="/registro_producto" class="button"
+      <router-link to="/registro_producto" class="button" tag="button"
         >Registro de Producto
       </router-link>
-
+      <router-link
+        to="/registro_promocion"
+        class="button"
+        tag="button"
+        :disabled="canAddToProm"
+      >
+        {{ buttons[1].name }}
+      </router-link>
+      <router-link
+        to=""
+        class="button"
+        tag="button"
+        :disabled="$store.state.idSelected[0] == -1"
+      >
+        {{ buttons[0].name }}
+      </router-link>
       <button
-        :disabled="$store.state.idSelected === -1"
+        :disabled="canAddToProm"
         class="button"
         @click="hayCantidad"
       >
         Aplicar descuento
       </button>
-      <button
-        v-for="(button, index) in buttons"
-        :key="index"
+      <router-link
+        to=""
         class="button"
-        :disabled="$store.state.idSelected === -1"
+        tag="button"
+        :disabled="this.$store.state.idSelected[0] == -1"
       >
-        {{ button.name }}
-      </button>
+        {{ buttons[2].name }}
+      </router-link>
     </ul>
   </aside>
 </template>
@@ -27,7 +42,7 @@
 <script>
 export default {
   name: "Options",
-  props: ["id_product"],
+  props: ["tipo"],
   data: function () {
     return {
       buttons: [
@@ -38,34 +53,40 @@ export default {
           name: "Añadir a promocion",
         },
         {
-          name: "Eliminar producto",
+          name: "Eliminar",
         },
       ],
     };
   },
+  mounted: function () {
+    this.$store.commit("changeSelection",[-1, 0]);
+  },
+  computed: {
+    canAddToProm() {
+      console.log(this.$store.state.idSelected[1] == null && this.tipo == "products")
+      if (this.$store.state.idSelected[0] == -1) return false;
+      else if (this.tipo == "promotions") return true;
+      return this.$store.state.idSelected[1] == null;
+    },
+  },
   methods: {
     async hayCantidad() {
-      const id = this.$store.state.idSelected;
-      const cantidad = await this.obtenerCantidad(id);
-      if (cantidad) {
+      const id = this.$store.state.idSelected[0];
+      
+      
+       if(id != -1 ){
         this.$router.push(`/descuento_producto/${id}`);
-      } else {
-        alert("No se puede aplicar un descuento a este producto.");
-      }
+       }else{
+         alert("Seleccione un producto")
+       }
+      
     },
     async obtenerCantidad(id) {
       const response = await this.$http.get(`products/${id}`);
       return response.data.datos[0].cantidad;
     },
   },
-  mounted:function(){
-     this.$store.commit("changeSelection", -1);
-
-
-
-  }
 };
-
 </script>
 
 <style scoped>

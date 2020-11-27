@@ -11,7 +11,11 @@
         </p>
         <div>
           <p>Descuento en porcentaje:</p>
-          <input type="text" v-model="descuento.porcentaje" /> %
+          <input type="text" v-model="descuento.porcentaje" :style="
+              $v.descuento.porcentaje.$invalid
+                ? 'border:2px solid red '
+                : 'border:2px solid green '
+            " /> %
 
           <br />
           <div
@@ -33,18 +37,19 @@
             Campo requerido.
           </div>
           <br />
-
           <p>Unidades a comprar:</p>
-          <input name="numero" type="text" v-model="descuento.cantidad" />
+          <input name="numero" type="text" v-model="descuento.cantidad" :style="
+              $v.descuento.cantidad.$invalid
+                ? 'border:2px solid red '
+                : 'border:2px solid green '
+            " />
           <br />
-
           <div
             class="formulario_check-error"
             v-if="!$v.descuento.cantidad.required"
           >
             Campo requerido.
           </div>
-          
           <div
             class="formulario_check-error"
             v-if="!$v.descuento.cantidad.alpha2"
@@ -72,7 +77,6 @@
           </button>
         </div>
       </form>
-      
     </div>
   </section>
 </template>
@@ -112,10 +116,7 @@ export default {
   methods: {
     transformPrice(value) {
       const price = value;
-
       const newPrice = (price * this.descuento.porcentaje) / 100;
-
-      console.log(` descuento${newPrice}`);
       const result = (price - newPrice).toFixed(2);
       return `${result}`;
     },

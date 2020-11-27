@@ -7,18 +7,29 @@
       :imagenes="images"
     />
     <Datos class="producto_datos" :datos="product.datos[0]" />
+    <span v-if="discount.length!=0" class="producto_disc">
+      <Descuentos class="producto_disc" :disc="discount" />
+    </span>
+    <span v-if="promos.length>=1" class="producto_promolist">
+      <Promos class="producto_promolist" :proms="promos"/>
+    </span>
+    
   </section>
 </template>
 
 <script>
 import Datos from "@/components/VistaProducto/Datos.vue";
 import Galeria from "@/components/VistaProducto/Galeria.vue";
+import Descuentos from "@/components/VistaProducto/Descuentos.vue";
+import Promos from "@/components/VistaProducto/Promos.vue";
 
 export default {
   name: "Producto",
   components: {
     Datos,
     Galeria,
+    Promos,
+    Descuentos
   },
   data: function () {
     return {
@@ -30,6 +41,8 @@ export default {
         ],
       },
       images: [1],
+      discount: [1],
+      promos: [1],
     };
   },
   mounted: async function () {
@@ -39,9 +52,18 @@ export default {
     const response2 = await this.$http.get(
       `/images/${this.$route.params.id}?cantidad=1`
     );
+    const response3 = await this.$http.get(
+      `/discounts/${this.$route.params.id}`
+    );
+    const response4 = await this.$http.get(
+      `/products/promotions/${this.$route.params.id}`
+    );
+
     this.product = response1.data;
     this.images = response2.data.datos;
     this.convertToBase64();
+    this.discount = response3.data.datos;
+    this.promos = response4.data.datos;
   },
   methods: {
     convertToBase64() {
@@ -84,4 +106,14 @@ export default {
   grid-column: 1/2;
   grid-row: 2/3;
 }
+
+.producto_promolist {
+  grid-column:1/3;
+  grid-row: 4/4;
+}
+.producto_disc {
+  grid-column:1/3;
+  grid-row: 3/4;
+}
+
 </style>
