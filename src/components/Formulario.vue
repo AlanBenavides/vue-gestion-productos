@@ -277,7 +277,6 @@
         Confirmar
       </button>
     </form>
-    {{ producto }}
   </section>
 </template>
 
@@ -292,7 +291,7 @@ import {
 } from "vuelidate/lib/validators";
 
 //const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ´\s]*$/);
-const alpha = helpers.regex("alpha", /^[0-9a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*['a-zA-ZÀ-ÿ\u00f1\u00d1]+$/);
+const alpha = helpers.regex("alpha", /^[0-9a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[' a-zA-ZÀ-ÿ\u00f1\u00d1]+$/);
 //const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,´.\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 const alpha3 = helpers.regex("alpha3", /^[a-zA-Z\s]*$/);
@@ -420,7 +419,7 @@ export default {
           descripcion: this.producto.descripcion,
           categoria: this.producto.categoria,
           precio_unid: this.producto.precio_unid,
-          cantidad: !this.producto.cantidad ? this.producto.cantidad : null,
+          cantidad: this.producto.cantidad ? this.producto.cantidad : null,
           peso: this.producto.peso ? this.producto.peso : null,
           unidad_med: this.producto.unidad_med
             ? this.producto.unidad_med
