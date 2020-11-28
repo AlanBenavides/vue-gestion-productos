@@ -147,7 +147,7 @@ export default {
           });
         }
       } catch (error) {
-        throw new Error("Algo salio mal");
+        throw new Error("Cantidad de productos insuficiente ");
       }
     },
   },
