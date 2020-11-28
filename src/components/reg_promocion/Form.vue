@@ -68,12 +68,6 @@
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.descripcion.alpha1"
-        >
-          No se aceptan caracteres especiales.
-        </div>
-        <div
-          class="formulario_check-error"
           v-if="!$v.promocion.descripcion.maxLength"
         >
           Descripcion muy larga maximo
