@@ -41,7 +41,7 @@
         {{ datos.descripcion }}
       </p>
     </div>
-    {{ datos }}
+   
   </section>
 </template>
 
