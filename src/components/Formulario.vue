@@ -22,7 +22,7 @@
         </label>
         <div
           class="formulario_check-error"
-          v-if="!$v.producto.nombre_prod.alpha"
+          v-if="!$v.producto.nombre_prod.alpha1"
         >
           No se aceptan caracteres especiales.
         </div>
@@ -290,8 +290,8 @@ import {
   integer,
 } from "vuelidate/lib/validators";
 
-//const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ´\s]*$/);
-const alpha = helpers.regex("alpha", /^[0-9a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[' a-zA-ZÀ-ÿ\u00f1\u00d1]+$/);
+const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ'\s]*$/);
+//const alpha = helpers.regex("alpha", /^[0-9a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[' a-zA-ZÀ-ÿ\u00f1\u00d1]+$/);
 //const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,´.\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 const alpha3 = helpers.regex("alpha3", /^[a-zA-Z\s]*$/);
@@ -349,7 +349,7 @@ export default {
         required,
         minLength: minLength(2),
         maxLength: maxLength(30),
-        alpha,
+        alpha1,
       },
       descripcion: {
         required,
