@@ -107,7 +107,7 @@
         >
           No se aceptan caracteres especiales.
         </div>
-        <datalist id="categorias">
+        <datalist  id="categorias">
           <option value="Farmacia"></option>
           <option value="Electronicos"></option>
           <option value="Ropa"></option>
@@ -250,7 +250,7 @@
           >
             Maximo 2 decimales!
           </div>
-          <div class="formulario_check-error" v-if="!$v.producto.peso.alpha2">
+          <div class="formulario_check-error" v-if="!$v.producto.peso.alpha2" >
             Ingrese un valor numérico.
           </div>
         </div>
@@ -258,12 +258,13 @@
 
       <div class="formulario_group">
         <label
-          ><div class="formulario_name">Fecha de vencimiento del producto:</div>
+          ><div class="formulario_name">Fecha de vencimiento del producto(Opcional):</div>
           <input
             type="date"
             value="DD/MM/AA"
             onkeydown="return false"
             v-model="producto.fecha_venc"
+            
         /></label>
         <div
           class="formulario_check-error-center"
@@ -290,11 +291,9 @@ import {
   integer,
 } from "vuelidate/lib/validators";
 
-const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ'\s]*$/);
-//const alpha = helpers.regex("alpha", /^[0-9a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[' a-zA-ZÀ-ÿ\u00f1\u00d1]+$/);
-//const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,´.\s]*$/);
+const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ'-?!¡¿.\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
-const alpha3 = helpers.regex("alpha3", /^[a-zA-Z\s]*$/);
+const alpha3 = helpers.regex("alpha3", /^[a-zA-ZáéíóúÁÉÍÓÚ-\s]*$/);
 
 const validate_date = (value) => {
   const date = new Date();
