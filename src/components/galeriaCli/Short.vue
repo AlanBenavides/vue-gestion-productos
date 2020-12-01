@@ -8,12 +8,6 @@
             <select class="form-control" v-model="categoria" @change="selectCategoria(categoria)" :disabled="tipo=='promocion'">
                 <option value="">Todos</option>
                 <option v-for="cate of arrayCategoria" :key="cate.index" :value="cate.nombre_cat" v-text="cate.nombre_cat"></option>
-                
-                <!--<option value="Farmacia">Farmacia</option>
-                <option value="Entretenimiento">Entretenimiento</option>
-                <option value="Alimentos">Alimentos</option>
-                <option value="Electronicos">Electronicos</option>
-                <option value="Ropa">Ropa</option>-->
             </select>                                        
         </div>
       </div>
@@ -121,19 +115,25 @@
       </div>
     </div>
     </template>
+    <div v-if="!hayResultados">
+      <p>No se encontraron resultados para tu búsqueda</p>
+      <p>Intente con una palabra o expresión diferente</p>
+    </div>
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
         <li class="" :class="`page-item ${this.pagina <= 1 ? 'disabled' : ''}`">
           <a class="page-link" href="#" @click="prevPag">Anterior</a>
         </li>
-        <li
-          class="page-item"
-          v-for="index in pagCount"
-          :key="index"
-          :class="pagina == index ? 'active' : ''"
-        >
-          <a class="page-link" href="#" @click="setPage(index)">{{ index }}</a>
-        </li>
+        <div class="scrollable-pages">
+          <li
+            class="page-item"
+            v-for="index in pagCount"
+            :key="index"
+            :class="pagina == index ? 'active' : ''"
+          >
+            <a class="page-link" href="#" @click="setPage(index)">{{ index }}</a>
+          </li>
+        </div>
         <li
           :class="`page-item ${this.pagina >= this.pagCount ? 'disabled' : ''}`"
         >
@@ -164,7 +164,7 @@ export default {
       promos: [],
       descount: [],
       expresion: "",
-      searchResults: undefined,
+      hayResultados: true,
       arrayCategoria: [],
       //arrayAnt: [],
       orderButtons: [
@@ -278,17 +278,13 @@ export default {
         response = await this.$http.get(
           `search?expresion=${this.expresion}&page=${this.pagina}&limit=15&table=producto`
         );
+        this.verSiHayResultados(response.data.results);
       }
       this.pagCount = 1;
-      //this.arrayNext= [];
-      //this.arrayAnt= [];
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
       this.setPageInterval(arrayCount, 15);
-
-      //this.arrayNext = data.next;
-      //this.arrayAnt = data.previus;
 
       this.products = data.results;
       this.promos = [];
@@ -305,18 +301,15 @@ export default {
         response = await this.$http.get(
           `search?expresion=${this.expresion}&page=${this.pagina}&limit=15&table=promocion`
         );
+        this.verSiHayResultados(response.data.results);
       }
       this.pagCount = 1;
       this.categoria = '';
-      //this.arrayNext= [];
-      //this.arrayAnt= [];
+
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
       this.setPageInterval(arrayCount,15);
-
-      //this.arrayNext = data.next;
-      //this.arrayAnt = data.previus;
 
       this.promos = data.results;
       this.descount = [];
@@ -337,17 +330,14 @@ export default {
         response = await this.$http.get(
           `search?expresion=${this.expresion}&page=${this.pagina}&limit=15&table=descuento`
         );
+        this.verSiHayResultados(response.data.results);
       }
       this.pagCount = 1;
-      //this.arrayNext= [];
-      //this.arrayAnt= [];
+
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
       this.setPageInterval(arrayCount, 15);
-
-      //this.arrayNext = data.next;
-      //this.arrayAnt = data.previus;
 
       this.descount = data.results;
       this.promos = [];
@@ -403,34 +393,23 @@ export default {
         this.pagCount = Math.trunc(cant / limit);
       else this.pagCount = Math.trunc(cant / limit) + 1;
     },
-    showResults(searchResults){
-      if(this.tipo == "producto"){
-        this.products = searchResults;
-        this.promos = [];
-        this.descount = [];
-      }else if(this.tipo == "promocion"){
-        this.promos = searchResults;
-        this.products = [];
-        this.descount = [];
-      }else{
-        this.descount = searchResults;
-        this.promos = [];
-        this.products = [];
-      }
-    },
     async search() {
       this.pagina = 1;
       if(this.tipo == "producto"){
-      
         this.getProducts();
       }
       else if(this.tipo == "promocion"){
-        
         this.getPromos();
       }
       else{
-        
         this.getDesc();
+      }
+    },
+    verSiHayResultados(resultadosDeBusqueda){
+      if(resultadosDeBusqueda.length == 0){
+        this.hayResultados = false;
+      }else{
+        this.hayResultados = true;
       }
     }
   },
@@ -563,5 +542,25 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .search_button::-moz-focus-inner {
   border: 0;
+}
+
+.scrollable-pages {
+  max-width: 500px;
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.scrollable-pages::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scrollable-pages::-webkit-scrollbar-button {
+  display: none;
+}
+
+.scrollable-pages::-webkit-scrollbar-thumb {
+  background-color: #007bff;
+  border-radius: 3px;
 }
 </style>

@@ -64,14 +64,16 @@
         <li class="" :class="`page-item ${this.pagina <= 1 ? 'disabled' : ''}`">
           <a class="page-link" href="#" @click="prevPag">Anterior</a>
         </li>
-        <li
-          class="page-item"
-          v-for="index in pagCount"
-          :key="index"
-          :class="pagina == index ? 'active' : ''"
-        >
-          <a class="page-link" href="#" @click="setPage(index)">{{ index }}</a>
-        </li>
+        <div class="scrollable-pages">
+          <li
+            class="page-item"
+            v-for="index in pagCount"
+            :key="index"
+            :class="pagina == index ? 'active' : ''"
+          >
+            <a class="page-link" href="#" @click="setPage(index)">{{ index }}</a>
+          </li>
+        </div>
         <li
           :class="`page-item ${this.pagina >= this.pagCount ? 'disabled' : ''}`"
         >
@@ -222,6 +224,7 @@ export default {
     }
   },
   mounted: async function () {
+    this.$emit("tipo", this.mostrar)
     await this.getProducts(this.pagina, this.orden);
   },
 };
@@ -286,5 +289,25 @@ h4 {
 
 .short-product_select {
   box-shadow: 0px 0px 10px 0px #888;
+}
+
+.scrollable-pages {
+  max-width: 500px;
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.scrollable-pages::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scrollable-pages::-webkit-scrollbar-button {
+  display: none;
+}
+
+.scrollable-pages::-webkit-scrollbar-thumb {
+  background-color: #007bff;
+  border-radius: 3px;
 }
 </style>
