@@ -5,6 +5,16 @@
         >Registro de Producto
       </router-link>
       <router-link
+        v-if="tipo=='promotions'"
+        to="/editar_promocion"
+        class="button"
+        tag="button"
+        :disabled="$store.state.idSelected[0] == -1"
+      >
+        Editar promoción
+      </router-link>
+      <router-link
+        v-if="tipo=='products'"
         to="/registro_promocion"
         class="button"
         tag="button"
