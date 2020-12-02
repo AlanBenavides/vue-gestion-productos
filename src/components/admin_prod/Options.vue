@@ -20,11 +20,7 @@
       >
         {{ buttons[0].name }}
       </router-link>
-      <button
-        :disabled="canAddToProm"
-        class="button"
-        @click="hayCantidad"
-      >
+      <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
       <router-link
@@ -34,6 +30,9 @@
         :disabled="this.$store.state.idSelected[0] == -1"
       >
         {{ buttons[2].name }}
+      </router-link>
+      <router-link to="/product-category" class="button" tag="button">
+        Administrar categorías
       </router-link>
     </ul>
   </aside>
@@ -59,11 +58,11 @@ export default {
     };
   },
   mounted: function () {
-    this.$store.commit("changeSelection",[-1, 0]);
+    this.$store.commit("changeSelection", [-1, 0]);
   },
   computed: {
     canAddToProm() {
-      console.log(this.$store.state.idSelected[1] == null && this.tipo == "products")
+      // console.log(this.$store.state.idSelected[1] == null && this.tipo == "products")
       if (this.$store.state.idSelected[0] == -1) return false;
       else if (this.tipo == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
@@ -72,14 +71,12 @@ export default {
   methods: {
     async hayCantidad() {
       const id = this.$store.state.idSelected[0];
-      
-      
-       if(id != -1 ){
+
+      if (id != -1) {
         this.$router.push(`/descuento_producto/${id}`);
-       }else{
-         alert("Seleccione un producto")
-       }
-      
+      } else {
+        alert("Seleccione un producto");
+      }
     },
     async obtenerCantidad(id) {
       const response = await this.$http.get(`products/${id}`);
