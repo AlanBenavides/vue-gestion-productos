@@ -11,11 +11,16 @@
         </p>
         <div>
           <p>Descuento en porcentaje:</p>
-          <input type="text" v-model="descuento.porcentaje" :style="
+          <input
+            type="text"
+            v-model="descuento.porcentaje"
+            :style="
               $v.descuento.porcentaje.$invalid
                 ? 'border:2px solid red '
                 : 'border:2px solid green '
-            " /> %
+            "
+          />
+          %
 
           <br />
           <div
@@ -38,11 +43,16 @@
           </div>
           <br />
           <p>Unidades a comprar:</p>
-          <input name="numero" type="text" v-model="descuento.cantidad" :style="
+          <input
+            name="numero"
+            type="text"
+            v-model="descuento.cantidad"
+            :style="
               $v.descuento.cantidad.$invalid
                 ? 'border:2px solid red '
                 : 'border:2px solid green '
-            " />
+            "
+          />
           <br />
           <div
             class="formulario_check-error"
@@ -94,7 +104,6 @@ export default {
         porcentaje: "",
         cantidad: null,
         hayDescuento: false,
-        
       },
     };
   },
@@ -154,13 +163,14 @@ export default {
   mounted: async function () {
     const response = await this.$http.get(`discounts/${this.$route.params.id}`);
     this.hayDescuento = response.data.datos.length > 0;
-    this.descuento.cantidad=response.data.datos[0].cantidad_req
-      this.descuento.porcentaje =parseInt(response.data.datos[0].porcentaje).toFixed(0)
+    this.descuento.cantidad = response.data.datos[0].cantidad_req;
+    this.descuento.porcentaje = parseInt(
+      response.data.datos[0].porcentaje
+    ).toFixed(0);
 
-     
-    console.log(typeof this.descuento.porcentaje);
-    console.log(response);
-     console.log(this.descuento);
+    // console.log(typeof this.descuento.porcentaje);
+    // console.log(response);
+    //  console.log(this.descuento);
   },
 };
 </script>
