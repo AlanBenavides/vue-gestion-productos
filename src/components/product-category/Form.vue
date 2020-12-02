@@ -8,8 +8,9 @@
       type="text"
       required
       maxlength="20"
-      minlength="5"
+      minlength="4"
       autocomplete="off"
+      pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
     />
     <button class="formcategory-button">Confirmar</button>
   </form>
@@ -31,18 +32,31 @@ export default {
   },
   methods: {
     async hadlerSubmit() {
-      if (this.cod_cat) await this.updateCategory();
-      else await this.createCategory();
-      closeOneModal(this.idModal);
-      this.$emit("get-categories");
+      try {
+        if (this.cod_cat) await this.updateCategory();
+        else await this.createCategory();
+        this.$emit("get-categories");
+      } catch (error) {
+        alert(error);
+      } finally {
+        closeOneModal(this.idModal);
+      }
     },
     async updateCategory() {
-      await this.$http.put(`categories/${this.cod_cat}`, {
-        nombre_cat: this.nombre,
-      });
+      try {
+        await this.$http.put(`categories/${this.cod_cat}`, {
+          nombre_cat: this.nombre,
+        });
+      } catch (error) {
+        throw new Error("La categoria ya existe");
+      }
     },
     async createCategory() {
-      await this.$http.post("categories", { nombre_cat: this.nombre });
+      try {
+        await this.$http.post("categories", { nombre_cat: this.nombre });
+      } catch (error) {
+        throw new Error("La categoria ya existe");
+      }
     },
   },
 };

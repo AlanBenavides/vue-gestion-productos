@@ -36,22 +36,23 @@ export default {
   },
   methods: {
     async handlerDeleteCategory() {
-      const containElements = (await this.getProductByCategory()).length == 0;
-      if (containElements) {
+      try {
         if (confirm("¿Seguro que quiere eliminar esta categoría?")) {
-          await this.$http.delete(`categories/${this.category.cod_cat}`);
+          await this.deleteCategory();
           this.$emit("get-categories");
         }
-      } else
-        alert(
+      } catch (error) {
+        alert(error);
+      }
+    },
+    async deleteCategory() {
+      try {
+        await this.$http.delete(`categories/${this.category.cod_cat}`);
+      } catch (error) {
+        throw new Error(
           "Esta categoría tiene productos asignados, elimine o edite los productos para poder borrar satisfactoriamente la categoría"
         );
-    },
-    async getProductByCategory() {
-      const response = await this.$http.get(
-        `products?criterio=nombre_prod&categoria=${this.category.nombre_cat}&page=1&limit=1`
-      );
-      return response.data.results;
+      }
     },
   },
 };
