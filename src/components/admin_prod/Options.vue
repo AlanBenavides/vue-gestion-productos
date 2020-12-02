@@ -73,7 +73,6 @@ export default {
   },
   computed: {
     canAddToProm() {
-      console.log(this.$store.state.idSelected[1] == null && this.tipo == "products")
       if (this.$store.state.idSelected[0] == -1) return false;
       else if (this.tipo == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
