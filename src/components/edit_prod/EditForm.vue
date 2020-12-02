@@ -176,19 +176,22 @@
         <div class="formulario_group">
           <label
             ><input
-              type="radio"
+               type="radio"
               id="precio_unidades"
               @click="selectCantidad(false)"
-              v-model="producto.unidad"
+              v-model="producto.unidad"    
             />
+          
             <span class="formulario_name formulario_name-span">Unidades</span>
           </label>
           <input
             type="text"
+            
             :disabled="disabled"
             v-model="producto.cantidad"
             :required="!disabled"
           />
+          
           <div
             class="formulario_check-error"
             v-if="!$v.producto.cantidad.between"
@@ -218,8 +221,10 @@
               @click="selectCantidad(true)"
               v-model="producto.unidad"
             />
+           
             <span class="formulario_name formulario_name-span">Peso</span>
           </label>
+         
           <input
             type="text"
             step="0.25"
@@ -383,6 +388,7 @@ export default {
     },
   },
   methods: {
+  
     selectCantidad(disabled) {
       this.disabled = disabled;
       if (!this.disabled) {
@@ -395,6 +401,7 @@ export default {
         this.producto.unidad_med = "";
       }
     },
+    
 
     async submitForm() {
       try {
@@ -433,6 +440,30 @@ export default {
         throw new Error("El nombre del producto esta repetido");
       }
     },
+    transformDate1(value) {
+      const date = new Date(value);
+     
+      return `${date.getFullYear()}-${
+        date.getMonth() + 1
+      }-${date.getDate() + 1}`;
+    },
+  },
+   mounted: async function () {
+    const response = await this.$http.get(`products/${this.$route.params.id}`);
+    
+    this.producto.nombre_prod=response.data.datos[0].nombre_prod
+    this.producto.descripcion =response.data.datos[0].descripcion
+    this.producto.categoria=response.data.datos[0].nombre_cat
+    this.producto.precio_unid=response.data.datos[0].precio_unid
+    this.producto.unidad=response.data.datos[0].unidad
+    this.producto.cantidad=response.data.datos[0].cantidad
+    this.producto.peso=response.data.datos[0].peso
+    this.producto.unidad_med=response.data.datos[0].unidad_med
+    if(response.data.datos[0].fecha_venc != null){
+
+      this.producto.fecha_venc=this.transformDate1(response.data.datos[0].fecha_venc)
+    }
+    console.log(response.data.datos[0]);
   },
 };
 </script>
