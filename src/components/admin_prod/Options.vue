@@ -5,7 +5,7 @@
         >Registro de Producto
       </router-link>
       <router-link
-        v-if="tipo=='promotions'"
+        v-if="itemtype=='promotions'"
         to="/editar_promocion"
         class="button"
         tag="button"
@@ -14,7 +14,7 @@
         Editar promoción
       </router-link>
       <router-link
-        v-if="tipo=='products'"
+        v-if="itemtype=='products'"
         to="/registro_promocion"
         class="button"
         tag="button"
@@ -52,7 +52,7 @@
 <script>
 export default {
   name: "Options",
-  props: ["tipo"],
+  props: ["itemtype"],
   data: function () {
     return {
       buttons: [
@@ -74,7 +74,7 @@ export default {
   computed: {
     canAddToProm() {
       if (this.$store.state.idSelected[0] == -1) return false;
-      else if (this.tipo == "promotions") return true;
+      else if (this.itemtype == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
     },
   },

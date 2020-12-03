@@ -340,7 +340,7 @@ export default {
     },
     async sendDataProm() {
       try {
-        /*await this.$http.put("promotions", {
+        await this.$http.put(`promotions${this.$store.state.idSelected[0]}`, {
           nombr_prom: this.promocion.nombre_prom,
           descrip_prom: this.promocion.descripcion,
           precio_prom: this.promocion.precio_unid,
@@ -349,7 +349,7 @@ export default {
           fecha_fin: this.promocion.fecha_fin,
           products: this.$store.state.groupIDselected,
           imagen_prom: this.image,
-        });*/
+        });
       } catch (error) {
         throw new Error("El nombre de la promoción esta repetido");
       }
