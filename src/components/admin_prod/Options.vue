@@ -20,21 +20,16 @@
       >
         {{ buttons[0].name }}
       </router-link>
-      <button
-        :disabled="canAddToProm"
-        class="button"
-        @click="hayCantidad"
-      >
+      <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
-      <router-link
-        to=""
+      <button
         class="button"
-        tag="button"
         :disabled="this.$store.state.idSelected[0] == -1"
+        @click="handlerDelete()"
       >
-        {{ buttons[2].name }}
-      </router-link>
+        Eliminar
+      </button>
     </ul>
   </aside>
 </template>
@@ -52,18 +47,17 @@ export default {
         {
           name: "Añadir a promocion",
         },
-        {
-          name: "Eliminar",
-        },
       ],
     };
   },
   mounted: function () {
-    this.$store.commit("changeSelection",[-1, 0]);
+    this.$store.commit("changeSelection", [-1, 0]);
   },
   computed: {
     canAddToProm() {
-      console.log(this.$store.state.idSelected[1] == null && this.tipo == "products")
+      console.log(
+        this.$store.state.idSelected[1] == null && this.tipo == "products"
+      );
       if (this.$store.state.idSelected[0] == -1) return false;
       else if (this.tipo == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
@@ -72,18 +66,26 @@ export default {
   methods: {
     async hayCantidad() {
       const id = this.$store.state.idSelected[0];
-      
-      
-       if(id != -1 ){
+
+      if (id != -1) {
         this.$router.push(`/descuento_producto/${id}`);
-       }else{
-         alert("Seleccione un producto")
-       }
-      
+      } else {
+        alert("Seleccione un producto");
+      }
     },
     async obtenerCantidad(id) {
       const response = await this.$http.get(`products/${id}`);
       return response.data.datos[0].cantidad;
+    },
+    async handlerDelete() {
+      confirm(`Las promociones y descuento
+      s que se eliminarán con est
+      a acción`);
+      // if (confirm(`Las promociones y descuentos que se eliminarán con esta acción`))
+      // this.deleteProduct(this.$store.state.idSelected[0])
+    },
+    async deleteProduct(idProduct) {
+      await this.$http.delete(`products/${idProduct}`);
     },
   },
 };
