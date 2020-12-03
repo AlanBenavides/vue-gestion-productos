@@ -177,11 +177,15 @@
           <label
             ><input
                type="radio"
+              
+               :value="true"
               id="precio_unidades"
+              :class="!disabled? 'checked': ' '"
               @click="selectCantidad(false)"
-              v-model="producto.unidad"    
+              v-model="producto.unidad" 
+
             />
-          
+        
             <span class="formulario_name formulario_name-span">Unidades</span>
           </label>
           <input
@@ -219,7 +223,10 @@
               value="peso"
               id="precio_peso"
               @click="selectCantidad(true)"
+              :class="disabled ? 'checked': ' ' "
               v-model="producto.unidad"
+
+              
             />
            
             <span class="formulario_name formulario_name-span">Peso</span>
@@ -394,11 +401,11 @@ export default {
       if (!this.disabled) {
         this.producto.peso = null;
         this.producto.unidad_med = null;
-        this.producto.cantidad = "";
+        //this.producto.cantidad = "";
       } else {
         this.producto.cantidad = null;
-        this.producto.peso = "";
-        this.producto.unidad_med = "";
+        //this.producto.peso = "";
+        //this.producto.unidad_med = "";
       }
     },
     
@@ -449,19 +456,23 @@ export default {
     },
   },
    mounted: async function () {
-    const response = await this.$http.get(`products/${this.$route.params.id}`);
+    const response = (await this.$http.get(`products/${this.$route.params.id}`)).data.datos[0];
     
-    this.producto.nombre_prod=response.data.datos[0].nombre_prod
-    this.producto.descripcion =response.data.datos[0].descripcion
-    this.producto.categoria=response.data.datos[0].nombre_cat
-    this.producto.precio_unid=response.data.datos[0].precio_unid
-    this.producto.unidad=response.data.datos[0].unidad
-    this.producto.cantidad=response.data.datos[0].cantidad
-    this.producto.peso=response.data.datos[0].peso
-    this.producto.unidad_med=response.data.datos[0].unidad_med
-    if(response.data.datos[0].fecha_venc != null){
+    this.producto.nombre_prod=response.nombre_prod
+    this.producto.descripcion =response.descripcion
+    this.producto.categoria=response.nombre_cat
+    this.producto.precio_unid=response.precio_unid
+    this.producto.unidad=response.unidad
+    this.producto.cantidad=response.cantidad
+    this.producto.peso=response.peso
+    this.producto.unidad_med=response.unidad_med
+    if(response.fecha_venc != null){
 
-      this.producto.fecha_venc=this.transformDate1(response.data.datos[0].fecha_venc)
+      this.producto.fecha_venc=this.transformDate1(response.fecha_venc)
+    }
+    if(response.peso){
+      this.selectCantidad(true);
+      
     }
     console.log(response.data.datos[0]);
   },
@@ -559,5 +570,19 @@ export default {
 .formulario_check-error1 {
   color: black;
   text-align: right;
+}
+.checked::after{
+  display:block;
+  height: 7px;
+  width: 7.95px;
+  background:#8b8b8b;
+ content: "";
+ position:relative;
+ top: 3px;
+ left: 2.5px;
+ border-radius: 50%;
+    
+ 
+     
 }
 </style>
