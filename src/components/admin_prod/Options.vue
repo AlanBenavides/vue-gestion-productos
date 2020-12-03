@@ -55,9 +55,9 @@ export default {
   },
   computed: {
     canAddToProm() {
-      console.log(
-        this.$store.state.idSelected[1] == null && this.tipo == "products"
-      );
+      // console.log(
+      //   this.$store.state.idSelected[1] == null && this.tipo == "products"
+      // );
       if (this.$store.state.idSelected[0] == -1) return false;
       else if (this.tipo == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
@@ -78,14 +78,41 @@ export default {
       return response.data.datos[0].cantidad;
     },
     async handlerDelete() {
-      confirm(`Las promociones y descuento
-      s que se eliminarán con est
-      a acción`);
-      // if (confirm(`Las promociones y descuentos que se eliminarán con esta acción`))
-      // this.deleteProduct(this.$store.state.idSelected[0])
+      const idProduct = this.$store.state.idSelected[0];
+      const promotions = await this.getPromotions(idProduct);
+      const disconunt =
+        (await this.getDiscount(idProduct)).length != 0 ? true : false;
+      const promotionMessage =
+        promotions.length != 0 ? this.renderPromotions(promotions) : "";
+      if (confirm(this.getFormatedMessage(disconunt, promotionMessage)))
+        await this.deleteProduct(idProduct);
     },
     async deleteProduct(idProduct) {
       await this.$http.delete(`products/${idProduct}`);
+    },
+    async getDiscount(idProduct) {
+      return (await this.$http.get(`discounts/${idProduct}`)).data.datos;
+    },
+    async getPromotions(idProduct) {
+      return (await this.$http.get(`products/promotions/${idProduct}`)).data
+        .datos;
+    },
+    renderPromotions(promotions) {
+      return promotions.reduce(
+        (acc, promotions) => `${acc} ${promotions.nombr_prom}`,
+        ""
+      );
+    },
+    getFormatedMessage(disconunt, promotionMessage) {
+      const message = "¿Estas seguro de quieres eliminarlo?";
+      if (disconunt && promotionMessage)
+        return `Este producto tiene registrado un descuento y esta en las promociones de${promotionMessage}. ${message}`;
+      else {
+        if (disconunt) return `Este producto tiene un descuento. ${message}`;
+        else if (promotionMessage)
+          return `Este producto tiene registrado las promociones de${promotionMessage}. ${message}`;
+        else return message;
+      }
     },
   },
 };
