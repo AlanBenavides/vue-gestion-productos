@@ -93,9 +93,14 @@ export default {
       
       
        if(idprom != -1 ){
-        alert("El id de la promocion es" + idprom);
+         var opcion = confirm("Esta seguro que desea eliminar esta promocion");
+            if (opcion == true) {     
+              alert("La promocion fue eliminada El id de la promocion es" + idprom);
+          } else {
+              alert("Se Cancelo la eliminacion");
+          }
        }else{
-         alert("Seleccione un producto")
+         alert("Seleccione una promocion")
        }
       
     },
