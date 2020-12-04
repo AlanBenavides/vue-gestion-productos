@@ -14,7 +14,7 @@
                 <label>Cantidad: </label>
                 <input type="number" min="1" 
                 :max="product.cantidad"
-                v-model.number="cant_products[product.cod_prod][0]"
+                v-model.number="productsCount[product.cod_prod][0]"
                 @change="upCounts(product.cod_prod)"
                 />
             </div>
@@ -41,7 +41,7 @@ export default {
         return {
             showModal: false,
             products: [],
-            cant_products: {},
+            productsCount: {},
         }
     },
     methods: {
@@ -56,28 +56,28 @@ export default {
         },
         async getProducts(){
             let newProducts = [];
-            let newCantProducts = {};
+            let newCountProducts = {};
             for(let productID in this.$store.state.groupIDselected){
                 const response = await this.$http.get(
                     `products/${productID}`
                 );
                 newProducts.push(response.data.datos[0]);
-                newCantProducts[productID] = [this.$store.state.groupIDselected[productID][0],
+                newCountProducts[productID] = [this.$store.state.groupIDselected[productID][0],
                 response.data.datos[0].cantidad];
             }
             this.products = newProducts;
-            this.cant_products = newCantProducts;
+            this.productsCount = newCountProducts;
         },
         deleteProduct(id){
             this.$store.commit("deleteID", id);
             this.getProducts();
         },
         updateProducts(){
-            this.$store.commit('updateGroup', this.cant_products);
+            this.$store.commit('updateGroup', this.productsCount);
             this.showModal = !this.showModal;
         },
         upCounts(id){
-            this.$store.state.groupIDselected[id] = this.cant_products[id]
+            this.$store.state.groupIDselected[id] = this.productsCount[id]
         }
     },
     mounted(){

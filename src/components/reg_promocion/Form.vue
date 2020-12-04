@@ -10,40 +10,40 @@
           <div class="formulario_name">Nombre de promoción:</div>
           <input
             :style="
-              $v.promocion.nombre_prom.$invalid
+              $v.promotion.promName.$invalid
                 ? 'border:1px solid red '
                 : 'border:1px solid green '
             "
             type="text"
             required
-            v-model="promocion.nombre_prom"
+            v-model="promotion.promName"
           />
         </label>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.nombre_prom.alpha"
+          v-if="!$v.promotion.promName.alpha"
         >
           No se aceptan caracteres especiales.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.nombre_prom.minLength"
+          v-if="!$v.promotion.promName.minLength"
         >
           Debe tener una longitud no menor a
-          {{ $v.promocion.nombre_prom.$params.minLength.min }}.
+          {{ $v.promotion.promName.$params.minLength.min }}.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.nombre_prom.required"
+          v-if="!$v.promotion.promName.required"
         >
           Campo requerido.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.nombre_prom.maxLength"
+          v-if="!$v.promotion.promName.maxLength"
         >
           Nombre muy largo maximo
-          {{ $v.promocion.nombre_prom.$params.maxLength.max }}
+          {{ $v.promotion.promName.$params.maxLength.max }}
           caracteres.
         </div>
       </div>
@@ -53,29 +53,29 @@
           <div class="formulario_name">Descripción:</div>
           <textarea
             :style="
-              $v.promocion.descripcion.$invalid
+              $v.promotion.description.$invalid
                 ? 'border:1px solid red '
                 : 'border:1px solid green '
             "
-            v-model="promocion.descripcion"
+            v-model="promotion.description"
             cols="50"
             rows="10"
             maxlength="1000"
           />
         </label>
         <div class="formulario_check-error1">
-          {{ `${promocion.descripcion.length}/1000` }} caracteres.
+          {{ `${promotion.description.length}/1000` }} caracteres.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.descripcion.maxLength"
+          v-if="!$v.promotion.description.maxLength"
         >
           Descripcion muy larga maximo
-          {{ $v.promocion.descripcion.$params.maxLength.max }} caracteres.
+          {{ $v.promotion.description.$params.maxLength.max }} caracteres.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.descripcion.required"
+          v-if="!$v.promotion.description.required"
         >
           Campo requerido.
         </div>
@@ -86,9 +86,9 @@
           <div class="formulario_name">Precio(Bs.):</div>
           <input
             type="text"
-            v-model="promocion.precio_unid"
+            v-model="promotion.unitPrice"
             :style="
-              $v.promocion.precio_unid.$invalid
+              $v.promotion.unitPrice.$invalid
                 ? 'border:1px solid red '
                 : 'border:1px solid green '
             "
@@ -96,25 +96,25 @@
         </label>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.precio_unid.required"
+          v-if="!$v.promotion.unitPrice.required"
         >
           Campo requerido.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.precio_unid.between"
+          v-if="!$v.promotion.unitPrice.between"
         >
           Campo invalido (0.10-10000).
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.precio_unid.validate_decimales"
+          v-if="!$v.promotion.unitPrice.validateDecimals"
         >
           Maximo 2 decimales!
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.precio_unid.alpha2"
+          v-if="!$v.promotion.unitPrice.alpha2"
         >
           Ingrese un valor numérico.
         </div>
@@ -124,9 +124,9 @@
           <div class="formulario_name">Cantidad:</div>
           <input
             type="text"
-            v-model="promocion.cantidad"
+            v-model="promotion.quantity"
             :style="
-              $v.promocion.cantidad.$invalid
+              $v.promotion.quantity.$invalid
                 ? 'border:1px solid red '
                 : 'border:1px solid green '
             "
@@ -134,25 +134,25 @@
         </label>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.cantidad.required"
+          v-if="!$v.promotion.quantity.required"
         >
           Campo requerido.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.cantidad.between"
+          v-if="!$v.promotion.quantity.between"
         >
           Ingrese valores enteros entre (1-1000).
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.cantidad.integer"
+          v-if="!$v.promotion.quantity.integer"
         >
           Solo se aceptan valores enteros.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promocion.cantidad.alpha2"
+          v-if="!$v.promotion.quantity.alpha2"
         >
           Ingrese un valor numérico
         </div>
@@ -164,12 +164,12 @@
             type="date"
             value="DD/MM/AA"
             onkeydown="return false"
-            v-model="promocion.fecha_inicio"
+            v-model="promotion.startDate"
           />
         </label>
         <div
           class="formulario_check-error-center"
-          v-if="!$v.promocion.fecha_inicio.validate_date"
+          v-if="!$v.promotion.startDate.validateDate"
         >
           Fecha fuera de límite
         </div>
@@ -181,24 +181,24 @@
             type="date"
             value="DD/MM/AA"
             onkeydown="return false"
-            v-model="promocion.fecha_fin"
+            v-model="promotion.endDate"
           />
         </label>
         <div
           class="formulario_check-error-center"
-          v-if="!$v.promocion.fecha_fin.validate_date"
+          v-if="!$v.promotion.endDate.validateDate"
         >
           Fecha fuera de límite
         </div>
         <div
           class="formulario_check-error-center"
-          v-if="!$v.promocion.fecha_fin.validate_end_date"
+          v-if="!$v.promotion.endDate.validateEndDate"
         >
           La promoción termina antes de empezar
         </div>
       </div>
       <button
-        :disabled="$v.promocion.$invalid || image == ''"
+        :disabled="$v.promotion.$invalid || image == ''"
         class="formulario_button"
         :class="isAllValid"
       >
@@ -218,35 +218,34 @@ import {
   integer,
 } from "vuelidate/lib/validators";
 
-const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\sáéíóúÁÉÍÓÚ]*$/);
+const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\sáéíóúÁÉÍÓÚ.,:;'`"-]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 
-const validate_date = (value) => {
-  const today_date = new Date();
-  const three_years_after = new Date().setFullYear(
-    today_date.getFullYear() + 3
+const validateDate = (value) => {
+  const todayDate = new Date();
+  const threeYearsAfter = new Date().setFullYear(
+    todayDate.getFullYear() + 3
   );
-  const input_date = new Date(Date.parse(value));
-  input_date.setDate(input_date.getDate() + 1);
-  return today_date <= input_date && input_date < three_years_after;
+  const inputDate = new Date(Date.parse(value));
+  inputDate.setDate(inputDate.getDate() + 1);
+  return todayDate <= inputDate && inputDate < threeYearsAfter;
 };
 
-const validate_end_date = (value, vm) => {
-  if (!vm.fecha_inicio || !value) {
+const validateEndDate = (value, vm) => {
+  if (!vm.startDate || !value) {
     return true;
   }
-  const start_date = new Date(Date.parse(vm.fecha_inicio));
-  const end_date = new Date(Date.parse(value));
-  start_date.setDate(start_date.getDate() + 1);
-  end_date.setDate(end_date.getDate() + 1);
-  return start_date < end_date;
+  const startDate = new Date(Date.parse(vm.startDate));
+  const endDate = new Date(Date.parse(value));
+  startDate.setDate(startDate.getDate() + 1);
+  endDate.setDate(endDate.getDate() + 1);
+  return startDate < endDate;
 };
 
-const validate_decimales = (value) => {
-  const datovalue = String(value);
+const validateDecimals = (value) => {
 
-  if (datovalue.indexOf(".") > 0) {
-    const parts = datovalue.split(".");
+  if (String(value).indexOf(".") > 0) {
+    const parts = String(value).split(".");
     const dato = String(parts[1]);
 
     return !helpers.req(value) || !(dato.length > 2);
@@ -255,7 +254,7 @@ const validate_decimales = (value) => {
   }
 };
 
-const min_products = (value) => {
+const validateMinProductsCount = (value) => {
   return Object.keys(value).length > 1;
 };
 
@@ -265,62 +264,62 @@ export default {
   data() {
     return {
       disabled: false,
-      promocion: {
-        nombre_prom: null,
-        descripcion: "",
-        precio_unid: null,
-        cantidad: null,
-        fecha_inicio: "",
-        fecha_fin: "",
-        product_list: this.$store.state.groupIDselected,
+      promotion: {
+        promName: null,
+        description: "",
+        unitPrice: null,
+        quantity: null,
+        startDate: "",
+        endDate: "",
+        productList: this.$store.state.groupIDselected,
       },
     };
   },
   validations: {
-    promocion: {
-      nombre_prom: {
+    promotion: {
+      promName: {
         required,
         minLength: minLength(2),
         maxLength: maxLength(30),
         alpha,
       },
-      descripcion: {
+      description: {
         required,
         maxLength: maxLength(1000),
       },
-      precio_unid: {
+      unitPrice: {
         required,
         between: between(0.1, 10000),
-        validate_decimales,
+        validateDecimals,
         alpha2,
       },
-      cantidad: {
+      quantity: {
         required,
         between: between(1, 1000),
         integer,
         alpha2,
       },
-      fecha_inicio: {
-        validate_date,
+      startDate: {
+        validateDate,
       },
-      fecha_fin: {
-        validate_date,
-        validate_end_date,
+      endDate: {
+        validateDate,
+        validateEndDate,
       },
-      product_list: {
-        min_products,
+      productList: {
+        validateMinProductsCount,
       },
     },
   },
   methods: {
     async submitForm() {
       try {
-        if (!this.$v.promocion.$invalid) {
+        if (!this.$v.promotion.$invalid) {
           if (this.image == "") alert("Registra la imagen de la promoción");
           else {
             for (let id in this.$store.state.groupIDselected) {
               if (
-                this.promocion.cantidad *
+                this.promotion.quantity *
                   this.$store.state.groupIDselected[id][0] >
                 this.$store.state.groupIDselected[id][1]
               ) {
@@ -341,12 +340,12 @@ export default {
     async sendDataProm() {
       try {
         await this.$http.post("promotions", {
-          nombr_prom: this.promocion.nombre_prom,
-          descrip_prom: this.promocion.descripcion,
-          precio_prom: this.promocion.precio_unid,
-          cantidad_prom: this.promocion.cantidad,
-          fecha_ini: this.promocion.fecha_inicio,
-          fecha_fin: this.promocion.fecha_fin,
+          nombr_prom: this.promotion.promName,
+          descrip_prom: this.promotion.description,
+          precio_prom: this.promotion.unitPrice,
+          cantidad_prom: this.promotion.quantity,
+          fecha_ini: this.promotion.startDate,
+          fecha_fin: this.promotion.endDate,
           products: this.$store.state.groupIDselected,
           imagen_prom: this.image,
         });
@@ -357,7 +356,7 @@ export default {
   },
   computed: {
     isAllValid() {
-      return this.$v.promocion.$invalid || this.image == ""
+      return this.$v.promotion.$invalid || this.image == ""
         ? "form_button_disabled"
         : "";
     },

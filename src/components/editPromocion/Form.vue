@@ -340,7 +340,7 @@ export default {
     },
     async sendDataProm() {
       try {
-        await this.$http.put(`promotions${this.$store.state.idSelected[0]}`, {
+        await this.$http.put(`promotions/${this.$store.state.idSelected[0]}`, {
           nombr_prom: this.promocion.nombre_prom,
           descrip_prom: this.promocion.descripcion,
           precio_prom: this.promocion.precio_unid,
