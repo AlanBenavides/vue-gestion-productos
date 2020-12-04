@@ -27,14 +27,15 @@
       >
         Aplicar descuento
       </button>
-      <router-link
+      <button
         to=""
         class="button"
         tag="button"
-        :disabled="this.$store.state.idSelected[0] == -1"
+        :disabled="canDeleteProm"
+        @click="eliminarProm"
       >
-        {{ buttons[2].name }}
-      </router-link>
+        Eliminar Promocion
+      </button>
     </ul>
   </aside>
 </template>
@@ -68,6 +69,12 @@ export default {
       else if (this.tipo == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
     },
+    canDeleteProm() {
+      console.log(this.$store.state.idSelected[1] == null && this.tipo == "promotions")
+      if (this.$store.state.idSelected[0] == -1) return true;
+      else if (this.tipo == "products") return true;
+      return this.$store.state.idSelected[1] == null;
+    },
   },
   methods: {
     async hayCantidad() {
@@ -76,6 +83,17 @@ export default {
       
        if(id != -1 ){
         this.$router.push(`/descuento_producto/${id}`);
+       }else{
+         alert("Seleccione un producto")
+       }
+      
+    },
+    async eliminarProm() {
+      const idprom = this.$store.state.idSelected[0];
+      
+      
+       if(idprom != -1 ){
+        alert("El id de la promocion es" + idprom);
        }else{
          alert("Seleccione un producto")
        }
