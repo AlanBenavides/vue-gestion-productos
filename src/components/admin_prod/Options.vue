@@ -95,7 +95,8 @@ export default {
        if(idprom != -1 ){
          var opcion = confirm("Esta seguro que desea eliminar esta promocion");
             if (opcion == true) {     
-              alert("La promocion fue eliminada El id de la promocion es" + idprom);
+              await this.$http.delete(`promotions/${idprom}`);
+              alert("La promocion fue eliminada");
           } else {
               alert("Se Cancelo la eliminacion");
           }
