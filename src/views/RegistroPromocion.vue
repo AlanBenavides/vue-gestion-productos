@@ -36,6 +36,9 @@ export default {
         isMoreThanTwo(){
             return Object.keys(this.$store.state.groupIDselected).length < 2
         }
+    },
+    destroyed() {
+        this.$store.commit("updateGroup", {});
     }
 }
 </script>

@@ -93,7 +93,7 @@ export default {
     async mounted(){
         const response = await this.$http.get(`/promotions/image/${this.$store.state.idSelected[0]}`);
         this.image = "data:image/[jpg/png];base64,"+response.data.datos[0].imagen_prom;
-        this.$emit("send-image", this.image);
+        this.$emit("send-image", response.data.datos[0].imagen_prom);
     }
 }
 </script>
