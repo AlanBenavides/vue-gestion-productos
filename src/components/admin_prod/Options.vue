@@ -35,6 +35,13 @@
       >
         {{ buttons[2].name }}
       </router-link>
+      <button
+        :disabled="canAddToProm1"
+        class="button"
+        @click="hayCantidad1"
+      >
+        Editar producto.
+      </button>
     </ul>
   </aside>
 </template>
@@ -60,6 +67,8 @@ export default {
   },
   mounted: function () {
     this.$store.commit("changeSelection",[-1, 0]);
+    
+    
   },
   computed: {
     canAddToProm() {
@@ -67,6 +76,11 @@ export default {
       if (this.$store.state.idSelected[0] == -1) return false;
       else if (this.tipo == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
+    },  canAddToProm1() {
+      console.log(this.$store.state.idSelected[1] == null && this.tipo == "products")
+      if (this.$store.state.idSelected[0] == -1) return false;
+      else if (this.tipo == "promotions") return true;
+      return this.$store.state.idSelected[1] == true;
     },
   },
   methods: {
@@ -76,6 +90,17 @@ export default {
       
        if(id != -1 ){
         this.$router.push(`/descuento_producto/${id}`);
+       }else{
+         alert("Seleccione un producto")
+       }
+      
+    },
+    async hayCantidad1() {
+      const id = this.$store.state.idSelected[0];
+      
+      
+       if(id != -1 ){
+        this.$router.push(`/editar_producto/${id}`);
        }else{
          alert("Seleccione un producto")
        }
