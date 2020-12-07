@@ -474,7 +474,7 @@ export default {
       this.selectCantidad(true);
       
     }
-    console.log(response.data.datos[0]);
+    //console.log(response.data.datos[0]);
   },
 };
 </script>
