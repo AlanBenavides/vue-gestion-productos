@@ -86,6 +86,7 @@ export default {
         promotions.length != 0 ? this.renderPromotions(promotions) : "";
       if (confirm(this.getFormatedMessage(disconunt, promotionMessage)))
         await this.deleteProduct(idProduct);
+      this.$emit("reload-page");
     },
     async deleteProduct(idProduct) {
       await this.$http.delete(`products/${idProduct}`);
