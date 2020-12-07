@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import store from "../main";
 
 Vue.use(VueRouter);
 
@@ -24,25 +23,25 @@ const routes = [
     path: "/admin_productos",
     name: "Admin_productos",
     component: () => import("@/views/Admin_productos.vue"),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/registro_producto",
     name: "Registro_Producto",
     component: () => import("@/views/RegistroProducto.vue"),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/registro_promocion",
     name: "Registro de promocion",
     component: () => import("@/views/RegistroPromocion.vue"),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/descuento_producto/:id",
     name: "Descuento_Producto",
     component: () => import("@/views/Descuento.vue"),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/GaleryCli",
@@ -62,19 +61,19 @@ const routes = [
 ];
 
 const router = new VueRouter({
-    mode: "history",
-    base: process.env.BASE_URL,
-    routes,
+  mode: "history",
+  base: process.env.BASE_URL,
+  routes,
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (store.state.auth) {
-            next()
-        } else {
-            next({ name: 'Home' })
-        }
-    } else next()
-})
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (localStorage.getItem("session-vue") == "true") {
+      next();
+    } else {
+      next({ name: "Home" });
+    }
+  } else next();
+});
 
 export default router;
