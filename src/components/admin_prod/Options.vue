@@ -12,14 +12,21 @@
       >
         {{ buttons[1].name }}
       </router-link>
-      <router-link
+       <button
+        :disabled="canEditProducts "
+        class="button"
+        @click="editProduct"
+      >
+        Editar producto
+      </button>
+      <!--<router-link
         to=""
         class="button"
         tag="button"
         :disabled="$store.state.idSelected[0] == -1"
       >
         {{ buttons[0].name }}
-      </router-link>
+      </router-link>-->
       <button
         :disabled="canAddToProm"
         class="button"
@@ -35,13 +42,7 @@
       >
         {{ buttons[2].name }}
       </router-link>
-      <button
-        :disabled="canAddToProm1"
-        class="button"
-        @click="hayCantidad1"
-      >
-        Editar producto.
-      </button>
+     
     </ul>
   </aside>
 </template>
@@ -76,9 +77,9 @@ export default {
       if (this.$store.state.idSelected[0] == -1) return false;
       else if (this.tipo == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
-    },  canAddToProm1() {
+    },  canEditProducts() {
       console.log(this.$store.state.idSelected[1] == null && this.tipo == "products")
-      if (this.$store.state.idSelected[0] == -1) return false;
+      if (this.$store.state.idSelected[0] == -1) return true;
       else if (this.tipo == "promotions") return true;
       return this.$store.state.idSelected[1] == true;
     },
@@ -92,10 +93,11 @@ export default {
         this.$router.push(`/descuento_producto/${id}`);
        }else{
          alert("Seleccione un producto")
+          
        }
       
     },
-    async hayCantidad1() {
+    async editProduct() {
       const id = this.$store.state.idSelected[0];
       
       
