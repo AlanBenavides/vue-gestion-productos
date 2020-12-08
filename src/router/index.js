@@ -20,20 +20,30 @@ const routes = [
     component: () => import("@/views/Producto.vue"),
   },
   {
+    path: "/galeryCli",
+    name: "GaleryCli",
+    component: () => import("@/views/GaleryCli.vue"),
+  },
+  {
+    path: "/vista_promo/:id",
+    name: "VistaPromocion",
+    component: () => import("@/views/VistaPromo.vue"),
+  },
+  {
     path: "/admin_productos",
-    name: "Admin_productos",
+    name: "AdminProductos",
     component: () => import("@/views/Admin_productos.vue"),
     meta: { requiresAuth: true },
   },
   {
     path: "/registro_producto",
-    name: "Registro_Producto",
+    name: "RegistroProducto",
     component: () => import("@/views/RegistroProducto.vue"),
     meta: { requiresAuth: true },
   },
   {
     path: "/registro_promocion",
-    name: "Registro de promocion",
+    name: "RegistroDePromocion",
     component: () => import("@/views/RegistroPromocion.vue"),
     meta: { requiresAuth: true },
   },
@@ -45,14 +55,15 @@ const routes = [
   },
   {
     path: "/descuento_producto/:id",
-    name: "Descuento_Producto",
+    name: "DescuentoProducto",
     component: () => import("@/views/Descuento.vue"),
     meta: { requiresAuth: true },
   },
   {
-    path: "/GaleryCli",
-    name: "GaleryCli",
-    component: () => import("@/views/GaleryCli.vue"),
+    path: "/product-category",
+    name: "ProductCategory",
+    component: () => import("@/views/ProductCategory"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/vista_promo/:id",

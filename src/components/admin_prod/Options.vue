@@ -30,11 +30,7 @@
       >
         {{ buttons[0].name }}
       </router-link>
-      <button
-        :disabled="canAddToProm"
-        class="button"
-        @click="hayCantidad"
-      >
+      <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
       <button
@@ -46,6 +42,10 @@
       >
         Eliminar Promocion
       </button>
+      </router-link>
+      <router-link to="/product-category" class="button" tag="button">
+        Administrar categorías
+      </router-link>
     </ul>
   </aside>
 </template>
@@ -70,7 +70,7 @@ export default {
     };
   },
   mounted: function () {
-    this.$store.commit("changeSelection",[-1, 0]);
+    this.$store.commit("changeSelection", [-1, 0]);
   },
   computed: {
     canAddToProm() {
@@ -88,14 +88,12 @@ export default {
   methods: {
     async hayCantidad() {
       const id = this.$store.state.idSelected[0];
-      
-      
-       if(id != -1 ){
+
+      if (id != -1) {
         this.$router.push(`/descuento_producto/${id}`);
-       }else{
-         alert("Seleccione un producto")
-       }
-      
+      } else {
+        alert("Seleccione un producto");
+      }
     },
     async eliminarProm() {
       const idprom = this.$store.state.idSelected[0];

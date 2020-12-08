@@ -11,11 +11,16 @@
         </p>
         <div>
           <p>Descuento en porcentaje:</p>
-          <input type="text" v-model="descuento.porcentaje" :style="
+          <input
+            type="text"
+            v-model="descuento.porcentaje"
+            :style="
               $v.descuento.porcentaje.$invalid
                 ? 'border:2px solid red '
                 : 'border:2px solid green '
-            " /> %
+            "
+          />
+          %
 
           <br />
           <div
@@ -38,11 +43,16 @@
           </div>
           <br />
           <p>Unidades a comprar:</p>
-          <input name="numero" type="text" v-model="descuento.cantidad" :style="
+          <input
+            name="numero"
+            type="text"
+            v-model="descuento.cantidad"
+            :style="
               $v.descuento.cantidad.$invalid
                 ? 'border:2px solid red '
                 : 'border:2px solid green '
-            " />
+            "
+          />
           <br />
           <div
             class="formulario_check-error"
@@ -97,7 +107,6 @@ export default {
         porcentaje: "",
         cantidad: null,
         hayDescuento: false,
-        
       },
     };
   },
