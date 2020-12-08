@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2><strong>Registro de Promoción</strong></h2>
+        <h2><strong>Editar Promoción</strong></h2>
         <h3 class="left"><strong>Paquete de productos:</strong></h3>
         <ProductList></ProductList>
         <div class="formulario_check-error-center"
@@ -14,13 +14,13 @@
     </div>
 </template>
 <script>
-import Form from "@/components/reg_promocion/Form.vue";
-import ProductList from "@/components/reg_promocion/ProductList.vue";
-import ImageAdd from "@/components/reg_promocion/ImageAdd.vue";
+import Form from "@/components/editPromocion/Form.vue";
+import ProductList from "@/components/editPromocion/ProductList.vue";
+import ImageAdd from "@/components/editPromocion/ImageAdd.vue";
 
 
 export default {
-    name: 'RegistroPromocion',
+    name: 'EdicionPromocion',
     components: {Form, ProductList, ImageAdd},
     data() {
         return {

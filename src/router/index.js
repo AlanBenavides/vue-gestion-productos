@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import store from "../main";
 
 Vue.use(VueRouter);
 
@@ -49,6 +48,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/editar_promocion",
+    name: "Editar promocion",
+    component: () => import("@/views/EdicionPromocion.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
     path: "/descuento_producto/:id",
     name: "DescuentoProducto",
     component: () => import("@/views/Descuento.vue"),
@@ -60,6 +65,11 @@ const routes = [
     component: () => import("@/views/ProductCategory"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/vista_promo/:id",
+    name: "Vista_Promocion",
+    component: () => import("@/views/VistaPromo.vue"),
+  },
 ];
 
 const router = new VueRouter({
@@ -70,7 +80,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (store.state.auth) {
+    if (localStorage.getItem("session-vue") == "true") {
       next();
     } else {
       next({ name: "Home" });
