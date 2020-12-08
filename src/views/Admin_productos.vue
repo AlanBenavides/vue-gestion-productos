@@ -2,7 +2,11 @@
   <section>
     <h1 class="admin_productos-title">Administración de productos</h1>
     <div class="admin_productos-container">
-      <Options class="admin_productos-options" :itemtype="itemTypeSelected" />
+      <Options
+        class="admin_productos-options"
+        @reload-page="reloadPage()"
+        :itemtype="itemTypeSelected"
+      />
       <Short class="admin_productos-products" @itemtype="itemTypeSelected=$event"/>
     </div>
   </section>
@@ -22,7 +26,12 @@ export default {
     return{
       itemTypeSelected: ''
     }
-  }
+  },
+   methods: {
+    reloadPage() {
+      location.reload();
+    },
+  },
 };
 </script>
 
