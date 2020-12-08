@@ -14,7 +14,7 @@
                 <label>Cantidad: </label>
                 <input type="number" min="1" 
                 :max="product.cantidad"
-                v-model.number="productsCount[product.cod_prod][0]"
+                v-model.number="cant_products[product.cod_prod][0]"
                 @change="upCounts(product.cod_prod)"
                 />
             </div>
@@ -41,7 +41,7 @@ export default {
         return {
             showModal: false,
             products: [],
-            productsCount: {},
+            cant_products: {},
         }
     },
     methods: {
@@ -56,34 +56,38 @@ export default {
         },
         async getProducts(){
             let newProducts = [];
-            let newCountProducts = {};
+            let newCantProducts = {};
             for(let productID in this.$store.state.groupIDselected){
                 const response = await this.$http.get(
                     `products/${productID}`
                 );
                 newProducts.push(response.data.datos[0]);
-                newCountProducts[productID] = [this.$store.state.groupIDselected[productID][0],
+                newCantProducts[productID] = [this.$store.state.groupIDselected[productID][0],
                 response.data.datos[0].cantidad];
             }
             this.products = newProducts;
-            this.productsCount = newCountProducts;
+            this.cant_products = newCantProducts;
         },
         deleteProduct(id){
             this.$store.commit("deleteID", id);
             this.getProducts();
         },
         updateProducts(){
-            this.$store.commit('updateGroup', this.productsCount);
+            this.$store.commit('updateGroup', this.cant_products);
             this.showModal = !this.showModal;
         },
         upCounts(id){
-            this.$store.state.groupIDselected[id] = this.productsCount[id]
+            this.$store.state.groupIDselected[id] = this.cant_products[id]
         }
     },
-    mounted(){
-        if(this.$store.state.idSelected[0] != -1){
-            this.$store.commit("addID", this.$store.state.idSelected);
+    async mounted(){
+        const response = await this.$http.get(`/promotions/products/${this.$store.state.idSelected[0]}`);
+        const datos = response.data.datos;
+        let product_previus = {};
+        for(let dato of datos){
+            product_previus[dato.cod_prod] = [1/*product_previus.cant_en_prom*/, 10/*product_previus.cantidad*/]
         }
+        this.$store.commit("updateGroup", product_previus);
         this.getProducts();
     }
 }
