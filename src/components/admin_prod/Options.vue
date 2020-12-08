@@ -5,6 +5,16 @@
         >Registro de Producto
       </router-link>
       <router-link
+        v-if="itemtype=='promotions'"
+        to="/editar_promocion"
+        class="button"
+        tag="button"
+        :disabled="$store.state.idSelected[0] == -1"
+      >
+        Editar promoción
+      </router-link>
+      <router-link
+        v-if="itemtype=='products'"
         to="/registro_promocion"
         class="button"
         tag="button"
@@ -23,6 +33,7 @@
       <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
+      <!-- Comprobar que sea un producto -->
       <button
         class="button"
         :disabled="this.$store.state.idSelected[0] == -1"
@@ -30,6 +41,17 @@
       >
         Eliminar
       </button>
+      <button
+        class="button"
+        :disabled="canDeleteProm"
+        @click="eliminarProm"
+      >
+        Eliminar Promocion
+      </button>
+      </router-link>
+      <router-link to="/product-category" class="button" tag="button">
+        Administrar categorías
+      </router-link>
     </ul>
   </aside>
 </template>
@@ -37,7 +59,7 @@
 <script>
 export default {
   name: "Options",
-  props: ["tipo"],
+  props: ["itemtype"],
   data: function () {
     return {
       buttons: [
@@ -55,11 +77,14 @@ export default {
   },
   computed: {
     canAddToProm() {
-      // console.log(
-      //   this.$store.state.idSelected[1] == null && this.tipo == "products"
-      // );
       if (this.$store.state.idSelected[0] == -1) return false;
-      else if (this.tipo == "promotions") return true;
+      else if (this.itemtype == "promotions") return true;
+      return this.$store.state.idSelected[1] == null;
+    },
+    canDeleteProm() {
+      console.log(this.$store.state.idSelected[1] == null && this.tipo == "promotions")
+      if (this.$store.state.idSelected[0] == -1) return true;
+      else if (this.tipo == "products") return true;
       return this.$store.state.idSelected[1] == null;
     },
   },
@@ -72,6 +97,22 @@ export default {
       } else {
         alert("Seleccione un producto");
       }
+    },
+    async eliminarProm() {
+      const idprom = this.$store.state.idSelected[0];
+      
+      
+       if(idprom != -1 ){
+         var opcion = confirm("Esta seguro que desea eliminar esta promocion");
+            if (opcion == true) {     
+              await this.$http.delete(`promotions/${idprom}`);
+              alert("La promocion fue eliminada");
+          } else {
+              alert("Se Cancelo la eliminacion");
+          }
+       }else{
+         alert("Seleccione una promocion")
+       }
     },
     async obtenerCantidad(id) {
       const response = await this.$http.get(`products/${id}`);

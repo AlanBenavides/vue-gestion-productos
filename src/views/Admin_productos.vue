@@ -5,9 +5,9 @@
       <Options
         class="admin_productos-options"
         @reload-page="reloadPage()"
-        :tipo="tipoSelect"
+        :itemtype="itemTypeSelected"
       />
-      <Short class="admin_productos-products" @tipo="tipoSelect = $event" />
+      <Short class="admin_productos-products" @itemtype="itemTypeSelected=$event"/>
     </div>
   </section>
 </template>
@@ -22,12 +22,12 @@ export default {
     Options,
     Short,
   },
-  data() {
-    return {
-      tipoSelect: "",
-    };
+  data(){
+    return{
+      itemTypeSelected: ''
+    }
   },
-  methods: {
+   methods: {
     reloadPage() {
       location.reload();
     },
