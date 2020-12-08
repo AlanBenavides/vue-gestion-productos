@@ -5,7 +5,7 @@
         >Registro de Producto
       </router-link>
       <router-link
-        v-if="itemtype=='promotions'"
+        v-if="itemtype == 'promotions'"
         to="/editar_promocion"
         class="button"
         tag="button"
@@ -14,7 +14,7 @@
         Editar promoción
       </router-link>
       <router-link
-        v-if="itemtype=='products'"
+        v-if="itemtype == 'products'"
         to="/registro_promocion"
         class="button"
         tag="button"
@@ -33,22 +33,12 @@
       <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
-      <!-- Comprobar que sea un producto -->
-      <button
-        class="button"
-        :disabled="this.$store.state.idSelected[0] == -1"
-        @click="handlerDelete()"
-      >
-        Eliminar
+      <button class="button" :disabled="!isProduct" @click="handlerDelete()">
+        Eliminar Producto
       </button>
-      <button
-        class="button"
-        :disabled="canDeleteProm"
-        @click="eliminarProm"
-      >
+      <button class="button" :disabled="canDeleteProm" @click="eliminarProm">
         Eliminar Promocion
       </button>
-      </router-link>
       <router-link to="/product-category" class="button" tag="button">
         Administrar categorías
       </router-link>
@@ -82,10 +72,14 @@ export default {
       return this.$store.state.idSelected[1] == null;
     },
     canDeleteProm() {
-      console.log(this.$store.state.idSelected[1] == null && this.tipo == "promotions")
       if (this.$store.state.idSelected[0] == -1) return true;
       else if (this.tipo == "products") return true;
       return this.$store.state.idSelected[1] == null;
+    },
+    isProduct() {
+      if (this.$store.state.idSelected[0] != -1 && this.itemtype === "products")
+        return true;
+      return false;
     },
   },
   methods: {
@@ -100,19 +94,18 @@ export default {
     },
     async eliminarProm() {
       const idprom = this.$store.state.idSelected[0];
-      
-      
-       if(idprom != -1 ){
-         var opcion = confirm("Esta seguro que desea eliminar esta promocion");
-            if (opcion == true) {     
-              await this.$http.delete(`promotions/${idprom}`);
-              alert("La promocion fue eliminada");
-          } else {
-              alert("Se Cancelo la eliminacion");
-          }
-       }else{
-         alert("Seleccione una promocion")
-       }
+
+      if (idprom != -1) {
+        var opcion = confirm("Esta seguro que desea eliminar esta promocion");
+        if (opcion == true) {
+          await this.$http.delete(`promotions/${idprom}`);
+          alert("La promocion fue eliminada");
+        } else {
+          alert("Se Cancelo la eliminacion");
+        }
+      } else {
+        alert("Seleccione una promocion");
+      }
     },
     async obtenerCantidad(id) {
       const response = await this.$http.get(`products/${id}`);
@@ -125,9 +118,10 @@ export default {
         (await this.getDiscount(idProduct)).length != 0 ? true : false;
       const promotionMessage =
         promotions.length != 0 ? this.renderPromotions(promotions) : "";
-      if (confirm(this.getFormatedMessage(disconunt, promotionMessage)))
+      if (confirm(this.getFormatedMessage(disconunt, promotionMessage))) {
         await this.deleteProduct(idProduct);
-      this.$emit("reload-page");
+        this.$emit("reload-page");
+      }
     },
     async deleteProduct(idProduct) {
       await this.$http.delete(`products/${idProduct}`);
