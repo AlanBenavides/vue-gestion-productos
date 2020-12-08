@@ -35,7 +35,7 @@ export default {
         `search?expresion=${this.expresion}&page=1&limit=3&table=producto`
       );
       this.data = response.data;
-      console.log(this.data);
+      // console.log(this.data);
     },
   },
 };

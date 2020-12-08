@@ -10,40 +10,40 @@
           <div class="formulario_name">Nombre de promoción:</div>
           <input
             :style="
-              $v.promotion.promName.$invalid
+              $v.promocion.nombre_prom.$invalid
                 ? 'border:1px solid red '
                 : 'border:1px solid green '
             "
             type="text"
             required
-            v-model="promotion.promName"
+            v-model="promocion.nombre_prom"
           />
         </label>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.promName.alpha"
+          v-if="!$v.promocion.nombre_prom.alpha"
         >
           No se aceptan caracteres especiales.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.promName.minLength"
+          v-if="!$v.promocion.nombre_prom.minLength"
         >
           Debe tener una longitud no menor a
-          {{ $v.promotion.promName.$params.minLength.min }}.
+          {{ $v.promocion.nombre_prom.$params.minLength.min }}.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.promName.required"
+          v-if="!$v.promocion.nombre_prom.required"
         >
           Campo requerido.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.promName.maxLength"
+          v-if="!$v.promocion.nombre_prom.maxLength"
         >
           Nombre muy largo maximo
-          {{ $v.promotion.promName.$params.maxLength.max }}
+          {{ $v.promocion.nombre_prom.$params.maxLength.max }}
           caracteres.
         </div>
       </div>
@@ -53,29 +53,29 @@
           <div class="formulario_name">Descripción:</div>
           <textarea
             :style="
-              $v.promotion.description.$invalid
+              $v.promocion.descripcion.$invalid
                 ? 'border:1px solid red '
                 : 'border:1px solid green '
             "
-            v-model="promotion.description"
+            v-model="promocion.descripcion"
             cols="50"
             rows="10"
             maxlength="1000"
           />
         </label>
         <div class="formulario_check-error1">
-          {{ `${promotion.description.length}/1000` }} caracteres.
+          {{ `${promocion.descripcion.length}/1000` }} caracteres.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.description.maxLength"
+          v-if="!$v.promocion.descripcion.maxLength"
         >
           Descripcion muy larga maximo
-          {{ $v.promotion.description.$params.maxLength.max }} caracteres.
+          {{ $v.promocion.descripcion.$params.maxLength.max }} caracteres.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.description.required"
+          v-if="!$v.promocion.descripcion.required"
         >
           Campo requerido.
         </div>
@@ -86,9 +86,9 @@
           <div class="formulario_name">Precio(Bs.):</div>
           <input
             type="text"
-            v-model="promotion.unitPrice"
+            v-model="promocion.precio_unid"
             :style="
-              $v.promotion.unitPrice.$invalid
+              $v.promocion.precio_unid.$invalid
                 ? 'border:1px solid red '
                 : 'border:1px solid green '
             "
@@ -96,25 +96,25 @@
         </label>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.unitPrice.required"
+          v-if="!$v.promocion.precio_unid.required"
         >
           Campo requerido.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.unitPrice.between"
+          v-if="!$v.promocion.precio_unid.between"
         >
           Campo invalido (0.10-10000).
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.unitPrice.validateDecimals"
+          v-if="!$v.promocion.precio_unid.validate_decimales"
         >
           Maximo 2 decimales!
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.unitPrice.alpha2"
+          v-if="!$v.promocion.precio_unid.alpha2"
         >
           Ingrese un valor numérico.
         </div>
@@ -124,9 +124,9 @@
           <div class="formulario_name">Cantidad:</div>
           <input
             type="text"
-            v-model="promotion.quantity"
+            v-model="promocion.cantidad"
             :style="
-              $v.promotion.quantity.$invalid
+              $v.promocion.cantidad.$invalid
                 ? 'border:1px solid red '
                 : 'border:1px solid green '
             "
@@ -134,25 +134,25 @@
         </label>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.quantity.required"
+          v-if="!$v.promocion.cantidad.required"
         >
           Campo requerido.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.quantity.between"
+          v-if="!$v.promocion.cantidad.between"
         >
           Ingrese valores enteros entre (1-1000).
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.quantity.integer"
+          v-if="!$v.promocion.cantidad.integer"
         >
           Solo se aceptan valores enteros.
         </div>
         <div
           class="formulario_check-error"
-          v-if="!$v.promotion.quantity.alpha2"
+          v-if="!$v.promocion.cantidad.alpha2"
         >
           Ingrese un valor numérico
         </div>
@@ -164,12 +164,12 @@
             type="date"
             value="DD/MM/AA"
             onkeydown="return false"
-            v-model="promotion.startDate"
+            v-model="promocion.fecha_inicio"
           />
         </label>
         <div
           class="formulario_check-error-center"
-          v-if="!$v.promotion.startDate.validateDate"
+          v-if="!$v.promocion.fecha_inicio.validate_date"
         >
           Fecha fuera de límite
         </div>
@@ -181,24 +181,24 @@
             type="date"
             value="DD/MM/AA"
             onkeydown="return false"
-            v-model="promotion.endDate"
+            v-model="promocion.fecha_fin"
           />
         </label>
         <div
           class="formulario_check-error-center"
-          v-if="!$v.promotion.endDate.validateDate"
+          v-if="!$v.promocion.fecha_fin.validate_date"
         >
           Fecha fuera de límite
         </div>
         <div
           class="formulario_check-error-center"
-          v-if="!$v.promotion.endDate.validateEndDate"
+          v-if="!$v.promocion.fecha_fin.validate_end_date"
         >
           La promoción termina antes de empezar
         </div>
       </div>
       <button
-        :disabled="$v.promotion.$invalid || image == ''"
+        :disabled="$v.promocion.$invalid || image == ''"
         class="formulario_button"
         :class="isAllValid"
       >
@@ -221,31 +221,32 @@ import {
 const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\sáéíóúÁÉÍÓÚ.,:;'`"-]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 
-const validateDate = (value) => {
-  const todayDate = new Date();
-  const threeYearsAfter = new Date().setFullYear(
-    todayDate.getFullYear() + 3
+const validate_date = (value) => {
+  const today_date = new Date();
+  const three_years_after = new Date().setFullYear(
+    today_date.getFullYear() + 3
   );
-  const inputDate = new Date(Date.parse(value));
-  inputDate.setDate(inputDate.getDate() + 1);
-  return todayDate <= inputDate && inputDate < threeYearsAfter;
+  const input_date = new Date(Date.parse(value));
+  input_date.setDate(input_date.getDate() + 1);
+  return today_date <= input_date && input_date < three_years_after;
 };
 
-const validateEndDate = (value, vm) => {
-  if (!vm.startDate || !value) {
+const validate_end_date = (value, vm) => {
+  if (!vm.fecha_inicio || !value) {
     return true;
   }
-  const startDate = new Date(Date.parse(vm.startDate));
-  const endDate = new Date(Date.parse(value));
-  startDate.setDate(startDate.getDate() + 1);
-  endDate.setDate(endDate.getDate() + 1);
-  return startDate < endDate;
+  const start_date = new Date(Date.parse(vm.fecha_inicio));
+  const end_date = new Date(Date.parse(value));
+  start_date.setDate(start_date.getDate() + 1);
+  end_date.setDate(end_date.getDate() + 1);
+  return start_date < end_date;
 };
 
-const validateDecimals = (value) => {
+const validate_decimales = (value) => {
+  const datovalue = String(value);
 
-  if (String(value).indexOf(".") > 0) {
-    const parts = String(value).split(".");
+  if (datovalue.indexOf(".") > 0) {
+    const parts = datovalue.split(".");
     const dato = String(parts[1]);
 
     return !helpers.req(value) || !(dato.length > 2);
@@ -254,7 +255,7 @@ const validateDecimals = (value) => {
   }
 };
 
-const validateMinProductsCount = (value) => {
+const min_products = (value) => {
   return Object.keys(value).length > 1;
 };
 
@@ -264,62 +265,62 @@ export default {
   data() {
     return {
       disabled: false,
-      promotion: {
-        promName: null,
-        description: "",
-        unitPrice: null,
-        quantity: null,
-        startDate: "",
-        endDate: "",
-        productList: this.$store.state.groupIDselected,
+      promocion: {
+        nombre_prom: null,
+        descripcion: "",
+        precio_unid: null,
+        cantidad: null,
+        fecha_inicio: "",
+        fecha_fin: "",
+        product_list: this.$store.state.groupIDselected,
       },
     };
   },
   validations: {
-    promotion: {
-      promName: {
+    promocion: {
+      nombre_prom: {
         required,
         minLength: minLength(2),
         maxLength: maxLength(30),
         alpha,
       },
-      description: {
+      descripcion: {
         required,
         maxLength: maxLength(1000),
       },
-      unitPrice: {
+      precio_unid: {
         required,
         between: between(0.1, 10000),
-        validateDecimals,
+        validate_decimales,
         alpha2,
       },
-      quantity: {
+      cantidad: {
         required,
         between: between(1, 1000),
         integer,
         alpha2,
       },
-      startDate: {
-        validateDate,
+      fecha_inicio: {
+        validate_date,
       },
-      endDate: {
-        validateDate,
-        validateEndDate,
+      fecha_fin: {
+        validate_date,
+        validate_end_date,
       },
-      productList: {
-        validateMinProductsCount,
+      product_list: {
+        min_products,
       },
     },
   },
   methods: {
     async submitForm() {
       try {
-        if (!this.$v.promotion.$invalid) {
+        if (!this.$v.promocion.$invalid) {
           if (this.image == "") alert("Registra la imagen de la promoción");
           else {
             for (let id in this.$store.state.groupIDselected) {
               if (
-                this.promotion.quantity *
+                this.promocion.cantidad *
                   this.$store.state.groupIDselected[id][0] >
                 this.$store.state.groupIDselected[id][1]
               ) {
@@ -328,7 +329,7 @@ export default {
               }
             }
             await this.sendDataProm();
-            alert("Nueva promoción creada exitosamente");
+            alert("Datos de la promoción editados exitosamente");
           }
         } else {
           alert("Rellene todos los datos correctamente");
@@ -339,13 +340,13 @@ export default {
     },
     async sendDataProm() {
       try {
-        await this.$http.post("promotions", {
-          nombr_prom: this.promotion.promName,
-          descrip_prom: this.promotion.description,
-          precio_prom: this.promotion.unitPrice,
-          cantidad_prom: this.promotion.quantity,
-          fecha_ini: this.promotion.startDate,
-          fecha_fin: this.promotion.endDate,
+        await this.$http.put(`promotions/${this.$store.state.idSelected[0]}`, {
+          nombr_prom: this.promocion.nombre_prom,
+          descrip_prom: this.promocion.descripcion,
+          precio_prom: this.promocion.precio_unid,
+          cantidad_prom: this.promocion.cantidad,
+          fecha_ini: this.promocion.fecha_inicio,
+          fecha_fin: this.promocion.fecha_fin,
           products: this.$store.state.groupIDselected,
           imagen_prom: this.image,
         });
@@ -353,14 +354,28 @@ export default {
         throw new Error("El nombre de la promoción esta repetido");
       }
     },
+    parseDate(dat){
+      const date = new Date(dat);
+      return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+    }
   },
   computed: {
     isAllValid() {
-      return this.$v.promotion.$invalid || this.image == ""
+      return this.$v.promocion.$invalid || this.image == ""
         ? "form_button_disabled"
         : "";
     },
   },
+  async mounted(){
+    const response = await this.$http.get(`/promotions/${this.$store.state.idSelected[0]}`);
+    const datos = response.data.datos;
+    this.promocion.nombre_prom = datos[0].nombr_prom;
+    this.promocion.descripcion = datos[0].descrip_prom;
+    this.promocion.precio_unid = datos[0].precio_prom;
+    this.promocion.cantidad = datos[0].cantidad_prom;
+    this.promocion.fecha_inicio = this.parseDate(datos[0].fecha_ini);
+    this.promocion.fecha_fin = this.parseDate(datos[0].fecha_fin);
+  }
 };
 </script>
 
