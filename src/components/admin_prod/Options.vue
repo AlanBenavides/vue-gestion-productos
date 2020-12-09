@@ -100,6 +100,7 @@ export default {
         if (opcion == true) {
           await this.$http.delete(`promotions/${idprom}`);
           alert("La promocion fue eliminada");
+          this.$emit("reload-page");
         } else {
           alert("Se Cancelo la eliminacion");
         }
