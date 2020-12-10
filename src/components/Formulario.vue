@@ -9,7 +9,7 @@
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Nombre Producto:</div>
-          <input
+          <input name='nombreProducto'
             :style="
               $v.producto.nombre_prod.$invalid
                 ? 'border:1px solid red '
@@ -52,7 +52,7 @@
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Descripción:</div>
-          <textarea
+          <textarea name='descripcionProducto'
             :style="
               $v.producto.descripcion.$invalid
                 ? 'border:1px solid red '
@@ -86,7 +86,7 @@
       <div>
         <label
           ><div class="formulario_name">Categoría:</div>
-          <input
+          <input name='categoriaProducto'
             :style="
               $v.producto.categoria.$invalid
                 ? 'border:1px solid red '
@@ -135,7 +135,7 @@
             <span>(Bs):</span>
           </p>
 
-          <input
+          <input name='precioProducto'
             type="text"
             v-model="producto.precio_unid"
             :style="
@@ -175,7 +175,7 @@
         <legend class="formulario_name">Cantidad:</legend>
         <div class="formulario_group">
           <label
-            ><input
+            ><input name='cantidadUnidades'
               type="radio"
               id="precio_unidades"
               @click="selectCantidad(false)"
@@ -183,7 +183,7 @@
             />
             <span class="formulario_name formulario_name-span">Unidades</span>
           </label>
-          <input
+          <input name='unidadesProducto'
             type="text"
             :disabled="disabled"
             v-model="producto.cantidad"
@@ -211,7 +211,7 @@
 
         <div class="formulario_group">
           <label
-            ><input
+            ><input name='cantidadPeso'
               type="radio"
               value="peso"
               id="precio_peso"
@@ -220,7 +220,7 @@
             />
             <span class="formulario_name formulario_name-span">Peso</span>
           </label>
-          <input
+          <input name='pesoProducto'
             type="text"
             step="0.25"
             :disabled="!disabled"
@@ -230,6 +230,7 @@
           />
 
           <select
+            name='unidadMedProducto'
             :required="disabled"
             :disabled="!disabled"
             v-model="producto.unidad_med"
@@ -259,7 +260,7 @@
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Fecha de vencimiento del producto:</div>
-          <input
+          <input name='fechaVencProducto'
             type="date"
             value="DD/MM/AA"
             onkeydown="return false"
