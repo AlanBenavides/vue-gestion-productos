@@ -91,16 +91,19 @@
         </div>
       </form>
     </div>
+    <Confirm ref="confirm"></Confirm>
   </section>
 </template>
 
 <script>
+import Confirm from "@/components/Confirm.vue"
 import { between, helpers, required } from "vuelidate/lib/validators";
 const alpha2 = helpers.regex("alpha1", /^[0-9\s]*$/);
 
 export default {
   name: "Datos",
   props: ["datos"],
+  components: {Confirm},
   data: function () {
     return {
       descuento: {
@@ -176,6 +179,9 @@ export default {
           alert(error);
         }
       }
+    },
+    confirm(confirmMessage){
+      return this.$refs.confirm.showConfirm(confirmMessage);
     }
   },
   mounted: async function () {
@@ -185,6 +191,8 @@ export default {
       this.descuento.cantidad=response.data.datos[0].cantidad_req
       this.descuento.porcentaje =parseInt(response.data.datos[0].porcentaje).toFixed(0)
     }
+
+    console.log(this.confirm("seguro"));
   },
 };
 </script>
