@@ -3,19 +3,18 @@
         <h2 class="formulario_tittle">Fotos del producto:</h2>
         <input type="file" id="files" ref="files" accept="image/*" multiple @change="handleFilesUpload()" class="images_input" />
         <div class="imagenes_container">
-            <div v-for="(image, key) in pics" :key="key" :class="`imagenes_list ${key == 0 ? 'imagenes_list-first' : ''}`" >
-                <img class="imagenes_preview" :src="pics.slice(key, key+1)" v-bind:ref="'image' + parseInt(key)" :height="key == 0 ? '360px' : '200px'" />
+            <div v-for="(image, key) in image64" :key="key" :class="`imagenes_list ${key == 0 ? 'imagenes_list-first' : ''}`" >
+                <img class="imagenes_preview" :src="image64[key]" v-bind:ref="'image' + parseInt(key)" :height="key == 0 ? '360px' : '200px'" />
                 <span class="imagenes_remove" v-on:click="removeFile(key, 3)">X</span>
             </div>
             <template v-for="(button, index) in 3">
-                <div :key="'image' + index" class="images_container-button" v-if="image64.length <= index + 1">
+                <div :key="'image' + (index)" class="images_container-button" v-if="image64.length <= index + 1">
                     <button @click="addFiles()" class="add_imagenes">
                         <span class="images_container-button">+</span>
                     </button>
                 </div>
             </template>
         </div>
-
         <span class="formulario_check-error" v-if="!$v.image64.required">Faltan fotografias</span>
         <span class="formulario_check-error" v-if="!$v.image64.maxLength">No se aceptan mas de 4 imagenes</span>
     </section>
@@ -25,11 +24,10 @@
 import { required, maxLength } from 'vuelidate/lib/validators'
 export default {
     name: 'EditImages',
-    props: ["pics", "name"],
     data() {
         return {
             files: [],
-            image64: this.pics,
+            image64: [],
         }
     },
     validations: {
@@ -48,13 +46,6 @@ export default {
             for (var i = 0; i < rep; i++) {
                 let arch = uploadedFiles[i]
                 if (/\.(jpe?g|png)$/i.test(arch.name)) {
-                    for (var j = 0; j < this.files.length; j++) {
-                        if (arch.name == this.files[j].name) {
-                            alert(arch.name + ' ya fue subido')
-                            this.removeFile(this.files.length + i, 1)
-                            return
-                        }
-                    }
                     if (arch.size > 1024 * 1024) {
                         alert(arch.name + ' es muy pesado (> 1MB)')
                         this.removeFile(this.files.length + i, 1)
@@ -81,8 +72,7 @@ export default {
                                     } else {
                                         this.createBase64Image(arch)
                                         this.files.push(arch)
-                                        this.getImagePreviews()
-                                        this.$emit('sendimages', this.image64)
+                                        this.$emit("sendimages", this.image64)
                                     }
                                 }
                             }
@@ -91,21 +81,6 @@ export default {
                     }
                 } else {
                     alert(arch.name + ' no es un archivo jpg o png')
-                }
-            }
-        },
-        getImagePreviews() {
-            for (let i = 0; i < this.files.length; i++) {
-                if (/\.(jpe?g|png)$/i.test(this.files[i].name)) {
-                    let reader = new FileReader()
-                    reader.addEventListener(
-                        'load',
-                        function () {
-                            this.$refs['image' + parseInt(i)][0].src = reader.result
-                        }.bind(this),
-                        false
-                    )
-                    reader.readAsDataURL(this.files[i])
                 }
             }
         },
@@ -127,9 +102,16 @@ export default {
                 this.image64.push(e.target.result)
             }
         },
+        convertToBase64() {
+            this.image64 = this.image64.map(
+                (imagen) => `data:image/[jpg/png];base64,${imagen.imagen}`
+            );
+        },
     },
     mounted: async function () {
-
+        const response = (await this.$http.get(`/images/${this.$route.params.id}?cantidad=1`)).data.datos;
+        this.image64=response;
+        this.convertToBase64();
     },
     
 }

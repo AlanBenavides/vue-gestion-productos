@@ -447,6 +447,14 @@ export default {
         throw new Error("El nombre del producto esta repetido");
       }
     },
+    async sendImage(productId) {
+      this.images.forEach(async (image) => {
+        await this.$http.put(`images`, {
+          cod_prod: productId,
+          imagen: image,
+        });
+      });
+    },
     transformDate1(value) {
       const date = new Date(value);
      

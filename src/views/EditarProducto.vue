@@ -4,7 +4,7 @@
 
     <div class="edicion_container">
       <EditForm class="edicion_form"  :datos="product.datos[0]" />
-      <EditImages @sendimages="passImages($event)" :name="product.datos[0].nombre_prod" :pics="imagenes"/>
+      <EditImages @sendimages="passImages($event)" />
     </div>
   </div>
 </template>
@@ -29,29 +29,12 @@ export default {
         ],
       },
       images: [],
-      imagenes: [1],
     };
   },
   methods: {
     passImages(images) {
       this.images = images;
     },
-    convertToBase64() {
-      this.imagenes = this.imagenes.map(
-        (imagen) => `data:image/[jpg/png];base64,${imagen.imagen}`
-      );
-    },
-  },
-  mounted: async function () {
-    const response1 = await this.$http.get(
-      `/products/${this.$route.params.id}`
-    );
-    const response2 = await this.$http.get(
-      `/images/${this.$route.params.id}?cantidad=4`
-    );
-    this.product = response1.data;
-    this.imagenes = response2.data.datos;
-    this.convertToBase64();
   },
 }
 </script>
