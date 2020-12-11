@@ -7,7 +7,10 @@
         @reload-page="reloadPage()"
         :itemtype="itemTypeSelected"
       />
-      <Short class="admin_productos-products" @itemtype="itemTypeSelected=$event"/>
+      <Short
+        class="admin_productos-products"
+        @itemtype="itemTypeSelected = $event"
+      />
     </div>
   </section>
 </template>
@@ -22,12 +25,12 @@ export default {
     Options,
     Short,
   },
-  data(){
-    return{
-      itemTypeSelected: ''
-    }
+  data() {
+    return {
+      itemTypeSelected: "",
+    };
   },
-   methods: {
+  methods: {
     reloadPage() {
       location.reload();
     },
@@ -42,9 +45,9 @@ export default {
 }
 
 .admin_productos-title {
-  font-size: 25px;
+  font-size: 40px;
   font-weight: 700;
-  color: var(--primary-color);
+  color: #42b983;
   margin-bottom: 4rem;
 }
 </style>

@@ -41,7 +41,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - Arévalo Ferrufino Juan Carlos
 - Benavides Alvarez Alan Bruno
 - Encinas Boza Geovanny Brian
-- Machado Álvaro Dennis
 - Torrico Rosas Britany
-- Ugarte García Richard
 - Zurita Gómez Gabriel
