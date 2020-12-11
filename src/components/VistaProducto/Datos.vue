@@ -41,7 +41,6 @@
         {{ datos.descripcion }}
       </p>
     </div>
-   
   </section>
 </template>
 
@@ -79,7 +78,7 @@ export default {
   background-color: var(--background);
   padding: 0.5rem 2rem;
   padding-bottom: 3rem;
-  border-radius: 15px;
+  border-radius: var(--border-radius);
 }
 
 .datos_resaltados {

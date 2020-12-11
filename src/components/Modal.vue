@@ -73,6 +73,6 @@ export default {
 
 .modal-dialog {
   width: 400px;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
 }
 </style>

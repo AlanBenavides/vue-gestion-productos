@@ -64,7 +64,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   border: 1px solid #777;
-  border-radius: 12px;
+  border-radius: var(--border-radius);
   margin: 1rem;
 }
 

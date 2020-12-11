@@ -354,10 +354,10 @@ export default {
         throw new Error("El nombre de la promoción esta repetido");
       }
     },
-    parseDate(dat){
+    parseDate(dat) {
       const date = new Date(dat);
-      return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-    }
+      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    },
   },
   computed: {
     isAllValid() {
@@ -366,8 +366,10 @@ export default {
         : "";
     },
   },
-  async mounted(){
-    const response = await this.$http.get(`/promotions/${this.$store.state.idSelected[0]}`);
+  async mounted() {
+    const response = await this.$http.get(
+      `/promotions/${this.$store.state.idSelected[0]}`
+    );
     const datos = response.data.datos;
     this.promocion.nombre_prom = datos[0].nombr_prom;
     this.promocion.descripcion = datos[0].descrip_prom;
@@ -375,7 +377,7 @@ export default {
     this.promocion.cantidad = datos[0].cantidad_prom;
     this.promocion.fecha_inicio = this.parseDate(datos[0].fecha_ini);
     this.promocion.fecha_fin = this.parseDate(datos[0].fecha_fin);
-  }
+  },
 };
 </script>
 
@@ -409,7 +411,7 @@ export default {
 .formulario select {
   border: none;
   border: 2px solid #8b8b8b;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   padding: 5px 7px;
 }
 

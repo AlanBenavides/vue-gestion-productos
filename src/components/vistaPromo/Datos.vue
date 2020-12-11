@@ -5,14 +5,14 @@
         Precio:
         <span class="datos_resaltados datos_resaltados-block datos_precio"
           >{{ datos.precio_prom }}Bs.</span
-        >  
-     </p>
-     <p class="datos_info">
+        >
+      </p>
+      <p class="datos_info">
         Cantidad:
         {{ datos.cantidad_prom }}
         <span class="datos_resaltados"> paquete(s)</span>
       </p>
-     <p class="datos_info">
+      <p class="datos_info">
         Valido Hasta:
         <span class="datos_resaltados">{{
           transformDate(datos.fecha_fin)
@@ -23,9 +23,7 @@
         {{ datos.descrip_prom }}
       </p>
       <div>
-          <button  class="formulario_button">
-            Añadir al carrito
-          </button>
+        <button class="formulario_button">Añadir al carrito</button>
       </div>
     </div>
   </section>
@@ -39,14 +37,13 @@ export default {
     return {};
   },
   methods: {
-        transformDate(value) {
+    transformDate(value) {
       const date = new Date(value);
       return `${date.getDate() + 1}/${
         date.getMonth() + 1
       }/${date.getFullYear()}`;
     },
   },
-  
 };
 </script>
 <style scoped>
@@ -65,7 +62,7 @@ export default {
   background-color: var(--background);
   padding: 0.5rem 2rem;
   padding-bottom: 3rem;
-  border-radius: 15px;
+  border-radius: var(--border-radius);
 }
 
 .datos_resaltados {

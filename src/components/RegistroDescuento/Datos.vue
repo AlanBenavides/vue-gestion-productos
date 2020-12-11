@@ -82,10 +82,19 @@
         </div>
         <div>
           <br />
-          <button :disabled="$v.descuento.$invalid" class="formulario_button" :class="$v.descuento.$invalid ? 'button_disabled': ''">
+          <button
+            :disabled="$v.descuento.$invalid"
+            class="formulario_button"
+            :class="$v.descuento.$invalid ? 'button_disabled' : ''"
+          >
             Aplicar descuento
           </button>
-          <button :disabled="!descuento.hayDescuento" @click="deleteDiscount($event);" class="formulario_button" :class="!descuento.hayDescuento ? 'button_disabled': ''">
+          <button
+            :disabled="!descuento.hayDescuento"
+            @click="deleteDiscount($event)"
+            class="formulario_button"
+            :class="!descuento.hayDescuento ? 'button_disabled' : ''"
+          >
             Eliminar descuento
           </button>
         </div>
@@ -163,9 +172,11 @@ export default {
         throw new Error("Cantidad de productos insuficiente ");
       }
     },
-    async deleteDiscount(e){
+    async deleteDiscount(e) {
       e.preventDefault();
-      if(confirm("¿Seguro que quiere eliminar el descuento a este producto?")){
+      if (
+        confirm("¿Seguro que quiere eliminar el descuento a este producto?")
+      ) {
         try {
           await this.$http.delete(`discounts/${this.datos.cod_prod}`);
           alert("Eliminación exitosa");
@@ -176,14 +187,16 @@ export default {
           alert(error);
         }
       }
-    }
+    },
   },
   mounted: async function () {
     const response = await this.$http.get(`discounts/${this.$route.params.id}`);
     this.descuento.hayDescuento = response.data.datos.length > 0;
-    if(this.descuento.hayDescuento){
-      this.descuento.cantidad=response.data.datos[0].cantidad_req
-      this.descuento.porcentaje =parseInt(response.data.datos[0].porcentaje).toFixed(0)
+    if (this.descuento.hayDescuento) {
+      this.descuento.cantidad = response.data.datos[0].cantidad_req;
+      this.descuento.porcentaje = parseInt(
+        response.data.datos[0].porcentaje
+      ).toFixed(0);
     }
   },
 };
@@ -205,7 +218,7 @@ export default {
   background-color: var(--background);
   padding: 0.5rem 2rem;
   padding-bottom: 3rem;
-  border-radius: 15px;
+  border-radius: var(--border-radius);
 }
 
 .datos_resaltados {

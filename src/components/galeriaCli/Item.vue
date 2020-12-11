@@ -1,28 +1,41 @@
 <template>
   <div class="item">
     <router-link :to="this.route">
-      <img class="img-item" :src="imagen" :alt="nombre"/>
+      <img class="img-item" :src="imagen" :alt="nombre" />
     </router-link>
     <h5 class="one-line">{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
-    <p v-if="porcentaje != null">{{porcentaje}} % de descuento por {{cantidad_req}} Ud.</p>
     <p v-if="porcentaje != null">
-      <strike>{{ precio }} Bs.</strike>   <strong id="precio-nuevo">{{ (precio - (precio * (porcentaje/100))).toFixed(2) }} Bs</strong>
+      {{ porcentaje }} % de descuento por {{ cantidad_req }} Ud.
     </p>
-    <p class="three-lines">Descripcion:<br/>{{ descripcion }}</p>
+    <p v-if="porcentaje != null">
+      <strike>{{ precio }} Bs.</strike>
+      <strong id="precio-nuevo"
+        >{{ (precio - precio * (porcentaje / 100)).toFixed(2) }} Bs</strong
+      >
+    </p>
+    <p class="three-lines">Descripcion:<br />{{ descripcion }}</p>
   </div>
 </template>
-
 
 <script>
 //import { Router } from 'express';
 export default {
   name: "Item",
-  props: ["id_product", "nombre", "precio", "descripcion", "fecha", "tipo", "porcentaje", "cantidad_req"],
+  props: [
+    "id_product",
+    "nombre",
+    "precio",
+    "descripcion",
+    "fecha",
+    "tipo",
+    "porcentaje",
+    "cantidad_req",
+  ],
   data: function () {
     return {
       imagen: "",
-      route: ""
+      route: "",
     };
   },
   methods: {
@@ -33,22 +46,31 @@ export default {
       const year = date.getFullYear();
       return `${day}-${month}-${year}`;
     },
-            abrirModal(){
-                this.modal=1;
-            },
-            cerrarModal(){
-                this.modal=0;
-            },
+    abrirModal() {
+      this.modal = 1;
+    },
+    cerrarModal() {
+      this.modal = 0;
+    },
   },
   mounted: async function () {
-    let query = this.tipo == "producto" || this.tipo == "descuento" ? "images/": "promotions/image/"
+    let query =
+      this.tipo == "producto" || this.tipo == "descuento"
+        ? "images/"
+        : "promotions/image/";
     query += `${this.id_product}?cantidad=1`;
     const response = await this.$http.get(query);
 
-    const imageURL = this.tipo == "producto" || this.tipo == "descuento" ? response.data.datos[0].imagen : response.data.datos[0].imagen_prom;
+    const imageURL =
+      this.tipo == "producto" || this.tipo == "descuento"
+        ? response.data.datos[0].imagen
+        : response.data.datos[0].imagen_prom;
     this.imagen = "data:image/jpg;base64," + imageURL;
 
-    this.route = this.tipo == "producto" || this.tipo == "descuento" ? `/producto/${this.id_product}` : `/vista_promo/${this.id_product}`
+    this.route =
+      this.tipo == "producto" || this.tipo == "descuento"
+        ? `/producto/${this.id_product}`
+        : `/vista_promo/${this.id_product}`;
   },
 };
 </script>
@@ -84,35 +106,34 @@ strike {
   text-overflow: ellipsis;
 }
 
-.three-lines{
+.three-lines {
   line-height: 1.5em;
   height: 4.5em;
   word-wrap: break-word;
   overflow: hidden;
 }
 
-#precio-nuevo{
-  color: #2AC817;
+#precio-nuevo {
+  color: #2ac817;
 }
 
 strike {
   color: red;
 }
 
-button{
+button {
   border: none;
 }
-    .modal-content{
-        width: 100% !important;
-        position: absolute !important;
-    }
-    .mostrar{
-        display: list-item !important;
-        opacity: 1 !important;
-        position: absolute !important;
-        background-color: #3c29297a !important;
-    }
-
+.modal-content {
+  width: 100% !important;
+  position: absolute !important;
+}
+.mostrar {
+  display: list-item !important;
+  opacity: 1 !important;
+  position: absolute !important;
+  background-color: #3c29297a !important;
+}
 
 .datos {
   text-align: left;
@@ -129,7 +150,7 @@ button{
   background-color: var(--background);
   padding: 0.5rem 2rem;
   padding-bottom: 3rem;
-  border-radius: 15px;
+  border-radius: var(--border-radius);
   margin-left: 20rem;
 }
 
@@ -166,7 +187,7 @@ button{
   background-color: var(--background);
   height: 400px;
   width: 300px;
-  border-radius: 15px;
+  border-radius: var(--border-radius);
   display: flex;
   margin-bottom: 1rem;
   justify-content: center;
@@ -174,7 +195,7 @@ button{
   float: left;
 }
 
-#precio-nuevo{
-  color: #2AC817;
+#precio-nuevo {
+  color: #2ac817;
 }
 </style>

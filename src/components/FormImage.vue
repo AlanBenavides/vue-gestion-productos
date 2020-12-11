@@ -183,9 +183,9 @@ export default {
 
 .imagenes_preview {
   border: 1px solid #8b8b8b;
-  border-radius: 15px;
-  max-width:95%;
-  max-height:auto;
+  border-radius: var(--border-radius);
+  max-width: 95%;
+  max-height: auto;
   align-items: center;
 }
 
@@ -201,7 +201,7 @@ export default {
   width: 180px;
   background: #edf0f4;
   border: 1px solid #8b8b8b;
-  border-radius: 15px;
+  border-radius: var(--border-radius);
   font-weight: 300;
   font-size: 70px;
   color: #8b8b8b;

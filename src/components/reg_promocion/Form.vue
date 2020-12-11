@@ -19,10 +19,7 @@
             v-model="promotion.promName"
           />
         </label>
-        <div
-          class="formulario_check-error"
-          v-if="!$v.promotion.promName.alpha"
-        >
+        <div class="formulario_check-error" v-if="!$v.promotion.promName.alpha">
           No se aceptan caracteres especiales.
         </div>
         <div
@@ -223,9 +220,7 @@ const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 
 const validateDate = (value) => {
   const todayDate = new Date();
-  const threeYearsAfter = new Date().setFullYear(
-    todayDate.getFullYear() + 3
-  );
+  const threeYearsAfter = new Date().setFullYear(todayDate.getFullYear() + 3);
   const inputDate = new Date(Date.parse(value));
   inputDate.setDate(inputDate.getDate() + 1);
   return todayDate <= inputDate && inputDate < threeYearsAfter;
@@ -243,7 +238,6 @@ const validateEndDate = (value, vm) => {
 };
 
 const validateDecimals = (value) => {
-
   if (String(value).indexOf(".") > 0) {
     const parts = String(value).split(".");
     const dato = String(parts[1]);
@@ -394,7 +388,7 @@ export default {
 .formulario select {
   border: none;
   border: 2px solid #8b8b8b;
-  border-radius: 6px;
+  border-radius: var(--border-radius);
   padding: 5px 7px;
 }
 

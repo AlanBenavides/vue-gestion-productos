@@ -54,7 +54,7 @@ input[type="search"]::-webkit-search-results-decoration {
 .search_input {
   border: 1px solid black;
   border-left: none;
-  border-radius: 15px;
+  border-radius: var(--border-radius);
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   width: 100%;
