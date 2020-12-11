@@ -85,25 +85,27 @@
           <button :disabled="$v.descuento.$invalid" class="formulario_button" :class="$v.descuento.$invalid ? 'button_disabled': ''">
             Aplicar descuento
           </button>
-          <button :disabled="!descuento.hayDescuento" @click="deleteDiscount($event);" class="formulario_button" :class="!descuento.hayDescuento ? 'button_disabled': ''">
+          <button :disabled="!descuento.hayDescuento" @click="confirmDeletion($event);" class="formulario_button" :class="!descuento.hayDescuento ? 'button_disabled': ''">
             Eliminar descuento
           </button>
         </div>
       </form>
     </div>
-    <Confirm ref="confirm"></Confirm>
+    <Alert ref="alert"></Alert>
+    <Confirm ref="confirm" @taken-decision="executeAction($event,deleteDiscount)"></Confirm>
   </section>
 </template>
 
 <script>
 import Confirm from "@/components/Confirm.vue"
+import Alert from "@/components/Alert.vue"
 import { between, helpers, required } from "vuelidate/lib/validators";
 const alpha2 = helpers.regex("alpha1", /^[0-9\s]*$/);
 
 export default {
   name: "Datos",
   props: ["datos"],
-  components: {Confirm},
+  components: {Confirm, Alert},
   data: function () {
     return {
       descuento: {
@@ -139,10 +141,10 @@ export default {
       try {
         if (!this.$v.descuento.$invalid) {
           await this.sendDataDiscounts();
-          alert("Descuento creado exitosamente");
+          this.alert("success","Descuento creado exitosamente");
           this.descuento.hayDescuento = true;
         } else {
-          alert("Rellene todos los datos correctamente");
+          this.alert("warning","Rellene todos los datos correctamente");
         }
       } catch (error) {
         alert(error);
@@ -166,22 +168,31 @@ export default {
         throw new Error("Cantidad de productos insuficiente ");
       }
     },
-    async deleteDiscount(e){
-      e.preventDefault();
-      if(confirm("¿Seguro que quiere eliminar el descuento a este producto?")){
-        try {
-          await this.$http.delete(`discounts/${this.datos.cod_prod}`);
-          alert("Eliminación exitosa");
-          this.descuento.porcentaje = "";
-          this.descuento.cantidad = null;
-          this.descuento.hayDescuento = false;
-        } catch (error) {
-          alert(error);
-        }
+    async deleteDiscount(){
+      try {
+        await this.$http.delete(`discounts/${this.datos.cod_prod}`);
+        this.alert("success","Eliminación exitosa");
+        this.descuento.porcentaje = "";
+        this.descuento.cantidad = null;
+        this.descuento.hayDescuento = false;
+      } catch (error) {
+        alert(error);
       }
     },
+    confirmDeletion(defaultEvent){
+      defaultEvent.preventDefault();
+      this.confirm("¿Seguro que quiere eliminar el descuento de este producto?");
+    },
     confirm(confirmMessage){
-      return this.$refs.confirm.showConfirm(confirmMessage);
+      this.$refs.confirm.showConfirm(confirmMessage);  
+    },
+    executeAction(takenDecision, functionToExecute){
+      if(takenDecision){
+        functionToExecute();
+      }
+    },
+    alert(alertType, alertMessage){
+      this.$refs.alert.showAlert(alertType, alertMessage);
     }
   },
   mounted: async function () {
@@ -191,8 +202,6 @@ export default {
       this.descuento.cantidad=response.data.datos[0].cantidad_req
       this.descuento.porcentaje =parseInt(response.data.datos[0].porcentaje).toFixed(0)
     }
-
-    console.log(this.confirm("seguro"));
   },
 };
 </script>

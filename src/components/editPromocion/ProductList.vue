@@ -16,6 +16,7 @@
                 :max="product.cantidad"
                 v-model.number="cant_products[product.cod_prod][0]"
                 @change="upCounts(product.cod_prod)"
+                onkeydown="return false"
                 />
             </div>
         </div>
