@@ -72,9 +72,9 @@ export default {
       return this.$store.state.idSelected[1] == null;
     },
     canDeleteProm() {
-      if (this.$store.state.idSelected[0] == -1) return true;
-      else if (this.tipo == "products") return true;
-      return this.$store.state.idSelected[1] == null;
+      if (this.$store.state.idSelected[0] == -1 && this.itemtype === "promotions") return true;
+      else if (this.itemtype === "products") return true;
+      return false;
     },
     isProduct() {
       if (this.$store.state.idSelected[0] != -1 && this.itemtype === "products")
@@ -100,6 +100,7 @@ export default {
         if (opcion == true) {
           await this.$http.delete(`promotions/${idprom}`);
           alert("La promocion fue eliminada");
+          this.$emit("reload-page");
         } else {
           alert("Se Cancelo la eliminacion");
         }
