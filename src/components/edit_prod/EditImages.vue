@@ -4,7 +4,7 @@
         <input type="file" id="files" ref="files" accept="image/*" multiple @change="handleFilesUpload()" class="images_input" />
         <div class="imagenes_container">
             <div v-for="(image, key) in image64" :key="key" :class="`imagenes_list ${key == 0 ? 'imagenes_list-first' : ''}`" >
-                <img class="imagenes_preview" :src="image64[key]" v-bind:ref="'image' + parseInt(key)" :height="key == 0 ? '360px' : '200px'" />
+                <img class="imagenes_preview" :src="image64.slice(key,key+1)" v-bind:ref="'image' + parseInt(key)" :height="key == 0 ? '360px' : '200px'"/>
                 <span class="imagenes_remove" v-on:click="removeFile(key, 3)">X</span>
             </div>
             <template v-for="(button, index) in 3">
@@ -35,6 +35,9 @@ export default {
             required,
             maxLength: maxLength(4),
         },
+        files: {
+            maxLength: maxLength(4),
+        },
     },
     methods: {
         addFiles() {
@@ -48,7 +51,6 @@ export default {
                 if (/\.(jpe?g|png)$/i.test(arch.name)) {
                     if (arch.size > 1024 * 1024) {
                         alert(arch.name + ' es muy pesado (> 1MB)')
-                        this.removeFile(this.files.length + i, 1)
                         return
                     } else {
                         let reader = new FileReader()
@@ -58,22 +60,13 @@ export default {
                             img.onload = () => {
                                 if (img.width < 640 || img.width > 1366) {
                                     alert('El ancho de ' + arch.name + ' debe estar entre 640px y 1366px')
-                                    this.removeFile(this.files.length + i, 1)
                                     return
                                 } else if (img.height < 360 || img.height > 768) {
                                     alert('El alto de ' + arch.name + ' debe estar entre 360px y 768px')
-                                    this.removeFile(this.files.length + i, 1)
                                     return
                                 } else {
-                                    if (this.files.length >= 4) {
-                                        alert('No puede ingresar más de 4 imagenes')
-                                        this.removeFile(this.files.length + i, 1)
-                                        return
-                                    } else {
                                         this.createBase64Image(arch)
-                                        this.files.push(arch)
                                         this.$emit("sendimages", this.image64)
-                                    }
                                 }
                             }
                             img.src = evt.target.result
@@ -87,12 +80,6 @@ export default {
         removeFile(key, type) {
             if (type == 3) {
                 this.image64.splice(key, 1)
-            }else{
-                this.files.splice(key, 1)
-                this.getImagePreviews()
-                if (type == 2) {
-                    this.image64.splice(key, 1)
-                }
             }
         },
         createBase64Image(fileObject) {
@@ -102,16 +89,13 @@ export default {
                 this.image64.push(e.target.result)
             }
         },
-        convertToBase64() {
-            this.image64 = this.image64.map(
-                (imagen) => `data:image/[jpg/png];base64,${imagen.imagen}`
-            );
-        },
     },
     mounted: async function () {
         const response = (await this.$http.get(`/images/${this.$route.params.id}?cantidad=1`)).data.datos;
         this.image64=response;
-        this.convertToBase64();
+        this.image64 = this.image64.map(
+                (imagen) => `data:image/[jpg/png];base64,${imagen.imagen}`
+            );
     },
     
 }

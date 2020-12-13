@@ -3,8 +3,8 @@
     <h1 class="edicion_tittle">Editar Producto</h1>
 
     <div class="edicion_container">
-      <EditForm class="edicion_form"  :datos="product.datos[0]" />
       <EditImages @sendimages="passImages($event)" />
+      <EditForm class="edicion_form" :images="images"/>
     </div>
   </div>
 </template>
@@ -21,13 +21,6 @@ export default {
   },
   data: function () {
     return {
-      product: {
-        datos: [
-          {
-            nombre_prod: "",
-          },
-        ],
-      },
       images: [],
     };
   },

@@ -2,8 +2,12 @@
   <section>
     <h1 class="admin_productos-title">Administración de productos</h1>
     <div class="admin_productos-container">
-      <Options class="admin_productos-options" :tipo="tipoSelect" />
-      <Short class="admin_productos-products" @tipo="tipoSelect=$event"/>
+      <Options
+        class="admin_productos-options"
+        @reload-page="reloadPage()"
+        :itemtype="itemTypeSelected"
+      />
+      <Short class="admin_productos-products" @itemtype="itemTypeSelected=$event"/>
     </div>
   </section>
 </template>
@@ -20,9 +24,14 @@ export default {
   },
   data(){
     return{
-      tipoSelect: ''
+      itemTypeSelected: ''
     }
-  }
+  },
+   methods: {
+    reloadPage() {
+      location.reload();
+    },
+  },
 };
 </script>
 

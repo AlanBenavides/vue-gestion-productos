@@ -11,11 +11,16 @@
         </p>
         <div>
           <p>Descuento en porcentaje:</p>
-          <input type="text" v-model="descuento.porcentaje" :style="
+          <input
+            type="text"
+            v-model="descuento.porcentaje"
+            :style="
               $v.descuento.porcentaje.$invalid
                 ? 'border:2px solid red '
                 : 'border:2px solid green '
-            " /> %
+            "
+          />
+          %
 
           <br />
           <div
@@ -38,11 +43,16 @@
           </div>
           <br />
           <p>Unidades a comprar:</p>
-          <input name="numero" type="text" v-model="descuento.cantidad" :style="
+          <input
+            name="numero"
+            type="text"
+            v-model="descuento.cantidad"
+            :style="
               $v.descuento.cantidad.$invalid
                 ? 'border:2px solid red '
                 : 'border:2px solid green '
-            " />
+            "
+          />
           <br />
           <div
             class="formulario_check-error"
@@ -72,8 +82,11 @@
         </div>
         <div>
           <br />
-          <button :disabled="$v.descuento.$invalid" class="formulario_button">
+          <button :disabled="$v.descuento.$invalid" class="formulario_button" :class="$v.descuento.$invalid ? 'button_disabled': ''">
             Aplicar descuento
+          </button>
+          <button :disabled="!descuento.hayDescuento" @click="deleteDiscount($event);" class="formulario_button" :class="!descuento.hayDescuento ? 'button_disabled': ''">
+            Eliminar descuento
           </button>
         </div>
       </form>
@@ -94,7 +107,6 @@ export default {
         porcentaje: "",
         cantidad: null,
         hayDescuento: false,
-        
       },
     };
   },
@@ -125,6 +137,7 @@ export default {
         if (!this.$v.descuento.$invalid) {
           await this.sendDataDiscounts();
           alert("Descuento creado exitosamente");
+          this.descuento.hayDescuento = true;
         } else {
           alert("Rellene todos los datos correctamente");
         }
@@ -134,7 +147,7 @@ export default {
     },
     async sendDataDiscounts() {
       try {
-        if (this.hayDescuento) {
+        if (this.descuento.hayDescuento) {
           await this.$http.put(`discounts/${this.datos.cod_prod}`, {
             porcentaje: this.descuento.porcentaje,
             cantidad_req: this.descuento.cantidad,
@@ -150,17 +163,28 @@ export default {
         throw new Error("Cantidad de productos insuficiente ");
       }
     },
+    async deleteDiscount(e){
+      e.preventDefault();
+      if(confirm("¿Seguro que quiere eliminar el descuento a este producto?")){
+        try {
+          await this.$http.delete(`discounts/${this.datos.cod_prod}`);
+          alert("Eliminación exitosa");
+          this.descuento.porcentaje = "";
+          this.descuento.cantidad = null;
+          this.descuento.hayDescuento = false;
+        } catch (error) {
+          alert(error);
+        }
+      }
+    }
   },
   mounted: async function () {
     const response = await this.$http.get(`discounts/${this.$route.params.id}`);
-    this.hayDescuento = response.data.datos.length > 0;
-    this.descuento.cantidad=response.data.datos[0].cantidad_req
+    this.descuento.hayDescuento = response.data.datos.length > 0;
+    if(this.descuento.hayDescuento){
+      this.descuento.cantidad=response.data.datos[0].cantidad_req
       this.descuento.porcentaje =parseInt(response.data.datos[0].porcentaje).toFixed(0)
-
-     
-    console.log(typeof this.descuento.porcentaje);
-    console.log(response);
-     console.log(this.descuento);
+    }
   },
 };
 </script>
@@ -203,15 +227,20 @@ export default {
   font-size: 1.4rem;
 }
 .formulario_button {
-  margin: auto;
-  display: block;
+  margin: 5px;
+  display: inline-block;
   background-color: rgb(51, 51, 51);
-  padding: 13px 40px;
+  padding: 13px 30px;
   color: white;
   font-size: 20px;
   font-weight: 700;
   text-align: right;
 }
+
+.button_disabled {
+  background-color: gray;
+}
+
 .formulario_check-error {
   color: red;
 }

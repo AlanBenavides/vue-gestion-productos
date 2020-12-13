@@ -338,24 +338,23 @@ const validate_decimales = (value) => {
 
 export default {
   name: "EditForm",
-  props: ["datos"],
   data() {
     return {
       disabled: false,
       producto: {
-        nombre_prod: this.datos.nombre_prod,
-        descripcion: "",//this.datos.descripcion,
-        categoria: this.datos.categoria,
-        precio_unid: this.datos.precio_unid,
-        unidad: this.datos.unidad, //for chech form
-        cantidad: this.datos.cantidad,
-        peso: null, //this.datos.peso,
-        unidad_med: null,//this.datos.unidad_med,
-        fecha_venc: "",//this.datos.fecha_venc,
+        nombre_prod: null,
+        descripcion: "",
+        categoria: null,
+        precio_unid: null,
+        unidad: null, //for chech form
+        cantidad: null,
+        peso: null,
+        unidad_med: null,
+        fecha_venc: "",
       },
     };
   },
-  
+  props: ["images"],
   validations: {
     producto: {
       nombre_prod: {
@@ -448,11 +447,14 @@ export default {
       }
     },
     async sendImage(productId) {
+      let index=0
       this.images.forEach(async (image) => {
-        await this.$http.put(`images`, {
-          cod_prod: productId,
+        await this.$http.put("images", {
+          id: productId,
+          num_pic: index,
           imagen: image,
         });
+        index++
       });
     },
     transformDate1(value) {
