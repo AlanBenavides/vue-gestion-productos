@@ -2,7 +2,8 @@
     <div class="image-container">
         <p>Foto de la promoción</p>
         <div class="image-add">
-            <img class="img-prom" :src="imagen"  @click="addFiles()" alt="">
+            <img class="img-prom" :src="imagen" alt="">
+            <img class="edit-icon" src="@/assets/edit-imagen.png"  @click="addFiles()" alt="">
         </div>
         <input
             type="file"
@@ -106,6 +107,7 @@ export default {
     margin: 32px;
 }
 .image-add{
+    position: relative;
     height: 436px;
     border-radius: 20px;
     background-color: #ECF0F1;
@@ -125,6 +127,24 @@ export default {
 
 .images_input{
     display: none;
+}
+
+.edit-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 500px;
+    max-height: 400px;
+    z-index: 1;
+    border-radius: 20px;
+    opacity: 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: opacity 0.5s;
+}
+
+.edit-icon:hover {
+    opacity: 1;
 }
 
 .button-img {

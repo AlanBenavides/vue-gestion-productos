@@ -16,6 +16,7 @@
                 :max="product.cantidad"
                 v-model.number="cant_products[product.cod_prod][0]"
                 @change="upCounts(product.cod_prod)"
+                onkeydown="return false"
                 />
             </div>
         </div>
@@ -82,10 +83,10 @@ export default {
     },
     async mounted(){
         const response = await this.$http.get(`/promotions/products/${this.$store.state.idSelected[0]}`);
-        const datos = response.data.datos;
+        const datos = response.data.prod;
         let product_previus = {};
         for(let dato of datos){
-            product_previus[dato.cod_prod] = [1/*product_previus.cant_en_prom*/, 10/*product_previus.cantidad*/]
+            product_previus[dato.cod_prod] = [dato.cant_prod, dato.cantidad]
         }
         this.$store.commit("updateGroup", product_previus);
         this.getProducts();
