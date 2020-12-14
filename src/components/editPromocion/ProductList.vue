@@ -29,15 +29,17 @@
         <ModalProduct v-if="this.showModal"></ModalProduct>
         <button class="modl-button term" @click="addProducts()" v-if="this.showModal">Añadir productos</button>
         <button class="modl-button ext" @click="updateProducts()" v-if="this.showModal">X</button>
+        <Alert ref="alert"></Alert>
     </div>
 </template>
 <script>
 import ModalProduct from "@/components/reg_promocion/ModalProduct.vue";
 import Item from "@/components/admin_prod/Item.vue";
+import Alert from "@/components/Alert.vue";
 
 export default {
     name: "ProductList",
-    components: {ModalProduct, Item},
+    components: {ModalProduct, Item, Alert},
     data: () => {
         return {
             showModal: false,
@@ -50,9 +52,9 @@ export default {
             if(Object.keys(this.$store.state.groupIDselected).length > 0){
                 this.getProducts();
                 this.showModal = !this.showModal;
-                alert("Productos añadidos.");
+                this.alert("success","Productos añadidos.");
             }else{
-                alert("No tienes productos seleccionados.");
+                this.alert("warning","No tienes productos seleccionados.");
             }
         },
         async getProducts(){
@@ -79,6 +81,9 @@ export default {
         },
         upCounts(id){
             this.$store.state.groupIDselected[id] = this.cant_products[id]
+        },
+        alert(alertType, alertMessage){
+            this.$refs.alert.showAlert(alertType, alertMessage);
         }
     },
     async mounted(){

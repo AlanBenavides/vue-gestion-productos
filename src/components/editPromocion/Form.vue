@@ -319,7 +319,7 @@ export default {
     async submitForm() {
       try {
         if (!this.$v.promocion.$invalid) {
-          if (this.image == "") alert("Registra la imagen de la promoción");
+          if (this.image == "") this.alert("warning","Registra la imagen de la promoción");
           else {
             for (let id in this.$store.state.groupIDselected) {
               if (
@@ -327,7 +327,7 @@ export default {
                   this.$store.state.groupIDselected[id][0] >
                 this.$store.state.groupIDselected[id][1]
               ) {
-                alert("No existen suficientes productos para esta promoción.");
+                this.alert("warning","No existen suficientes productos para esta promoción.");
                 return;
               }
             }
@@ -335,7 +335,7 @@ export default {
             this.alert("success","Datos de la promoción editados exitosamente");
           }
         } else {
-          alert("Rellene todos los datos correctamente");
+          this.alert("warning","Rellene todos los datos correctamente");
         }
       } catch (error) {
         this.alert("warning",error);

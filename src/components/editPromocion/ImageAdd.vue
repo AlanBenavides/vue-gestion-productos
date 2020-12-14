@@ -16,14 +16,17 @@
         <span class="formulario_check-error" v-if="!$v.image.required">
             Coloque una fotografia
         </span>
+        <Alert ref="alert"></Alert>
     </div>
 </template>
 
 <script>
+import Alert from "@/components/Alert.vue";
 import { required } from "vuelidate/lib/validators";
 
 export default {
     name: "ImageAdd",
+    components: {Alert},
     data() {
         return {
             image: ''
@@ -47,7 +50,7 @@ export default {
             if (/\.(jpe?g|png)$/i.test(arch.name)) {
             
                 if (arch.size > 1024 * 1024) {
-                    alert(arch.name + " es muy pesado (> 1MB)");
+                    this.alert("warning",arch.name + " es muy pesado (> 1MB)");
                     return;
                 } else {
                     let reader = new FileReader();
@@ -55,14 +58,14 @@ export default {
                         let img = new Image();
                         img.onload = () => {
                             if (img.width < 640 || img.width > 1366) {
-                                alert(
+                                this.alert("warning",
                                     "El ancho de " +
                                     arch.name +
                                     " debe estar entre 640px y 1366px"
                                 );
                                 return;
                             } else if (img.height < 360 || img.height > 768) {
-                                alert(
+                                this.alert("warning",
                                     "El alto de " +
                                     arch.name +
                                     " debe estar entre 360px y 768px"
@@ -78,8 +81,11 @@ export default {
                     reader.readAsDataURL(arch);
                 }
             } else {
-                alert(arch.name + " no es un archivo jpg o png");
+                this.alert("warning",arch.name + " no es un archivo jpg o png");
             }
+        },
+        alert(alertType, alertMessage){
+            this.$refs.alert.showAlert(alertType, alertMessage);
         }
     },
     computed: {

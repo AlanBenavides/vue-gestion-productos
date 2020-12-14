@@ -147,7 +147,7 @@ export default {
           this.alert("warning","Rellene todos los datos correctamente");
         }
       } catch (error) {
-        alert(error);
+        this.alert("warning",error);
       }
     },
     async sendDataDiscounts() {
@@ -176,7 +176,7 @@ export default {
         this.descuento.cantidad = null;
         this.descuento.hayDescuento = false;
       } catch (error) {
-        alert(error);
+        this.alert("warning", error);
       }
     },
     confirmDeletion(defaultEvent){

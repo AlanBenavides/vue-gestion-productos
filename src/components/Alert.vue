@@ -30,11 +30,13 @@ export default {
 
 <style scoped>
 .alert {
+  display: block;
   padding: 20px;
   color: white;
   top: 30px;
   right: 0px;
   position: fixed;
+  z-index: 2;
 }
 
 .success {

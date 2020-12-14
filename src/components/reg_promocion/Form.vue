@@ -205,6 +205,7 @@
         Confirmar
       </button>
     </form>
+    <Alert ref="alert"></Alert>
   </div>
 </template>
 
@@ -217,6 +218,7 @@ import {
   between,
   integer,
 } from "vuelidate/lib/validators";
+import Alert from "@/components/Alert.vue";
 
 const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\sáéíóúÁÉÍÓÚ.,:;'`"-]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
@@ -261,6 +263,7 @@ const validateMinProductsCount = (value) => {
 export default {
   name: "Form",
   props: ["image"],
+  components: {Alert},
   data() {
     return {
       disabled: false,
@@ -315,7 +318,7 @@ export default {
     async submitForm() {
       try {
         if (!this.$v.promotion.$invalid) {
-          if (this.image == "") alert("Registra la imagen de la promoción");
+          if (this.image == "") this.alert("warning", "Registra la imagen de la promoción");
           else {
             for (let id in this.$store.state.groupIDselected) {
               if (
@@ -323,18 +326,18 @@ export default {
                   this.$store.state.groupIDselected[id][0] >
                 this.$store.state.groupIDselected[id][1]
               ) {
-                alert("No existen suficientes productos para esta promoción.");
+                this.alert("warning","No existen suficientes productos para esta promoción.");
                 return;
               }
             }
             await this.sendDataProm();
-            alert("Nueva promoción creada exitosamente");
+            this.alert("success","Nueva promoción creada exitosamente");
           }
         } else {
-          alert("Rellene todos los datos correctamente");
+          this.alert("warning","Rellene todos los datos correctamente");
         }
       } catch (error) {
-        alert(error);
+        this.alert("warning",error);
       }
     },
     async sendDataProm() {
@@ -352,6 +355,9 @@ export default {
       } catch (error) {
         throw new Error("El nombre de la promoción esta repetido");
       }
+    },
+    alert(alertType, alertMessage){
+      this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
   computed: {

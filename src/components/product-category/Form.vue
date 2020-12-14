@@ -13,15 +13,18 @@
       pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$"
     />
     <button class="formcategory-button">Confirmar</button>
+    <Alert ref="alert"></Alert>
   </form>
 </template>
 
 <script>
 import { closeOneModal } from "@/services/bootstrap";
+import Alert from "@/components/Alert.vue";
 
 export default {
   name: "formCategory",
   props: ["nombre_cat", "idModal", "cod_cat"],
+  components: {Alert},
   data: function () {
     return {
       nombre: "",
@@ -37,7 +40,7 @@ export default {
         else await this.createCategory();
         this.$emit("get-categories");
       } catch (error) {
-        alert(error);
+        this.alert("warning",error);
       } finally {
         closeOneModal(this.idModal);
       }
@@ -58,6 +61,9 @@ export default {
         throw new Error("La categoria ya existe");
       }
     },
+    alert(alertType, alertMessage){
+      this.$refs.alert.showAlert(alertType, alertMessage);
+    }
   },
 };
 </script>
