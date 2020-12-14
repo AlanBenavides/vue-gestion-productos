@@ -96,6 +96,7 @@ export default {
         this.image64 = this.image64.map(
                 (imagen) => `data:image/[jpg/png];base64,${imagen.imagen}`
             );
+        this.$emit("sendimages", this.image64)
     },
     
 }

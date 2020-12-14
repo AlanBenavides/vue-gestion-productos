@@ -415,7 +415,8 @@ export default {
           if (this.images.length == 0)
             alert("Registra por lo menos una imagen");
           else {
-            const productId = await this.sendDataProduct();
+            const productId = this.$route.params.id;
+            await this.sendDataProduct(productId);
             await this.sendImage(productId);
             alert("Producto creado exitosamente");
           }
@@ -426,9 +427,10 @@ export default {
         alert(error);
       }
     },
-    async sendDataProduct() {
+    async sendDataProduct(productId) {
       try {
-        const response = await this.$http.put("products", {
+        await this.$http.put("products", {
+          id: productId,
           nombre_prod: this.producto.nombre_prod,
           descripcion: this.producto.descripcion,
           categoria: this.producto.categoria,
@@ -441,7 +443,6 @@ export default {
           fecha_venc:
             this.producto.fecha_venc == "" ? null : this.producto.fecha_venc,
         });
-        return response.data[0].cod_prod;
       } catch (error) {
         throw new Error("El nombre del producto esta repetido");
       }
@@ -467,7 +468,6 @@ export default {
   },
    mounted: async function () {
     const response = (await this.$http.get(`products/${this.$route.params.id}`)).data.datos[0];
-    
     this.producto.nombre_prod=response.nombre_prod
     this.producto.descripcion =response.descripcion
     this.producto.categoria=response.nombre_cat
