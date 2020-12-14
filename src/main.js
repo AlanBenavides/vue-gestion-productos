@@ -12,7 +12,6 @@ const store = new Vuex.Store({
   state: {
     idSelected: [-1, 0],
     groupIDselected: {},
-    auth: false,
   },
   mutations: {
     addID(state, newID) {
@@ -25,14 +24,6 @@ const store = new Vuex.Store({
     },
     deleteID(state, ID) {
       Vue.delete(state.groupIDselected, ID);
-    },
-    login(state) {
-      state.auth = true;
-      localStorage.setItem("session-vue", true);
-    },
-    logout(state) {
-      state.auth = false;
-      localStorage.setItem("session-vue", false);
     },
     updateGroup(state, newGroup) {
       Object.keys(state.groupIDselected).forEach(function (key) {
