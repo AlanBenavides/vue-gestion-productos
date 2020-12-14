@@ -9,10 +9,10 @@
         <label>
           <div class="formulario_name">Nombre de promoción:</div>
           <input
-            :style="
+            :class="
               $v.promocion.nombre_prom.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
             type="text"
             required
@@ -52,10 +52,10 @@
         <label>
           <div class="formulario_name">Descripción:</div>
           <textarea
-            :style="
+            :class="
               $v.promocion.descripcion.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
             v-model="promocion.descripcion"
             cols="50"
@@ -63,7 +63,7 @@
             maxlength="1000"
           />
         </label>
-        <div class="formulario_check-error1">
+        <div class="formulario_check-count">
           {{ `${promocion.descripcion.length}/1000` }} caracteres.
         </div>
         <div
@@ -87,10 +87,10 @@
           <input
             type="text"
             v-model="promocion.precio_unid"
-            :style="
+            :class="
               $v.promocion.precio_unid.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
           />
         </label>
@@ -125,10 +125,10 @@
           <input
             type="text"
             v-model="promocion.cantidad"
-            :style="
+            :class="
               $v.promocion.cantidad.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
           />
         </label>
@@ -382,21 +382,15 @@ export default {
 </script>
 
 <style>
-.formulario_tittle {
-  text-align: left;
-  color: #919ca9;
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
 .formulario_form {
-  background-color: #edf0f4;
+  background-color: var(--background);
   padding: 2rem;
   text-align: left;
 }
 
 .formulario label {
   display: block;
+  font-size: 1.2rem;
 }
 
 .formulario textarea {
@@ -410,7 +404,7 @@ export default {
 .formulario textarea,
 .formulario select {
   border: none;
-  border: 2px solid #8b8b8b;
+  border: 2px solid var(--color-border);
   border-radius: var(--border-radius);
   padding: 5px 7px;
 }
@@ -429,13 +423,8 @@ export default {
   text-align: center;
 }
 
-.formulario legend {
-  font-size: 1.2rem;
-  margin-bottom: 0;
-}
-
 .formulario_name {
-  color: #919ca9;
+  color: var(--font-color-secondary);
 }
 
 .formulario_name-span {
@@ -452,29 +441,33 @@ export default {
 }
 
 .formulario_check-error {
-  color: red;
+  color: var(--font-color-error);
 }
 
 .formulario_check-error-center {
   text-align: center;
-  color: red;
+  color: var(--font-color-error);
 }
 
 .formulario_button {
   margin: auto;
   display: block;
-  background-color: rgb(51, 51, 51);
+  background-color: var(--color-btn);
   padding: 13px 100px;
   color: white;
   font-size: 20px;
   font-weight: 700;
 }
-.form_button_disabled {
-  background-color: gray;
+
+.formulario_check-count {
+  text-align: right;
 }
 
-.formulario_check-error1 {
-  color: black;
-  text-align: right;
+.formulario_check-input {
+  border: 1px solid var(--font-color-accept);
+}
+
+.formulario_check-input-error {
+  border: 1px solid var(--font-color-error);
 }
 </style>

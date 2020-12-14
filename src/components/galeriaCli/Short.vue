@@ -413,22 +413,14 @@ export default {
 </script>
 
 <style scoped>
-h3 {
-  margin-left: 4rem;
-  text-align: left;
-  font-size: 1rem;
-  color: var(--font-color);
-}
-h4 {
-  text-align: right;
-  margin-right: 2rem;
-  font-size: 1rem;
-  color: var(--font-color);
+.form-control {
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
 }
 
 .short-button {
   background: none;
-  border: 2px solid var(--primary-color);
+  border: 1px solid var(--color-border);
   border-left: none;
   padding: 5px 1rem;
 }
@@ -436,7 +428,7 @@ h4 {
 .short-button:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  border-left: 2px solid var(--primary-color);
+  border-left: 1px solid var(--color-border);
 }
 .short-button:last-child {
   border-top-right-radius: 5px;
@@ -448,7 +440,7 @@ h4 {
 }
 
 .short-button_select {
-  background-color: var(--secondary-color);
+  background-color: var(--background);
 }
 
 .short-list {
@@ -459,30 +451,14 @@ h4 {
 }
 
 .short-product {
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--color-border);
   border-radius: var(--border-radius);
-  transition: 0.1s;
-}
-
-.short-product_select {
-  box-shadow: 0px 0px 10px 0px #888;
 }
 
 nav {
   width: 100%;
   height: 60px;
   border-bottom: 4px;
-}
-
-.cont {
-  height: 100%;
-  padding-top: 0px;
-  float: right;
-  margin-right: 2rem;
-}
-.cont label {
-  color: #797d7f;
-  font-size: 12.9px;
 }
 
 .options-inline {
@@ -501,25 +477,22 @@ input[type="search"]::-webkit-search-results-decoration {
   display: flex;
 }
 .search_input {
-  height: 40px;
-  border: 1px solid black;
+  background-color: transparent;
+  border: 1px solid var(--color-border);
   border-left: none;
-  border-radius: var(--border-radius);
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  width: 100%;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
   padding-left: 5px;
-  background-color: #fff;
   outline: none;
+  width: 100%;
 }
 .search_button {
-  height: 40px;
-  border: 1px solid black;
-  border-right: none;
   background: transparent;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
-  background-color: #fff;
+  border: 1px solid var(--color-border);
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  border-right: none;
+  height: 40px;
   padding-left: 5px;
 }
 

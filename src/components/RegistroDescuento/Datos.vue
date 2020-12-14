@@ -14,10 +14,10 @@
           <input
             type="text"
             v-model="descuento.porcentaje"
-            :style="
+            :class="
               $v.descuento.porcentaje.$invalid
-                ? 'border:2px solid red '
-                : 'border:2px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
           />
           %
@@ -47,10 +47,10 @@
             name="numero"
             type="text"
             v-model="descuento.cantidad"
-            :style="
+            :class="
               $v.descuento.cantidad.$invalid
-                ? 'border:2px solid red '
-                : 'border:2px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
           />
           <br />
@@ -242,7 +242,7 @@ export default {
 .formulario_button {
   margin: 5px;
   display: inline-block;
-  background-color: rgb(51, 51, 51);
+  background-color: var(--color-btn);
   padding: 13px 30px;
   color: white;
   font-size: 20px;
@@ -251,14 +251,24 @@ export default {
 }
 
 .button_disabled {
-  background-color: gray;
+  background-color: var(--color-btn-disable);
+  border: 2px solid var(--color-btn-disable);
 }
 
 .formulario_check-error {
-  color: red;
+  color: var(--font-color-error);
 }
+
+.formulario_check-input {
+  border: 1px solid var(--font-color-accept);
+}
+
+.formulario_check-input-error {
+  border: 1px solid var(--font-color-error);
+}
+
 .precio_descuento {
-  color: green;
+  color: var(--font-discount-before);
   font-weight: 700;
   font-size: 1.5rem;
 }

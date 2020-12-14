@@ -58,7 +58,7 @@ export default {
   text-align: start;
   cursor: pointer;
   text-decoration: none;
-  color: black;
+  color: var(--font-color-primary);
   white-space: normal;
 }
 

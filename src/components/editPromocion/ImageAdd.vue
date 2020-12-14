@@ -2,7 +2,7 @@
   <div class="image-container">
     <p>Foto de la promoción</p>
     <div class="image-add">
-      <img class="img-prom" :src="imagen" @click="addFiles()" alt="" />
+      <img class="img-prom" :src="imagen" @click="addFiles()" height="120" />
     </div>
     <input
       type="file"
@@ -81,7 +81,7 @@ export default {
   computed: {
     imagen() {
       if (this.image == "") {
-        return require("@/assets/add-product.png");
+        return require("@/assets/plus-circle.svg");
       } else {
         return this.image;
       }
@@ -107,7 +107,7 @@ export default {
 .image-add {
   height: 436px;
   border-radius: var(--border-radius);
-  background-color: #ecf0f1;
+  background-color: var(--background);
 }
 
 .img-prom {

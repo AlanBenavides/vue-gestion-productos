@@ -79,7 +79,7 @@ export default {
 }
 
 .datos_descripcion {
-  background-color: #e8eaf6;
+  background-color: var(--background);
   color: var(--color-btn);
   border: 2px solid var(--color-btn);
   padding: 5px 10px;
@@ -97,7 +97,7 @@ export default {
 .formulario_button {
   margin: auto;
   display: block;
-  background-color: rgb(51, 51, 51);
+  background-color: var(--color-btn);
   padding: 13px 100px;
   color: white;
   font-size: 20px;

@@ -25,19 +25,20 @@ export default {
 <style>
 :root {
   --color-title: #42b983;
+  --color-subtitle: #7a7a7a;
   --color-btn: #2a323d;
-  --color-fuente: #a09bb0;
+  --color-btn-disable: #727272;
   --color-border: #7a7a7a;
 
   --background: #e8ecf1;
 
-  --font-color: black;
   --font-color-primary: #3b4754;
   --font-color-secondary: #7a7a7a;
+  --font-color-error: #ff4b4b;
+  --font-color-accept: #2ac817;
+  --font-discount-after: #ff4b4b;
+  --font-discount-before: #2ac817;
   --border-radius: 5px;
-
-  --primary-color: rgb(192, 192, 192);
-  --secondary-color: rgb(216, 216, 216);
 }
 
 * {

@@ -9,7 +9,6 @@
     >
       {{ value }}
     </button>
-
     <img
       v-if="image == 'plus'"
       src="@/assets/plus-circle.svg"
@@ -17,7 +16,6 @@
       data-toggle="modal"
       :data-target="`#${idModal}`"
     />
-
     <img
       v-if="image == 'edit'"
       src="@/assets/pen-solid.svg"

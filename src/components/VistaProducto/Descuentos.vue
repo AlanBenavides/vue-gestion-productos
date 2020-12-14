@@ -9,24 +9,22 @@
           <label class="disc_quant"> {{ dis.cantidad_req }} unidades</label>
           <div class="disc_price_data">
             Precio:
-            <label class="disc_price">
+            <span class="disc_price">
               {{
                 (
                   (dis.precio_unid - (dis.precio_unid * dis.porcentaje) / 100) *
                   dis.cantidad_req
                 ).toFixed(2)
-              }}
-              Bs.</label
-            >
-            <label class="disc_unit_price"
-              >({{
+              }}Bs.
+            </span>
+            <span>
+              ({{
                 (
                   dis.precio_unid -
                   (dis.precio_unid * dis.porcentaje) / 100
                 ).toFixed(2)
-              }}
-              Bs. c/u)</label
-            >
+              }}Bs. c/u)
+            </span>
           </div>
         </div>
       </ul>
@@ -56,45 +54,40 @@ ul.no-bullets {
   padding: 0;
 }
 .disc_header {
-  color: #7a7a7a;
+  color: var(--font-color-primary);
   font-weight: 700;
   font-size: 1.7rem;
 }
 .disc_container {
   background-color: var(--background);
-  padding: 0.5rem 2rem;
-  padding-bottom: 3rem;
+  padding: 1rem;
   border-radius: var(--border-radius);
 }
 .disc_percent {
-  color: #ff3823;
+  color: var(--font-discount-after);
 }
 
 .disc_price_data {
-  color: #232323;
+  color: var(--font-color-primary);
   left: 50%;
   position: absolute;
   font-weight: 600;
-  font-size: 0.9rem;
   display: inline-block;
 }
 .disc_quant {
-  color: #232323;
+  color: var(--font-color-primary);
 }
 .disc_price {
-  color: #629c44;
+  color: var(--font-discount-before);
   font-weight: 600;
   font-size: 1.1rem;
-}
-.disc_unit_price {
-  color: #444444;
 }
 
 .disc_info {
   text-align: left;
   font-size: 1.1rem;
-  margin: 2rem;
+  margin: 1rem;
   margin-left: 0;
-  color: #7a7a7a;
+  color: var(--font-color-secondary);
 }
 </style>

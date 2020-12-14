@@ -85,11 +85,11 @@ export default {
   cursor: pointer;
   display: block;
   text-decoration: none;
-  color: black;
+  color: var(--font-color-primary);
 }
 
 strike {
-  color: red;
+  color: var(--font-discount-after);
 }
 
 .img-item {
@@ -114,88 +114,13 @@ strike {
 }
 
 #precio-nuevo {
-  color: #2ac817;
-}
-
-strike {
-  color: red;
-}
-
-button {
-  border: none;
-}
-.modal-content {
-  width: 100% !important;
-  position: absolute !important;
-}
-.mostrar {
-  display: list-item !important;
-  opacity: 1 !important;
-  position: absolute !important;
-  background-color: #3c29297a !important;
+  margin-left: 1rem;
+  color: var(--font-discount-before);
 }
 
 .datos {
   text-align: left;
   font-size: 1.1rem;
   font-weight: 700;
-}
-
-.datos_info {
-  margin: 2rem;
-  margin-left: 0;
-}
-
-.datos_container {
-  background-color: var(--background);
-  padding: 0.5rem 2rem;
-  padding-bottom: 3rem;
-  border-radius: var(--border-radius);
-  margin-left: 20rem;
-}
-
-.datos_resaltados {
-  color: var(--font-color-secondary);
-  font-weight: 700;
-}
-
-.datos_resaltados-block {
-  display: block;
-}
-
-.datos_both {
-  display: inline;
-}
-
-.datos_descripcion {
-  background-color: #e8eaf6;
-  color: var(--color-btn);
-  border: 2px solid var(--color-btn);
-  padding: 5px 10px;
-  height: 200px;
-  max-width: 100%;
-  overflow-y: auto;
-  word-wrap: break-word;
-}
-
-.datos_precio {
-  margin: 10px;
-  margin-left: 0;
-  font-size: 1.4rem;
-}
-.galeria_carrusel-principal {
-  background-color: var(--background);
-  height: 400px;
-  width: 300px;
-  border-radius: var(--border-radius);
-  display: flex;
-  margin-bottom: 1rem;
-  justify-content: center;
-  align-items: center;
-  float: left;
-}
-
-#precio-nuevo {
-  color: #2ac817;
 }
 </style>

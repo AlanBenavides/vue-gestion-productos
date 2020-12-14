@@ -89,7 +89,7 @@ export default {
   grid-column: 2/3;
   grid-row: 1/2;
   text-align: left;
-  color: var(--color-title);
+  color: var(--font-color-secondary);
   font-weight: 600;
   font-size: 2rem;
   display: block;

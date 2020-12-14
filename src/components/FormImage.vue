@@ -167,14 +167,14 @@ export default {
 .imagenes_list {
   display: inline-block;
   padding: 1rem;
-  background-color: #edf0f4;
+  background-color: var(--background);
   width: calc(100% / 3);
 }
 
 .imagenes_list-firt {
   height: 400px;
   width: 100%;
-  background: #edf0f4;
+  background-color: var(--background);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -182,7 +182,7 @@ export default {
 }
 
 .imagenes_preview {
-  border: 1px solid #8b8b8b;
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   max-width: 95%;
   max-height: auto;
@@ -199,18 +199,18 @@ export default {
 .add_imagenes {
   height: 200px;
   width: 180px;
-  background: #edf0f4;
-  border: 1px solid #8b8b8b;
+  background: var(--background);
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   font-weight: 300;
   font-size: 70px;
-  color: #8b8b8b;
+  color: var(--font-color-secondary);
 }
 
 .images_container-button {
   display: inline-block;
   padding: 1rem;
-  background-color: #edf0f4;
+  background-color: var(--background);
   width: calc(100% / 3);
 }
 </style>

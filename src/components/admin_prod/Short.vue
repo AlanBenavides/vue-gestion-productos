@@ -258,12 +258,10 @@ export default {
 h3 {
   text-align: start;
   font-size: 1rem;
-  color: var(--font-color);
 }
 h4 {
   text-align: start;
   font-size: 1rem;
-  color: var(--font-color);
 }
 
 .short-buttonlist {
@@ -273,7 +271,7 @@ h4 {
 
 .short-button {
   background: none;
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--color-border);
   border-left: none;
   padding: 5px 1rem;
 }
@@ -281,7 +279,7 @@ h4 {
 .short-button:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  border-left: 2px solid var(--primary-color);
+  border-left: 2px solid var(--color-border);
 }
 .short-button:last-child {
   border-top-right-radius: 5px;
@@ -293,7 +291,7 @@ h4 {
 }
 
 .short-button_select {
-  background-color: var(--secondary-color);
+  background-color: var(--background);
 }
 
 .short-list {
@@ -306,7 +304,7 @@ h4 {
 }
 
 .short-product {
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--color-border);
   border-radius: var(--border-radius);
   transition: 0.1s;
 }

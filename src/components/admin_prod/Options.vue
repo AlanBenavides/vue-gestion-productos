@@ -178,7 +178,7 @@ div {
   text-transform: uppercase;
   font-size: 14px;
   background: none;
-  border: 1.4px solid grey;
+  border: 1px solid var(--color-border);
   border-radius: var(--border-radius);
   width: 230px;
   padding: 16px;

@@ -31,7 +31,7 @@
     <div class="it-container" v-if="this.products.length < 5">
       <h6>Nuevo Producto</h6>
       <div class="it-add" @click="showModal = !showModal">
-        <img class="im-add" src="@/assets/add-product.png" alt="" width="340" />
+        <img class="im-add" src="@/assets/plus-circle.svg" alt="" width="120" />
       </div>
     </div>
     <ModalProduct v-if="this.showModal"></ModalProduct>
@@ -114,9 +114,9 @@ export default {
   width: 96%;
   height: 750px;
   margin: 32px 2%;
-  background-color: #d0d3d4;
+  background-color: var(--background);
   white-space: nowrap;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
 }
 
@@ -131,14 +131,12 @@ export default {
   margin: 32px;
   margin-top: 5px;
   border-radius: var(--border-radius);
-  background-color: #ecf0f1;
+  background-color: var(--background);
 }
 
 .im-add {
   position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 40%;
   cursor: pointer;
 }
 
@@ -154,18 +152,26 @@ export default {
   border-radius: 100px;
   height: 60px;
   width: 60px;
+  background-color: white;
+  border: none;
 }
 
 .modl-button {
   z-index: 1;
   margin: 20px;
   position: fixed;
+  padding: 4px;
+  border: 1px solid var(--color-border);
 }
 
 .del-button {
+  background-color: transparent;
+  border: none;
   position: relative;
+  font-weight: 600;
+  font-size: 1.2rem;
   left: 40%;
-  top: 2%;
+  top: 10px;
   height: 40px;
   width: 40px;
   border-radius: 100%;
