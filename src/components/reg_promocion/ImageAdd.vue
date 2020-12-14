@@ -2,7 +2,14 @@
   <div class="image-container">
     <p>Foto de la promoción</p>
     <div class="image-add">
-      <img class="img-prom" :src="imagen" @click="addFiles()" height="120" />
+      <img
+        class="img-prom"
+        :src="imagen"
+        @click="addFiles()"
+        :height="
+          imagen.search('/img/plus-circle.2de4ac5c.svg') == -1 ? '' : 120
+        "
+      />
     </div>
     <input
       type="file"
