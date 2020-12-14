@@ -1,7 +1,7 @@
 <template>
   <section class="category">
     <div class="category-header">
-      <h1>Categorías</h1>
+      <h1 class="category-title">Categorías</h1>
       <Modal
         title="Crear categoría"
         image="plus"
@@ -63,5 +63,12 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-right: 1rem;
+}
+
+.category-title {
+  color: var(--color-title);
+  font-size: 2rem;
+  font-weight: 600;
 }
 </style>

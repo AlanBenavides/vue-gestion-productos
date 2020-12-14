@@ -45,8 +45,8 @@ export default {
 }
 
 .admin_productos-title {
-  font-size: 40px;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 600;
   color: #42b983;
   margin-bottom: 4rem;
 }

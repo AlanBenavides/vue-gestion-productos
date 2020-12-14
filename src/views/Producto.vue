@@ -7,13 +7,12 @@
       :imagenes="images"
     />
     <Datos class="producto_datos" :datos="product.datos[0]" />
-    <span v-if="discount.length!=0" class="producto_disc">
+    <span v-if="discount.length != 0" class="producto_disc">
       <Descuentos class="producto_disc" :disc="discount" />
     </span>
-    <span v-if="promos.length>=1" class="producto_promolist">
-      <Promos class="producto_promolist" :proms="promos"/>
+    <span v-if="promos.length >= 1" class="producto_promolist">
+      <Promos class="producto_promolist" :proms="promos" />
     </span>
-    
   </section>
 </template>
 
@@ -29,7 +28,7 @@ export default {
     Datos,
     Galeria,
     Promos,
-    Descuentos
+    Descuentos,
   },
   data: function () {
     return {
@@ -90,8 +89,8 @@ export default {
   grid-column: 2/3;
   grid-row: 1/2;
   text-align: left;
-  color: var(--font-color-secondary);
-  font-weight: 700;
+  color: var(--color-title);
+  font-weight: 600;
   font-size: 2rem;
   display: block;
   text-overflow: ellipsis;
@@ -108,12 +107,11 @@ export default {
 }
 
 .producto_promolist {
-  grid-column:1/3;
+  grid-column: 1/3;
   grid-row: 4/4;
 }
 .producto_disc {
-  grid-column:1/3;
+  grid-column: 1/3;
   grid-row: 3/4;
 }
-
 </style>
