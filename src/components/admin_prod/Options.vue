@@ -29,14 +29,7 @@
       >
         Editar producto
       </button>
-      <router-link
-        to=""
-        class="button"
-        tag="button"
-        :disabled="$store.state.idSelected[0] == -1"
-      >
-        {{ buttons[0].name }}
-      </router-link>
+      
       <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
