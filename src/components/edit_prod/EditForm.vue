@@ -429,8 +429,9 @@ export default {
     },
     async sendDataProduct(productId) {
       try {
-        await this.$http.put("products", {
-          id: productId,
+        console.log(this.producto.categoria)
+        await this.$http.put(`products/${productId}`, {
+      
           nombre_prod: this.producto.nombre_prod,
           descripcion: this.producto.descripcion,
           categoria: this.producto.categoria,
@@ -448,15 +449,11 @@ export default {
       }
     },
     async sendImage(productId) {
-      let index=0
-      this.images.forEach(async (image) => {
-        await this.$http.put("images", {
-          id: productId,
-          num_pic: index,
-          imagen: image,
+      //this.images.forEach(async (image) => {
+        await this.$http.put( `images/${productId}`, {
+          imagen: this.images,
         });
-        index++
-      });
+      //});
     },
     transformDate1(value) {
       const date = new Date(value);
