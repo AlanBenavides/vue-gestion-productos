@@ -87,7 +87,7 @@ export default {
         }
     },
     async mounted(){
-        const response = await this.$http.get(`/promotions/products/${this.$store.state.idSelected[0]}`);
+        const response = await this.$http.get(`/promotions/${this.$store.state.idSelected[0]}`);
         const datos = response.data.prod;
         let product_previus = {};
         for(let dato of datos){
