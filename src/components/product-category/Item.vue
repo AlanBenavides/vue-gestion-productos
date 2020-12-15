@@ -86,4 +86,3 @@ export default {
 }
 </style>
 
-// this.$emit("sendimages", this.image64); // @sendimages="passImages($event)"
