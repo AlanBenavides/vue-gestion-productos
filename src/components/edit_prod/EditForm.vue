@@ -418,7 +418,7 @@ export default {
             const productId = this.$route.params.id;
             await this.sendDataProduct(productId);
             await this.sendImage(productId);
-            alert("Producto creado exitosamente");
+            alert("Producto actualizado exitosamente");
           }
         } else {
           alert("Rellene todos los datos correctamente");
