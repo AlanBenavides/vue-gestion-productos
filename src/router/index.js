@@ -68,8 +68,13 @@ const routes = [
   {
     path: "/vista_promo/:id",
     name: "Vista_Promocion",
-    component: () => import("@/views/VistaPromo.vue"),
-  },
+    component: () => import ("@/views/VistaPromo.vue"),
+   },
+   {
+     path: "/editar_producto/:id",
+     name: "Editar_Producto",
+     component: () => import ("@/views/EditarProducto.vue"),
+   },
 ];
 
 const router = new VueRouter({

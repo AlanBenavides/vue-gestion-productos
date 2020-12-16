@@ -18,6 +18,18 @@
         </span>
         <Alert ref="alert"></Alert>
     </div>
+    <input
+      type="file"
+      id="files"
+      ref="files"
+      accept="image/*"
+      class="images_input"
+      @change="getImage()"
+    />
+    <span class="formulario_check-error" v-if="!$v.image.required">
+      Coloque una fotografia
+    </span>
+  </div>
 </template>
 
 <script>
@@ -32,19 +44,37 @@ export default {
             image: ''
         }
     },
-    validations: {
-        image: {
-            required
-        }
+  },
+  methods: {
+    addFiles() {
+      this.$refs.files.click();
     },
-    methods: {
-        addFiles() {
-            this.$refs.files.click();
-        },
-        getImage(){
-            let uploadedFile = this.$refs.files.files;
-            let arch = uploadedFile[0];
-            if(arch == undefined){
+    getImage() {
+      let uploadedFile = this.$refs.files.files;
+      let arch = uploadedFile[0];
+      if (arch == undefined) {
+        return;
+      }
+      if (/\.(jpe?g|png)$/i.test(arch.name)) {
+        if (arch.size > 1024 * 1024) {
+          alert(arch.name + " es muy pesado (> 1MB)");
+          return;
+        } else {
+          let reader = new FileReader();
+          reader.addEventListener("load", (event) => {
+            let img = new Image();
+            img.onload = () => {
+              if (img.width < 640 || img.width > 1366) {
+                alert(
+                  "El ancho de " +
+                    arch.name +
+                    " debe estar entre 640px y 1366px"
+                );
+                return;
+              } else if (img.height < 360 || img.height > 768) {
+                alert(
+                  "El alto de " + arch.name + " debe estar entre 360px y 768px"
+                );
                 return;
             }
             if (/\.(jpe?g|png)$/i.test(arch.name)) {
@@ -87,52 +117,56 @@ export default {
         alert(alertType, alertMessage){
             this.$refs.alert.showAlert(alertType, alertMessage);
         }
+      } else {
+        alert(arch.name + " no es un archivo jpg o png");
+      }
     },
-    computed: {
-        imagen() {
-            if(this.image == ''){
-                return require("@/assets/add-product.png");
-            }else{
-                return this.image;
-            }
-        }
+  },
+  computed: {
+    imagen() {
+      if (this.image == "") {
+        return require("@/assets/plus-circle.svg");
+      } else {
+        return this.image;
+      }
     },
-    async mounted(){
-        const response = await this.$http.get(`/promotions/image/${this.$store.state.idSelected[0]}`);
-        this.image = "data:image/[jpg/png];base64,"+response.data.datos[0].imagen_prom;
-        this.$emit("send-image", response.data.datos[0].imagen_prom);
-    }
-}
+  },
+  async mounted() {
+    const response = await this.$http.get(
+      `/promotions/image/${this.$store.state.idSelected[0]}`
+    );
+    this.image =
+      "data:image/[jpg/png];base64," + response.data.datos[0].imagen_prom;
+    this.$emit("send-image", response.data.datos[0].imagen_prom);
+  },
+};
 </script>
 
 <style>
-
-.image-container{
-    width: 600px;
-    height: 550px;
-    margin: 32px;
+.image-container {
+  width: 600px;
+  height: 550px;
+  margin: 32px;
 }
-.image-add{
-    position: relative;
-    height: 436px;
-    border-radius: 20px;
-    background-color: #ECF0F1;
+.image-add {
+  height: 436px;
+  border-radius: var(--border-radius);
+  background-color: var(--background);
 }
 
-.img-prom
-{
-    display: block;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    max-width: 500px;
-    max-height: 400px;
-    cursor: pointer;
+.img-prom {
+  display: block;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 500px;
+  max-height: 400px;
+  cursor: pointer;
 }
 
-.images_input{
-    display: none;
+.images_input {
+  display: none;
 }
 
 .edit-icon {
@@ -154,7 +188,7 @@ export default {
 }
 
 .button-img {
-    margin: 10px;
-    border-radius: 100%;
+  margin: 10px;
+  border-radius: 100%;
 }
 </style>

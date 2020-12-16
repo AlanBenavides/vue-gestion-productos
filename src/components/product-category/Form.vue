@@ -85,8 +85,8 @@ export default {
 
 .formcategory-button {
   background: none;
-  border-radius: 12px;
-  border: 1px solid black;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-btn);
   padding: 7px 60px;
   outline: none;
 }

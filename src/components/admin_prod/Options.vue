@@ -22,14 +22,14 @@
       >
         {{ buttons[1].name }}
       </router-link>
-      <router-link
-        to=""
+       <button
+        :disabled="canEditProducts "
         class="button"
-        tag="button"
-        :disabled="$store.state.idSelected[0] == -1"
+        @click="editProduct"
       >
-        {{ buttons[0].name }}
-      </router-link>
+        Editar producto
+      </button>
+      
       <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
@@ -42,6 +42,7 @@
       <router-link to="/product-category" class="button" tag="button">
         Administrar categorías
       </router-link>
+     
     </ul>
     <Alert ref="alert"></Alert>
     <Confirm ref="confirm" @taken-decision="executeAction($event,eliminarProm)"></Confirm>
@@ -77,9 +78,18 @@ export default {
       if (this.$store.state.idSelected[0] == -1) return false;
       else if (this.itemtype == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
+    },  canEditProducts() {
+      console.log(this.$store.state.idSelected[1] == null && this.tipo == "products")
+      if (this.$store.state.idSelected[0] == -1) return true;
+      else if (this.tipo == "promotions") return true;
+      return this.$store.state.idSelected[1] == true;
     },
     canDeleteProm() {
-      if (this.$store.state.idSelected[0] == -1 && this.itemtype === "promotions") return true;
+      if (
+        this.$store.state.idSelected[0] == -1 &&
+        this.itemtype === "promotions"
+      )
+        return true;
       else if (this.itemtype === "products") return true;
       return false;
     },
@@ -194,8 +204,8 @@ div {
   text-transform: uppercase;
   font-size: 14px;
   background: none;
-  border: 1.4px solid grey;
-  border-radius: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
   width: 230px;
   padding: 16px;
   margin: 1rem;

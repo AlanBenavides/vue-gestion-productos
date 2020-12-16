@@ -39,7 +39,8 @@ export default {
 }
 
 .registro_tittle {
-  color: #8d8d8d;
+  color: var(--color-title);
+  font-size: 2rem;
   font-weight: 600;
 }
 

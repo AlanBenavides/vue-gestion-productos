@@ -77,7 +77,7 @@ export default {
 .galeria_carrusel-principal {
   background-color: var(--background);
   height: 400px;
-  border-radius: 15px;
+  border-radius: var(--border-radius);
   display: flex;
   margin-bottom: 1rem;
   justify-content: center;
@@ -85,14 +85,14 @@ export default {
 }
 
 .galeria_image-principal {
-  border-radius: 15px;
-  max-width:95%;
-  max-height:auto;
+  border-radius: var(--border-radius);
+  max-width: 95%;
+  max-height: auto;
   align-items: center;
 }
 
 .galeria_carrusel {
-  border-radius: 15px;
+  border-radius: var(--border-radius);
   background-color: var(--background);
   display: grid;
   gap: 1rem;
@@ -101,17 +101,17 @@ export default {
 }
 
 .galeria_image {
-  border-radius: 15px;
+  border-radius: var(--border-radius);
   place-self: center;
-  max-width:95%;
-  max-height:auto;
+  max-width: 95%;
+  max-height: auto;
   align-items: center;
 }
 
 .galeria_button {
   border: none;
   background-color: transparent;
-  border-radius: 15px;
+  border-radius: var(--border-radius);
 }
 .galeria_button:disabled {
   cursor: not-allowed;

@@ -83,9 +83,9 @@ export default {
 
 .datos_container {
   background-color: var(--background);
+  border-radius: var(--border-radius);
   padding: 0.5rem 2rem;
   padding-bottom: 3rem;
-  border-radius: 15px;
 }
 
 .datos_resaltados {
@@ -102,7 +102,7 @@ export default {
 }
 
 .datos_descripcion {
-  background-color: #e8eaf6;
+  background-color: var(--background);
   color: var(--color-btn);
   border: 2px solid var(--color-btn);
   padding: 5px 10px;
@@ -113,14 +113,13 @@ export default {
 }
 
 .datos_precio {
+  font-size: 1.4rem;
   margin: 10px;
   margin-bottom: 0;
   margin-left: 0;
-  font-size: 1.4rem;
 }
 
 .datos_unids {
-  color: #49494b !important;
   font-size: 20px;
 }
 
