@@ -33,10 +33,10 @@
       <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
-      <button class="button" :disabled="!isProduct" @click="handlerDelete()">
+      <button class="button" :disabled="!isProduct" @click="handlerConfirmProductDeletion()">
         Eliminar Producto
       </button>
-      <button class="button" :disabled="canDeleteProm" @click="eliminarProm">
+      <button class="button" :disabled="canDeleteProm" @click="handlerConfirmPromotionDeletion()">
         Eliminar Promocion
       </button>
       <router-link to="/product-category" class="button" tag="button">
@@ -44,13 +44,20 @@
       </router-link>
      
     </ul>
+    <Alert ref="alert"></Alert>
+    <Confirm ref="confirm" @taken-decision="executeAction($event,eliminarProm)"></Confirm>
+    <Confirm ref="confirm1" @taken-decision="executeAction($event,deleteProduct)"></Confirm>
   </aside>
 </template>
 
 <script>
+import Alert from "@/components/Alert.vue";
+import Confirm from "@/components/Confirm.vue"
+
 export default {
   name: "Options",
   props: ["itemtype"],
+  components: {Alert, Confirm},
   data: function () {
     return {
       buttons: [
@@ -98,57 +105,44 @@ export default {
 
       if (id != -1) {
         this.$router.push(`/descuento_producto/${id}`);
-       }else{
-         alert("Seleccione un producto")
-          
-       }
-      
+      } else {
+        this.alert("warning", "Seleccione un producto");
+      }
     },
-    async editProduct() {
-      const id = this.$store.state.idSelected[0];
-      
-      
-       if(id != -1 ){
-        this.$router.push(`/editar_producto/${id}`);
-       }else{
-         alert("Seleccione un producto")
-       }
-      
-    },
-    async eliminarProm() {
+    handlerConfirmPromotionDeletion(){
       const idprom = this.$store.state.idSelected[0];
 
       if (idprom != -1) {
-        var opcion = confirm("Esta seguro que desea eliminar esta promocion");
-        if (opcion == true) {
-          await this.$http.delete(`promotions/${idprom}`);
-          alert("La promocion fue eliminada");
-          this.$emit("reload-page");
-        } else {
-          alert("Se Cancelo la eliminacion");
-        }
+        this.confirm("Esta seguro que desea eliminar esta promocion", "confirm");
       } else {
-        alert("Seleccione una promocion");
+        this.alert("warning", "Seleccione una promocion");
       }
+    },
+    async eliminarProm() {
+      const idprom = this.$store.state.idSelected[0];
+      await this.$http.delete(`promotions/${idprom}`);
+      this.alert("success", "La promocion fue eliminada");
+      this.$emit("reload-page");
     },
     async obtenerCantidad(id) {
       const response = await this.$http.get(`products/${id}`);
       return response.data.datos[0].cantidad;
     },
-    async handlerDelete() {
+    async handlerConfirmProductDeletion(){
       const idProduct = this.$store.state.idSelected[0];
       const promotions = await this.getPromotions(idProduct);
       const disconunt =
         (await this.getDiscount(idProduct)).length != 0 ? true : false;
       const promotionMessage =
         promotions.length != 0 ? this.renderPromotions(promotions) : "";
-      if (confirm(this.getFormatedMessage(disconunt, promotionMessage))) {
-        await this.deleteProduct(idProduct);
-        this.$emit("reload-page");
-      }
+      
+      this.confirm(this.getFormatedMessage(disconunt, promotionMessage), "confirm1");
     },
-    async deleteProduct(idProduct) {
+    async deleteProduct() {
+      const idProduct = this.$store.state.idSelected[0];
       await this.$http.delete(`products/${idProduct}`);
+      this.alert("success", "El producto fue eliminado");
+      this.$emit("reload-page");
     },
     async getDiscount(idProduct) {
       return (await this.$http.get(`discounts/${idProduct}`)).data.datos;
@@ -172,6 +166,19 @@ export default {
         else if (promotionMessage)
           return `Este producto tiene registrado las promociones de${promotionMessage}. ${message}`;
         else return message;
+      }
+    },
+    alert(alertType, alertMessage){
+      this.$refs.alert.showAlert(alertType, alertMessage);
+    },
+    confirm(confirmMessage, confirmRefId){
+      this.$refs[confirmRefId].showConfirm(confirmMessage);  
+    },
+    executeAction(takenDecision, functionToExecute){
+      if(takenDecision){
+        functionToExecute();
+      }else{
+        this.alert("success", "se cancelo la eliminacion");
       }
     },
   },

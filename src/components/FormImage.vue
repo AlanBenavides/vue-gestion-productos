@@ -43,13 +43,17 @@
     <span class="formulario_check-error" v-if="!$v.files.maxLength"
       >No se aceptan mas de 4 imagenes</span
     >
+    <Alert ref="alert"></Alert>
   </section>
 </template>
 
 <script>
 import { required, maxLength } from "vuelidate/lib/validators";
+import Alert from "@/components/Alert.vue";
+
 export default {
   name: "FormImage",
+  components: {Alert},
   data() {
     return {
       files: [],
@@ -74,13 +78,13 @@ export default {
         if (/\.(jpe?g|png)$/i.test(arch.name)) {
           for (var j = 0; j < this.files.length; j++) {
             if (arch.name == this.files[j].name) {
-              alert(arch.name + " ya fue subido");
+              this.alert("warning",arch.name + " ya fue subido");
               this.removeFile(this.files.length + i, 1);
               return;
             }
           }
           if (arch.size > 1024 * 1024) {
-            alert(arch.name + " es muy pesado (> 1MB)");
+            this.alert("warning", arch.name + " es muy pesado (> 1MB)");
             this.removeFile(this.files.length + i, 1);
             return;
           } else {
@@ -90,7 +94,7 @@ export default {
               let img = new Image();
               img.onload = () => {
                 if (img.width < 640 || img.width > 1366) {
-                  alert(
+                  this.alert("warning",
                     "El ancho de " +
                       arch.name +
                       " debe estar entre 640px y 1366px"
@@ -98,7 +102,7 @@ export default {
                   this.removeFile(this.files.length + i, 1);
                   return;
                 } else if (img.height < 360 || img.height > 768) {
-                  alert(
+                  this.alert("warning",
                     "El alto de " +
                       arch.name +
                       " debe estar entre 360px y 768px"
@@ -107,7 +111,7 @@ export default {
                   return;
                 } else {
                   if (this.files.length >= 4) {
-                    alert("No puede ingresar más de 4 imagenes");
+                    this.alert("warning", "No puede ingresar más de 4 imagenes");
                     this.removeFile(this.files.length + i, 1);
                     return;
                   } else {
@@ -122,7 +126,7 @@ export default {
             };
           }
         } else {
-          alert(arch.name + " no es un archivo jpg o png");
+          this.alert("warning", arch.name + " no es un archivo jpg o png");
         }
       }
     },
@@ -154,6 +158,9 @@ export default {
       reader.onload = (e) => {
         this.image64.push(e.target.result);
       };
+    },
+    alert(alertType, alertMessage){
+      this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
 };

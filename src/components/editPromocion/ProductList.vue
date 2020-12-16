@@ -29,6 +29,7 @@
         <ModalProduct v-if="this.showModal"></ModalProduct>
         <button class="modl-button term" @click="addProducts()" v-if="this.showModal">Añadir productos</button>
         <button class="modl-button ext" @click="updateProducts()" v-if="this.showModal">X</button>
+        <Alert ref="alert"></Alert>
     </div>
     <div class="it-container" v-if="this.products.length < 5">
       <h6>Nuevo Producto</h6>
@@ -56,44 +57,56 @@
 <script>
 import ModalProduct from "@/components/reg_promocion/ModalProduct.vue";
 import Item from "@/components/admin_prod/Item.vue";
+import Alert from "@/components/Alert.vue";
 
 export default {
-  name: "ProductList",
-  components: { ModalProduct, Item },
-  data: () => {
-    return {
-      showModal: false,
-      products: [],
-      cant_products: {},
-    };
-  },
-  methods: {
-    addProducts() {
-      if (Object.keys(this.$store.state.groupIDselected).length > 0) {
-        this.getProducts();
-        this.showModal = !this.showModal;
-        alert("Productos añadidos.");
-      } else {
-        alert("No tienes productos seleccionados.");
-      }
+    name: "ProductList",
+    components: {ModalProduct, Item, Alert},
+    data: () => {
+        return {
+            showModal: false,
+            products: [],
+            cant_products: {},
+        }
     },
-    async getProducts() {
-      let newProducts = [];
-      let newCantProducts = {};
-      for (let productID in this.$store.state.groupIDselected) {
-        const response = await this.$http.get(`products/${productID}`);
-        newProducts.push(response.data.datos[0]);
-        newCantProducts[productID] = [
-          this.$store.state.groupIDselected[productID][0],
-          response.data.datos[0].cantidad,
-        ];
-      }
-      this.products = newProducts;
-      this.cant_products = newCantProducts;
-    },
-    deleteProduct(id) {
-      this.$store.commit("deleteID", id);
-      this.getProducts();
+    methods: {
+        addProducts(){
+            if(Object.keys(this.$store.state.groupIDselected).length > 0){
+                this.getProducts();
+                this.showModal = !this.showModal;
+                this.alert("success","Productos añadidos.");
+            }else{
+                this.alert("warning","No tienes productos seleccionados.");
+            }
+        },
+        async getProducts(){
+            let newProducts = [];
+            let newCantProducts = {};
+            for(let productID in this.$store.state.groupIDselected){
+                const response = await this.$http.get(
+                    `products/${productID}`
+                );
+                newProducts.push(response.data.datos[0]);
+                newCantProducts[productID] = [this.$store.state.groupIDselected[productID][0],
+                response.data.datos[0].cantidad];
+            }
+            this.products = newProducts;
+            this.cant_products = newCantProducts;
+        },
+        deleteProduct(id){
+            this.$store.commit("deleteID", id);
+            this.getProducts();
+        },
+        updateProducts(){
+            this.$store.commit('updateGroup', this.cant_products);
+            this.showModal = !this.showModal;
+        },
+        upCounts(id){
+            this.$store.state.groupIDselected[id] = this.cant_products[id]
+        },
+        alert(alertType, alertMessage){
+            this.$refs.alert.showAlert(alertType, alertMessage);
+        }
     },
     updateProducts() {
       this.$store.commit("updateGroup", this.cant_products);

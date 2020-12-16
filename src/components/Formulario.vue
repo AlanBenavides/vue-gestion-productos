@@ -287,6 +287,7 @@
         Confirmar
       </button>
     </form>
+    <Alert ref="alert"></Alert>
   </section>
 </template>
 
@@ -299,6 +300,7 @@ import {
   between,
   integer,
 } from "vuelidate/lib/validators";
+import Alert from "@/components/Alert.vue";
 
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ'\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
@@ -334,6 +336,7 @@ const validate_decimales = (value) => {
 
 export default {
   name: "Formulario",
+  components: {Alert},
   data() {
     return {
       disabled: false,
@@ -406,17 +409,17 @@ export default {
       try {
         if (!this.$v.producto.$invalid) {
           if (this.images.length == 0)
-            alert("Registra por lo menos una imagen");
+            this.alert("warning", "Registra por lo menos una imagen");
           else {
             const productId = await this.sendDataProduct();
             await this.sendImage(productId);
-            alert("Producto creado exitosamente");
+            this.alert("success", "Producto creado exitosamente");
           }
         } else {
-          alert("Rellene todos los datos correctamente");
+          this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        alert(error);
+        this.alert("warning",error);
       }
     },
     async sendDataProduct() {
@@ -446,6 +449,9 @@ export default {
           imagen: image,
         });
       });
+    },
+    alert(alertType, alertMessage){
+      this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
 };
