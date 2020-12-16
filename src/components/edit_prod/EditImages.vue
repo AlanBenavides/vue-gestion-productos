@@ -12,18 +12,18 @@
     />
     <div class="imagenes_container">
       <div
-        v-for="(file, key) in files"
+        v-for="(image, key) in image64"
         :key="key"
-        :class="`imagenes_list ${key == 0 ? 'imagenes_list-firt' : ''}`"
+        :class="`imagenes_list ${key == 0 ? 'imagenes_list-first' : ''}`"
       >
         <img
           class="imagenes_preview"
+          :src="image64.slice(key, key + 1)"
           v-bind:ref="'image' + parseInt(key)"
           :height="key == 0 ? '360px' : '200px'"
         />
-        <span class="imagenes_remove" v-on:click="removeFile(key, 2)">X</span>
+        <span class="imagenes_remove" v-on:click="removeFile(key, 3)">X</span>
       </div>
-      <div v-if="files.length == 0" class="imagenes_list-firt"></div>
       <template v-for="(button, index) in 3">
         <div
           :key="'image' + index"
@@ -36,24 +36,19 @@
         </div>
       </template>
     </div>
-
-    <span class="formulario_check-error" v-if="!$v.files.required"
+    <span class="formulario_check-error" v-if="!$v.image64.required"
       >Faltan fotografias</span
     >
-    <span class="formulario_check-error" v-if="!$v.files.maxLength"
+    <span class="formulario_check-error" v-if="!$v.image64.maxLength"
       >No se aceptan mas de 4 imagenes</span
     >
-    <Alert ref="alert"></Alert>
   </section>
 </template>
 
 <script>
 import { required, maxLength } from "vuelidate/lib/validators";
-import Alert from "@/components/Alert.vue";
-
 export default {
-  name: "FormImage",
-  components: {Alert},
+  name: "EditImages",
   data() {
     return {
       files: [],
@@ -61,8 +56,11 @@ export default {
     };
   },
   validations: {
-    files: {
+    image64: {
       required,
+      maxLength: maxLength(4),
+    },
+    files: {
       maxLength: maxLength(4),
     },
   },
@@ -76,16 +74,8 @@ export default {
       for (var i = 0; i < rep; i++) {
         let arch = uploadedFiles[i];
         if (/\.(jpe?g|png)$/i.test(arch.name)) {
-          for (var j = 0; j < this.files.length; j++) {
-            if (arch.name == this.files[j].name) {
-              this.alert("warning",arch.name + " ya fue subido");
-              this.removeFile(this.files.length + i, 1);
-              return;
-            }
-          }
           if (arch.size > 1024 * 1024) {
-            this.alert("warning", arch.name + " es muy pesado (> 1MB)");
-            this.removeFile(this.files.length + i, 1);
+            alert(arch.name + " es muy pesado (> 1MB)");
             return;
           } else {
             let reader = new FileReader();
@@ -94,61 +84,34 @@ export default {
               let img = new Image();
               img.onload = () => {
                 if (img.width < 640 || img.width > 1366) {
-                  this.alert("warning",
+                  alert(
                     "El ancho de " +
                       arch.name +
                       " debe estar entre 640px y 1366px"
                   );
-                  this.removeFile(this.files.length + i, 1);
                   return;
                 } else if (img.height < 360 || img.height > 768) {
-                  this.alert("warning",
+                  alert(
                     "El alto de " +
                       arch.name +
                       " debe estar entre 360px y 768px"
                   );
-                  this.removeFile(this.files.length + i, 1);
                   return;
                 } else {
-                  if (this.files.length >= 4) {
-                    this.alert("warning", "No puede ingresar más de 4 imagenes");
-                    this.removeFile(this.files.length + i, 1);
-                    return;
-                  } else {
-                    this.createBase64Image(arch);
-                    this.files.push(arch);
-                    this.getImagePreviews();
-                    this.$emit("sendimages", this.image64);
-                  }
+                  this.createBase64Image(arch);
+                  this.$emit("sendimages", this.image64);
                 }
               };
               img.src = evt.target.result;
             };
           }
         } else {
-          this.alert("warning", arch.name + " no es un archivo jpg o png");
-        }
-      }
-    },
-    getImagePreviews() {
-      for (let i = 0; i < this.files.length; i++) {
-        if (/\.(jpe?g|png)$/i.test(this.files[i].name)) {
-          let reader = new FileReader();
-          reader.addEventListener(
-            "load",
-            function () {
-              this.$refs["image" + parseInt(i)][0].src = reader.result;
-            }.bind(this),
-            false
-          );
-          reader.readAsDataURL(this.files[i]);
+          alert(arch.name + " no es un archivo jpg o png");
         }
       }
     },
     removeFile(key, type) {
-      this.files.splice(key, 1);
-      this.getImagePreviews();
-      if (type == 2) {
+      if (type == 3) {
         this.image64.splice(key, 1);
       }
     },
@@ -159,9 +122,16 @@ export default {
         this.image64.push(e.target.result);
       };
     },
-    alert(alertType, alertMessage){
-      this.$refs.alert.showAlert(alertType, alertMessage);
-    },
+  },
+  mounted: async function () {
+    const response = (
+      await this.$http.get(`/images/${this.$route.params.id}?cantidad=1`)
+    ).data.datos;
+    this.image64 = response;
+    this.image64 = this.image64.map(
+      (imagen) => `data:image/[jpg/png];base64,${imagen.imagen}`
+    );
+    this.$emit("sendimages", this.image64);
   },
 };
 </script>
@@ -178,10 +148,10 @@ export default {
   width: calc(100% / 3);
 }
 
-.imagenes_list-firt {
+.imagenes_list-first {
   height: 400px;
   width: 100%;
-  background-color: var(--background);
+  background: var(--background);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -190,7 +160,7 @@ export default {
 
 .imagenes_preview {
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
+  border-radius: 15px;
   max-width: 95%;
   max-height: auto;
   align-items: center;
@@ -208,7 +178,7 @@ export default {
   width: 180px;
   background: var(--background);
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
+  border-radius: 15px;
   font-weight: 300;
   font-size: 70px;
   color: var(--font-color-secondary);

@@ -10,11 +10,10 @@
         <label
           ><div class="formulario_name">Nombre Producto:</div>
           <input
-            name="nombreProducto"
             :class="
               $v.producto.nombre_prod.$invalid
-                ? 'formulario_check-input-error'
-                : 'formulario_check-input'
+                ? 'formulario_check-input-error '
+                : 'formulario_check-input '
             "
             type="text"
             required
@@ -54,11 +53,10 @@
         <label
           ><div class="formulario_name">Descripción:</div>
           <textarea
-            name="descripcionProducto"
             :class="
               $v.producto.descripcion.$invalid
-                ? 'formulario_check-input-error'
-                : 'formulario_check-input'
+                ? 'formulario_check-input-error '
+                : 'formulario_check-input '
             "
             v-model="producto.descripcion"
             cols="50"
@@ -89,11 +87,10 @@
         <label
           ><div class="formulario_name">Categoría:</div>
           <input
-            name="categoriaProducto"
             :class="
               $v.producto.categoria.$invalid
-                ? 'formulario_check-input-error'
-                : 'formulario_check-input'
+                ? 'formulario_check-input-error '
+                : 'formulario_check-input '
             "
             list="categorias"
             v-model="producto.categoria"
@@ -139,13 +136,12 @@
           </p>
 
           <input
-            name="precioProducto"
             type="text"
             v-model="producto.precio_unid"
             :class="
               $v.producto.precio_unid.$invalid
-                ? 'formulario_check-input-error'
-                : 'formulario_check-input'
+                ? 'formulario_check-input-error '
+                : 'formulario_check-input '
             "
           />
         </label>
@@ -180,21 +176,23 @@
         <div class="formulario_group">
           <label
             ><input
-              name="cantidadUnidades"
               type="radio"
+              :value="true"
               id="precio_unidades"
+              :class="!disabled ? 'checked' : ' '"
               @click="selectCantidad(false)"
               v-model="producto.unidad"
             />
+
             <span class="formulario_name formulario_name-span">Unidades</span>
           </label>
           <input
-            name="unidadesProducto"
             type="text"
             :disabled="disabled"
             v-model="producto.cantidad"
             :required="!disabled"
           />
+
           <div
             class="formulario_check-error"
             v-if="!$v.producto.cantidad.between"
@@ -218,17 +216,18 @@
         <div class="formulario_group">
           <label
             ><input
-              name="cantidadPeso"
               type="radio"
               value="peso"
               id="precio_peso"
               @click="selectCantidad(true)"
+              :class="disabled ? 'checked' : ' '"
               v-model="producto.unidad"
             />
+
             <span class="formulario_name formulario_name-span">Peso</span>
           </label>
+
           <input
-            name="pesoProducto"
             type="text"
             step="0.25"
             :disabled="!disabled"
@@ -238,7 +237,6 @@
           />
 
           <select
-            name="unidadMedProducto"
             :required="disabled"
             :disabled="!disabled"
             v-model="producto.unidad_med"
@@ -269,7 +267,6 @@
         <label
           ><div class="formulario_name">Fecha de vencimiento del producto:</div>
           <input
-            name="fechaVencProducto"
             type="date"
             value="DD/MM/AA"
             onkeydown="return false"
@@ -283,15 +280,10 @@
         </div>
       </div>
 
-      <button
-        :disabled="$v.producto.$invalid"
-        :class="$v.producto.$invalid ? 'button-disabled' : ''"
-        class="formulario_button"
-      >
+      <button :disabled="$v.producto.$invalid" class="formulario_button">
         Confirmar
       </button>
     </form>
-    <Alert ref="alert"></Alert>
   </section>
 </template>
 
@@ -304,7 +296,6 @@ import {
   between,
   integer,
 } from "vuelidate/lib/validators";
-import Alert from "@/components/Alert.vue";
 
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ'\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
@@ -339,8 +330,7 @@ const validate_decimales = (value) => {
 };
 
 export default {
-  name: "Formulario",
-  components: { Alert },
+  name: "EditForm",
   data() {
     return {
       disabled: false,
@@ -401,11 +391,8 @@ export default {
       if (!this.disabled) {
         this.producto.peso = null;
         this.producto.unidad_med = null;
-        this.producto.cantidad = "";
       } else {
         this.producto.cantidad = null;
-        this.producto.peso = "";
-        this.producto.unidad_med = "";
       }
     },
 
@@ -413,22 +400,23 @@ export default {
       try {
         if (!this.$v.producto.$invalid) {
           if (this.images.length == 0)
-            this.alert("warning", "Registra por lo menos una imagen");
+            alert("Registra por lo menos una imagen");
           else {
-            const productId = await this.sendDataProduct();
+            const productId = this.$route.params.id;
+            await this.sendDataProduct(productId);
             await this.sendImage(productId);
-            this.alert("success", "Producto creado exitosamente");
+            alert("Producto actualizado exitosamente");
           }
         } else {
-          this.alert("warning", "Rellene todos los datos correctamente");
+          alert("Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning", error);
+        alert(error);
       }
     },
-    async sendDataProduct() {
+    async sendDataProduct(productId) {
       try {
-        const response = await this.$http.post("products", {
+        await this.$http.put(`products/${productId}`, {
           nombre_prod: this.producto.nombre_prod,
           descripcion: this.producto.descripcion,
           categoria: this.producto.categoria,
@@ -441,22 +429,40 @@ export default {
           fecha_venc:
             this.producto.fecha_venc == "" ? null : this.producto.fecha_venc,
         });
-        return response.data[0].cod_prod;
       } catch (error) {
         throw new Error("El nombre del producto esta repetido");
       }
     },
     async sendImage(productId) {
-      this.images.forEach(async (image) => {
-        await this.$http.post(`images`, {
-          cod_prod: productId,
-          imagen: image,
-        });
+      await this.$http.put(`images/${productId}`, {
+        imagen: this.images,
       });
     },
-    alert(alertType, alertMessage) {
-      this.$refs.alert.showAlert(alertType, alertMessage);
+    transformDate1(value) {
+      const date = new Date(value);
+
+      return `${date.getFullYear()}-${date.getMonth() + 1}-${
+        date.getDate() + 1
+      }`;
     },
+  },
+  mounted: async function () {
+    const response = (await this.$http.get(`products/${this.$route.params.id}`))
+      .data.datos[0];
+    this.producto.nombre_prod = response.nombre_prod;
+    this.producto.descripcion = response.descripcion;
+    this.producto.categoria = response.nombre_cat;
+    this.producto.precio_unid = response.precio_unid;
+    this.producto.unidad = response.unidad;
+    this.producto.cantidad = response.cantidad;
+    this.producto.peso = response.peso;
+    this.producto.unidad_med = response.unidad_med;
+    if (response.fecha_venc != null) {
+      this.producto.fecha_venc = this.transformDate1(response.fecha_venc);
+    }
+    if (response.peso) {
+      this.selectCantidad(true);
+    }
   },
 };
 </script>
@@ -464,7 +470,7 @@ export default {
 <style>
 .formulario_tittle {
   text-align: left;
-  color: var(--color-subtitle);
+  color: var(--font-color-primary);
   font-size: 1.4rem;
   font-weight: 600;
 }
@@ -477,7 +483,6 @@ export default {
 
 .formulario label {
   display: block;
-  font-size: 1.2rem;
 }
 
 .formulario textarea {
@@ -555,6 +560,18 @@ export default {
   text-align: right;
 }
 
+.checked::after {
+  content: "";
+  display: block;
+  border-radius: 50%;
+  height: 7px;
+  width: 7.95px;
+  background: var(--font-color-secondary);
+  position: relative;
+  top: 3px;
+  left: 2.5px;
+}
+
 .formulario_check-input {
   border: 1px solid var(--font-color-accept) !important;
 }
@@ -562,7 +579,6 @@ export default {
 .formulario_check-input-error {
   border: 1px solid var(--font-color-error) !important;
 }
-
 .button-disabled {
   background: var(--color-btn-disable);
   border: 2px solid var(--color-btn-disable);

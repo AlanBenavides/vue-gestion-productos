@@ -20,12 +20,16 @@
         @click="handlerDeleteCategory()"
       />
     </div>
+    <Alert ref="alert"></Alert>
+    <Confirm ref="confirm" @taken-decision="executeAction($event,deleteCategory)"></Confirm>
   </article>
 </template>
 
 <script>
 import Form from "@/components/product-category/Form.vue";
 import Modal from "@/components/Modal.vue";
+import Alert from "@/components/Alert.vue";
+import Confirm from "@/components/Confirm.vue"
 
 export default {
   name: "categoryItem",
@@ -33,25 +37,30 @@ export default {
   components: {
     Form,
     Modal,
+    Alert,
+    Confirm
   },
   methods: {
     async handlerDeleteCategory() {
-      try {
-        if (confirm("¿Seguro que quiere eliminar esta categoría?")) {
-          await this.deleteCategory();
-          this.$emit("get-categories");
-        }
-      } catch (error) {
-        alert(error);
-      }
+      this.confirm("¿Seguro que quiere eliminar esta categoría?", "confirm");
     },
     async deleteCategory() {
       try {
         await this.$http.delete(`categories/${this.category.cod_cat}`);
+        this.$emit("get-categories");
       } catch (error) {
-        throw new Error(
-          "Esta categoría tiene productos asignados, elimine o edite los productos para poder borrar satisfactoriamente la categoría"
-        );
+        this.alert("warning", "Esta categoría tiene productos asignados, elimine o edite los productos para poder borrar satisfactoriamente la categoría");
+      }
+    },
+    alert(alertType, alertMessage){
+      this.$refs.alert.showAlert(alertType, alertMessage);
+    },
+    confirm(confirmMessage, confirmRefId){
+      this.$refs[confirmRefId].showConfirm(confirmMessage);  
+    },
+    executeAction(takenDecision, functionToExecute){
+      if(takenDecision){
+        functionToExecute();
       }
     },
   },
@@ -63,8 +72,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #777;
-  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
   margin: 1rem;
 }
 
@@ -85,5 +94,3 @@ export default {
   margin-left: 3rem;
 }
 </style>
-
-// this.$emit("sendimages", this.image64); // @sendimages="passImages($event)"

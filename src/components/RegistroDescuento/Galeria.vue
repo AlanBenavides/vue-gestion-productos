@@ -2,7 +2,7 @@ import Galeria from '@/components/Galeria.vue';
 <template>
   <section class="galeria">
     <div>
-      <div >
+      <div>
         <img
           class="galeria_image-principal imagen"
           :src="imagenes.slice(0, 1)"
@@ -27,19 +27,19 @@ export default {
 }
 
 .galeria_image-principal {
-  border-radius: 15px;
-  max-width:95%;
-    max-height:95%;
-    align-items: center;
+  border-radius: var(--border-radius);
+  max-width: 95%;
+  max-height: 95%;
+  align-items: center;
 }
 
 .galeria_image {
-  border-radius: 15px;
+  border-radius: var(--border-radius);
   place-self: center;
 }
-.imagen{
-   padding: 3px 10px;
+.imagen {
+  padding: 3px 10px;
   border: var(--background) 5px solid;
-  border-radius: 20px;
+  border-radius: var(--border-radius);
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1 class="titulo">Registro de descuento</h1>
+    <h1 class="disconut-titulo">Registro de descuento</h1>
     <section class="producto">
       <Galeria
-        class="producto_galeria"
+        class="discount_galery"
         :name="product.datos[0].nombre_prod"
         :imagenes="images"
       />
-      <Datos class="producto_datos" :datos="product.datos[0]" />
+      <Datos class="discount-data" :datos="product.datos[0]" />
     </section>
   </div>
 </template>
@@ -64,19 +64,18 @@ export default {
   margin-top: 0;
   word-wrap: break-word;
 }
-.titulo {
+.disconut-titulo {
   text-align: center;
-  color: var(--font-color-secondary);
-  font-weight: 700;
+  color: var(--color-title);
+  font-weight: 600;
   font-size: 2rem;
-  display: block;
-  text-overflow: ellipsis;
+  margin-bottom: 2rem;
 }
-.producto_datos {
+.discount-data {
   grid-column: 2/3;
   grid-row: 2/3;
 }
-.producto_galeria {
+.discount_galery {
   grid-column: 1/2;
   grid-row: 2/3;
 }

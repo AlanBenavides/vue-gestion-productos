@@ -9,10 +9,10 @@
         <label>
           <div class="formulario_name">Nombre de promoción:</div>
           <input
-            :style="
+            :class="
               $v.promocion.nombre_prom.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
             type="text"
             required
@@ -52,10 +52,10 @@
         <label>
           <div class="formulario_name">Descripción:</div>
           <textarea
-            :style="
+            :class="
               $v.promocion.descripcion.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
             v-model="promocion.descripcion"
             cols="50"
@@ -63,7 +63,7 @@
             maxlength="1000"
           />
         </label>
-        <div class="formulario_check-error1">
+        <div class="formulario_check-count">
           {{ `${promocion.descripcion.length}/1000` }} caracteres.
         </div>
         <div
@@ -87,10 +87,10 @@
           <input
             type="text"
             v-model="promocion.precio_unid"
-            :style="
+            :class="
               $v.promocion.precio_unid.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
           />
         </label>
@@ -125,10 +125,10 @@
           <input
             type="text"
             v-model="promocion.cantidad"
-            :style="
+            :class="
               $v.promocion.cantidad.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
           />
         </label>
@@ -205,6 +205,7 @@
         Confirmar
       </button>
     </form>
+    <Alert ref="alert"></Alert>
   </div>
 </template>
 
@@ -217,6 +218,7 @@ import {
   between,
   integer,
 } from "vuelidate/lib/validators";
+import Alert from "@/components/Alert.vue";
 
 const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\sáéíóúÁÉÍÓÚ.,:;'`"-]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
@@ -262,6 +264,7 @@ const min_products = (value) => {
 export default {
   name: "Form",
   props: ["image"],
+  components: { Alert },
   data() {
     return {
       disabled: false,
@@ -315,27 +318,23 @@ export default {
   methods: {
     async submitForm() {
       try {
-        if (!this.$v.promocion.$invalid) {
-          if (this.image == "") alert("Registra la imagen de la promoción");
-          else {
-            for (let id in this.$store.state.groupIDselected) {
-              if (
-                this.promocion.cantidad *
-                  this.$store.state.groupIDselected[id][0] >
-                this.$store.state.groupIDselected[id][1]
-              ) {
-                alert("No existen suficientes productos para esta promoción.");
-                return;
-              }
-            }
-            await this.sendDataProm();
-            alert("Datos de la promoción editados exitosamente");
+        if (this.image == "")
+          throw new Error("warning", "Registra la imagen de la promoción");
+
+        for (let id in this.$store.state.groupIDselected) {
+          if (
+            this.promotion.cantidad * this.$store.state.groupIDselected[id][0] >
+            this.$store.state.groupIDselected[id][1]
+          ) {
+            throw new Error(
+              "No existen suficientes productos para esta promoción."
+            );
           }
-        } else {
-          alert("Rellene todos los datos correctamente");
+          await this.sendDataProm();
+          this.alert("success", "Nueva promoción creada exitosamente");
         }
       } catch (error) {
-        alert(error);
+        this.alert("warning", error);
       }
     },
     async sendDataProm() {
@@ -354,20 +353,25 @@ export default {
         throw new Error("El nombre de la promoción esta repetido");
       }
     },
-    parseDate(dat){
+    parseDate(dat) {
       const date = new Date(dat);
-      return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
-    }
+      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    },
+    alert(alertType, alertMessage) {
+      this.$refs.alert.showAlert(alertType, alertMessage);
+    },
   },
   computed: {
     isAllValid() {
       return this.$v.promocion.$invalid || this.image == ""
-        ? "form_button_disabled"
+        ? "button-disabled"
         : "";
     },
   },
-  async mounted(){
-    const response = await this.$http.get(`/promotions/${this.$store.state.idSelected[0]}`);
+  async mounted() {
+    const response = await this.$http.get(
+      `/promotions/${this.$store.state.idSelected[0]}`
+    );
     const datos = response.data.datos;
     this.promocion.nombre_prom = datos[0].nombr_prom;
     this.promocion.descripcion = datos[0].descrip_prom;
@@ -375,26 +379,20 @@ export default {
     this.promocion.cantidad = datos[0].cantidad_prom;
     this.promocion.fecha_inicio = this.parseDate(datos[0].fecha_ini);
     this.promocion.fecha_fin = this.parseDate(datos[0].fecha_fin);
-  }
+  },
 };
 </script>
 
 <style>
-.formulario_tittle {
-  text-align: left;
-  color: #919ca9;
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
 .formulario_form {
-  background-color: #edf0f4;
+  background-color: var(--background);
   padding: 2rem;
   text-align: left;
 }
 
 .formulario label {
   display: block;
+  font-size: 1.2rem;
 }
 
 .formulario textarea {
@@ -408,8 +406,8 @@ export default {
 .formulario textarea,
 .formulario select {
   border: none;
-  border: 2px solid #8b8b8b;
-  border-radius: 6px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
   padding: 5px 7px;
 }
 
@@ -427,13 +425,8 @@ export default {
   text-align: center;
 }
 
-.formulario legend {
-  font-size: 1.2rem;
-  margin-bottom: 0;
-}
-
 .formulario_name {
-  color: #919ca9;
+  color: var(--font-color-secondary);
 }
 
 .formulario_name-span {
@@ -450,29 +443,38 @@ export default {
 }
 
 .formulario_check-error {
-  color: red;
+  color: var(--font-color-error);
 }
 
 .formulario_check-error-center {
   text-align: center;
-  color: red;
+  color: var(--font-color-error);
 }
 
 .formulario_button {
   margin: auto;
   display: block;
-  background-color: rgb(51, 51, 51);
+  background-color: var(--color-btn);
   padding: 13px 100px;
   color: white;
   font-size: 20px;
   font-weight: 700;
 }
-.form_button_disabled {
-  background-color: gray;
+
+.formulario_check-count {
+  text-align: right;
 }
 
-.formulario_check-error1 {
-  color: black;
-  text-align: right;
+.formulario_check-input {
+  border: 1px solid var(--font-color-accept) !important;
+}
+
+.formulario_check-input-error {
+  border: 1px solid var(--font-color-error) !important;
+}
+
+.button-disabled {
+  background: var(--color-btn-disable);
+  border: 2px solid var(--color-btn-disable);
 }
 </style>

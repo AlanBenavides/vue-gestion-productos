@@ -9,20 +9,17 @@
         <label>
           <div class="formulario_name">Nombre de promoción:</div>
           <input
-            :style="
+            :class="
               $v.promotion.promName.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
             type="text"
             required
             v-model="promotion.promName"
           />
         </label>
-        <div
-          class="formulario_check-error"
-          v-if="!$v.promotion.promName.alpha"
-        >
+        <div class="formulario_check-error" v-if="!$v.promotion.promName.alpha">
           No se aceptan caracteres especiales.
         </div>
         <div
@@ -52,10 +49,10 @@
         <label>
           <div class="formulario_name">Descripción:</div>
           <textarea
-            :style="
+            :class="
               $v.promotion.description.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
             v-model="promotion.description"
             cols="50"
@@ -63,7 +60,7 @@
             maxlength="1000"
           />
         </label>
-        <div class="formulario_check-error1">
+        <div class="formulario_check-count">
           {{ `${promotion.description.length}/1000` }} caracteres.
         </div>
         <div
@@ -87,10 +84,10 @@
           <input
             type="text"
             v-model="promotion.unitPrice"
-            :style="
+            :class="
               $v.promotion.unitPrice.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
           />
         </label>
@@ -125,10 +122,10 @@
           <input
             type="text"
             v-model="promotion.quantity"
-            :style="
+            :class="
               $v.promotion.quantity.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
           />
         </label>
@@ -205,6 +202,7 @@
         Confirmar
       </button>
     </form>
+    <Alert ref="alert"></Alert>
   </div>
 </template>
 
@@ -217,15 +215,14 @@ import {
   between,
   integer,
 } from "vuelidate/lib/validators";
+import Alert from "@/components/Alert.vue";
 
 const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\sáéíóúÁÉÍÓÚ.,:;'`"-]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 
 const validateDate = (value) => {
   const todayDate = new Date();
-  const threeYearsAfter = new Date().setFullYear(
-    todayDate.getFullYear() + 3
-  );
+  const threeYearsAfter = new Date().setFullYear(todayDate.getFullYear() + 3);
   const inputDate = new Date(Date.parse(value));
   inputDate.setDate(inputDate.getDate() + 1);
   return todayDate <= inputDate && inputDate < threeYearsAfter;
@@ -243,7 +240,6 @@ const validateEndDate = (value, vm) => {
 };
 
 const validateDecimals = (value) => {
-
   if (String(value).indexOf(".") > 0) {
     const parts = String(value).split(".");
     const dato = String(parts[1]);
@@ -261,6 +257,7 @@ const validateMinProductsCount = (value) => {
 export default {
   name: "Form",
   props: ["image"],
+  components: { Alert },
   data() {
     return {
       disabled: false,
@@ -314,27 +311,23 @@ export default {
   methods: {
     async submitForm() {
       try {
-        if (!this.$v.promotion.$invalid) {
-          if (this.image == "") alert("Registra la imagen de la promoción");
-          else {
-            for (let id in this.$store.state.groupIDselected) {
-              if (
-                this.promotion.quantity *
-                  this.$store.state.groupIDselected[id][0] >
-                this.$store.state.groupIDselected[id][1]
-              ) {
-                alert("No existen suficientes productos para esta promoción.");
-                return;
-              }
-            }
-            await this.sendDataProm();
-            alert("Nueva promoción creada exitosamente");
+        if (this.image == "")
+          throw new Error("warning", "Registra la imagen de la promoción");
+
+        for (let id in this.$store.state.groupIDselected) {
+          if (
+            this.promotion.quantity * this.$store.state.groupIDselected[id][0] >
+            this.$store.state.groupIDselected[id][1]
+          ) {
+            throw new Error(
+              "No existen suficientes productos para esta promoción."
+            );
           }
-        } else {
-          alert("Rellene todos los datos correctamente");
+          await this.sendDataProm();
+          this.alert("success", "Nueva promoción creada exitosamente");
         }
       } catch (error) {
-        alert(error);
+        this.alert("warning", error);
       }
     },
     async sendDataProm() {
@@ -353,11 +346,14 @@ export default {
         throw new Error("El nombre de la promoción esta repetido");
       }
     },
+    alert(alertType, alertMessage) {
+      this.$refs.alert.showAlert(alertType, alertMessage);
+    },
   },
   computed: {
     isAllValid() {
       return this.$v.promotion.$invalid || this.image == ""
-        ? "form_button_disabled"
+        ? "button-disabled"
         : "";
     },
   },
@@ -365,21 +361,15 @@ export default {
 </script>
 
 <style>
-.formulario_tittle {
-  text-align: left;
-  color: #919ca9;
-  font-size: 1.4rem;
-  font-weight: 600;
-}
-
 .formulario_form {
-  background-color: #edf0f4;
+  background-color: var(--background);
   padding: 2rem;
   text-align: left;
 }
 
 .formulario label {
   display: block;
+  font-size: 1.2rem;
 }
 
 .formulario textarea {
@@ -393,8 +383,8 @@ export default {
 .formulario textarea,
 .formulario select {
   border: none;
-  border: 2px solid #8b8b8b;
-  border-radius: 6px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
   padding: 5px 7px;
 }
 
@@ -412,13 +402,8 @@ export default {
   text-align: center;
 }
 
-.formulario legend {
-  font-size: 1.2rem;
-  margin-bottom: 0;
-}
-
 .formulario_name {
-  color: #919ca9;
+  color: var(--font-color-secondary);
 }
 
 .formulario_name-span {
@@ -435,29 +420,38 @@ export default {
 }
 
 .formulario_check-error {
-  color: red;
+  color: var(--font-color-error);
 }
 
 .formulario_check-error-center {
   text-align: center;
-  color: red;
+  color: var(--font-color-error);
 }
 
 .formulario_button {
   margin: auto;
   display: block;
-  background-color: rgb(51, 51, 51);
+  background-color: var(--color-btn);
   padding: 13px 100px;
   color: white;
   font-size: 20px;
   font-weight: 700;
 }
-.form_button_disabled {
-  background-color: gray;
+
+.formulario_check-count {
+  text-align: right;
 }
 
-.formulario_check-error1 {
-  color: black;
-  text-align: right;
+.formulario_check-input {
+  border: 1px solid var(--font-color-accept) !important;
+}
+
+.formulario_check-input-error {
+  border: 1px solid var(--font-color-error) !important;
+}
+
+.button-disabled {
+  background: var(--color-btn-disable);
+  border: 2px solid var(--color-btn-disable);
 }
 </style>

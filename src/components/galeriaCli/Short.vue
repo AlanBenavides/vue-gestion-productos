@@ -1,28 +1,40 @@
 <template>
   <div>
     <div class="options-inline">
-      <div >
-        <p style="text-align: left;">Categoria:</p>
+      <div>
+        <p style="text-align: left">Categoria:</p>
 
         <div class="short-selectlist">
-            <select class="form-control" v-model="categoria" @change="selectCategoria(categoria)" :disabled="tipo=='promocion'">
-                <option value="">Todos</option>
-                <option v-for="cate of arrayCategoria" :key="cate.index" :value="cate.nombre_cat" v-text="cate.nombre_cat"></option>
-            </select>                                        
+          <select
+            class="form-control"
+            v-model="categoria"
+            @change="selectCategoria(categoria)"
+            :disabled="tipo == 'promocion'"
+          >
+            <option value="">Todos</option>
+            <option
+              v-for="cate of arrayCategoria"
+              :key="cate.index"
+              :value="cate.nombre_cat"
+              v-text="cate.nombre_cat"
+            ></option>
+          </select>
         </div>
       </div>
       <div>
         <p style="text-align: right">Ordenar por:</p>
         <aside class="short-buttonlist">
           <button
-          v-for="(button, index) in orderButtons"
-          :key="index"
-          @click="selectOrder(button.order, button.orderProm)"
-          :class="`short-button ${
-              orden == button.order || orden == button.orderProm ? 'short-button_select' : ''
-          }`"
+            v-for="(button, index) in orderButtons"
+            :key="index"
+            @click="selectOrder(button.order, button.orderProm)"
+            :class="`short-button ${
+              orden == button.order || orden == button.orderProm
+                ? 'short-button_select'
+                : ''
+            }`"
           >
-          {{ button.type }}
+            {{ button.type }}
           </button>
         </aside>
       </div>
@@ -34,17 +46,14 @@
           :key="index"
           @click="selectTipe(button2.order)"
           :class="`short-button ${
-              tipo == button2.order ? 'short-button_select' : ''
+            tipo == button2.order ? 'short-button_select' : ''
           }`"
-          >
+        >
           {{ button2.type }}
-          </button>
+        </button>
       </aside>
       <div class="search">
-        <button
-          class="search_button"
-          @click="search()"
-        >
+        <button class="search_button" @click="search()">
           <img src="@/assets/search-24px.svg" alt="search" />
         </button>
         <input
@@ -59,61 +68,61 @@
         />
       </div>
     </div>
-    
+
     <template v-if="products">
-    <div class="short-list">
-      <div
-        v-for="product in products"
-        :key="product.cod_prod"
-        class="short-product"
-      >
-        <Item
-        tipo="producto"
-        :id_product="product.cod_prod"
-        :nombre="product.nombre_prod"
-        :precio="product.precio_unid"
-        :descripcion="product.descripcion"
-        :porcentaje="product.porcentaje"
-        :cantidad_req="product.cantidad_req"
-        />
+      <div class="short-list">
+        <div
+          v-for="product in products"
+          :key="product.cod_prod"
+          class="short-product"
+        >
+          <Item
+            tipo="producto"
+            :id_product="product.cod_prod"
+            :nombre="product.nombre_prod"
+            :precio="product.precio_unid"
+            :descripcion="product.descripcion"
+            :porcentaje="product.porcentaje"
+            :cantidad_req="product.cantidad_req"
+          />
+        </div>
       </div>
-    </div>
     </template>
     <template v-if="promos">
-    <div class="short-list">
-      <div
-        v-for="product in promos"
-        :key="product.cod_prom"
-        class="short-product"
-      >
-        <Item
-        tipo="promocion"
-        :id_product="product.cod_prom"
-        :nombre="product.nombr_prom"
-        :precio="product.precio_prom"
-        :descripcion="product.descrip_prom"
-        />
+      <div class="short-list">
+        <div
+          v-for="product in promos"
+          :key="product.cod_prom"
+          class="short-product"
+        >
+          <Item
+            tipo="promocion"
+            :id_product="product.cod_prom"
+            :nombre="product.nombr_prom"
+            :precio="product.precio_prom"
+            :descripcion="product.descrip_prom"
+          />
+        </div>
       </div>
-    </div>
     </template>
     <template v-if="descount">
-    <div class="short-list">
-      <div
-        v-for="product in descount"
-        :key="product.cod_prod"
-        class="short-product"
-      >
-        <Item
-        tipo="descuento"
-        :id_product="product.cod_prod"
-        :nombre="product.nombre_prod"
-        :precio="product.precio_unid"
-        :descripcion="product.descripcion"
-        :porcentaje="product.porcentaje"
-        :cantidad_req="product.cantidad_req"
-        />
+      <div class="short-list">
+        <div
+          v-for="product in descount"
+          :key="product.cod_prod"
+          class="short-product"
+        >
+          <Item
+            tipo="descuento"
+            :id_product="product.cod_prod"
+            :nombre="product.nombre_prod"
+            :precio="product.precio_unid"
+            :descripcion="product.descripcion"
+            :porcentaje="product.porcentaje"
+            :cantidad_req="product.cantidad_req"
+          />
+        </div>
       </div>
-    </div>
     </template>
     <div v-if="!hayResultados">
       <p>No se encontraron resultados para tu búsqueda</p>
@@ -131,7 +140,9 @@
             :key="index"
             :class="pagina == index ? 'active' : ''"
           >
-            <a class="page-link" href="#" @click="setPage(index)">{{ index }}</a>
+            <a class="page-link" href="#" @click="setPage(index)">{{
+              index
+            }}</a>
           </li>
         </div>
         <li
@@ -150,15 +161,15 @@ import Item from "@/components/galeriaCli/Item.vue";
 export default {
   name: "Short",
   components: {
-    Item
+    Item,
   },
   data: function () {
     return {
       pagina: 1,
       pagCount: 1,
-      categoria: '',
+      categoria: "",
       orden: "nombre_prod",
-      tipo:"producto",
+      tipo: "producto",
       produtSelect: -1,
       products: [],
       promos: [],
@@ -166,7 +177,6 @@ export default {
       expresion: "",
       hayResultados: true,
       arrayCategoria: [],
-      //arrayAnt: [],
       orderButtons: [
         {
           order: "nombre_prod",
@@ -206,61 +216,55 @@ export default {
     };
   },
   methods: {
-    async getCategoriaCli(){
-      const response = await this.$http.get(
-        `categories`
-      );
-      const respuesta= response.data;
+    async getCategoriaCli() {
+      const response = await this.$http.get(`categories`);
+      const respuesta = response.data;
       this.arrayCategoria = respuesta;
     },
-    selectCategoria(){
-      if(this.tipo == 'producto'){
+    selectCategoria() {
+      if (this.tipo == "producto") {
         this.getProducts();
-      }else if(this.tipo == 'descuento'){
+      } else if (this.tipo == "descuento") {
         this.getDesc();
       }
     },
     selectOrder(order, orderProm) {
       this.pagina = 1;
-      if(this.tipo == "producto"){
+      if (this.tipo == "producto") {
         this.orden = order;
         this.getProducts();
-      }
-      else if(this.tipo == "promocion"){
+      } else if (this.tipo == "promocion") {
         this.orden = orderProm;
         this.getPromos();
-      }
-      else{
+      } else {
         this.orden = order;
         this.getDesc();
       }
     },
     selectTipe(tipo) {
-      if(this.tipo == tipo){
+      if (this.tipo == tipo) {
         return;
       }
       this.tipo = tipo;
       this.pagina = 1;
 
-      if(this.tipo == "producto"){
-        for(let order_select of this.orderButtons){
-          if(order_select.orderProm == this.orden){
+      if (this.tipo == "producto") {
+        for (let order_select of this.orderButtons) {
+          if (order_select.orderProm == this.orden) {
             this.orden = order_select.order;
           }
         }
         this.getProducts();
-      }
-      else if(this.tipo == "promocion"){
-        for(let order_select of this.orderButtons){
-          if(order_select.order == this.orden){
+      } else if (this.tipo == "promocion") {
+        for (let order_select of this.orderButtons) {
+          if (order_select.order == this.orden) {
             this.orden = order_select.orderProm;
           }
         }
         this.getPromos();
-      }
-      else{
-        for(let order_select of this.orderButtons){
-          if(order_select.orderProm == this.orden){
+      } else {
+        for (let order_select of this.orderButtons) {
+          if (order_select.orderProm == this.orden) {
             this.orden = order_select.order;
           }
         }
@@ -269,12 +273,14 @@ export default {
     },
     async getProducts() {
       let response = null;
-      if(this.expresion == ''){
+      if (this.expresion == "") {
         response = await this.$http.get(
-          `products?criterio=${this.orden}&categoria=${this.categoria}&page=${this.pagina}&limit=${15}&usr=1234`
+          `products?criterio=${this.orden}&categoria=${this.categoria}&page=${
+            this.pagina
+          }&limit=${15}&usr=1234`
         );
-      }else{
-        this.categoria = '';
+      } else {
+        this.categoria = "";
         response = await this.$http.get(
           `search?expresion=${this.expresion}&page=${this.pagina}&limit=15&table=producto`
         );
@@ -289,44 +295,47 @@ export default {
       this.products = data.results;
       this.promos = [];
       this.descount = [];
-      
     },
     async getPromos() {
       let response = null;
-      if(this.expresion == ''){
+      if (this.expresion == "") {
         response = await this.$http.get(
-          `promotions?criterio=${this.orden}&page=${this.pagina}&limit=${15}&usr=1234`
+          `promotions?criterio=${this.orden}&page=${
+            this.pagina
+          }&limit=${15}&usr=1234`
         );
-      }else{
+      } else {
         response = await this.$http.get(
           `search?expresion=${this.expresion}&page=${this.pagina}&limit=15&table=promocion`
         );
         this.verSiHayResultados(response.data.results);
       }
       this.pagCount = 1;
-      this.categoria = '';
+      this.categoria = "";
 
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      this.setPageInterval(arrayCount,15);
+      this.setPageInterval(arrayCount, 15);
 
       this.promos = data.results;
       this.descount = [];
       this.products = [];
-      if(this.orden == 'cantidad_prom'){
-          this.orden = 'cantidad'
-        }else if(this.orden == 'precio_prom'){
-          this.orden = 'precio_unid'
-        }
+      if (this.orden == "cantidad_prom") {
+        this.orden = "cantidad";
+      } else if (this.orden == "precio_prom") {
+        this.orden = "precio_unid";
+      }
     },
     async getDesc() {
       let response = null;
-      if(this.expresion == ''){
+      if (this.expresion == "") {
         response = await this.$http.get(
-          `discounts?criterio=${this.orden}&categoria=${this.categoria}&page=${this.pagina}&limit=${15}&usr=1234`
+          `discounts?criterio=${this.orden}&categoria=${this.categoria}&page=${
+            this.pagina
+          }&limit=${15}&usr=1234`
         );
-      }else{
+      } else {
         response = await this.$http.get(
           `search?expresion=${this.expresion}&page=${this.pagina}&limit=15&table=descuento`
         );
@@ -345,73 +354,55 @@ export default {
     },
     prevPag() {
       this.pagina--;
-      if(this.tipo == "producto"){
-      
+      if (this.tipo == "producto") {
         this.getProducts();
-      }
-      else if(this.tipo == "promocion"){
-        
+      } else if (this.tipo == "promocion") {
         this.getPromos();
-      }
-      else{
-        
+      } else {
         this.getDesc();
       }
     },
     nextPag() {
       this.pagina++;
-      if(this.tipo == "producto"){
-      
+      if (this.tipo == "producto") {
         this.getProducts();
-      }
-      else if(this.tipo == "promocion"){
-        
+      } else if (this.tipo == "promocion") {
         this.getPromos();
-      }
-      else{
-        
+      } else {
         this.getDesc();
       }
     },
     setPage(index) {
       this.pagina = index;
-      if(this.tipo == "producto"){
-      
+      if (this.tipo == "producto") {
         this.getProducts();
-      }
-      else if(this.tipo == "promocion"){
-        
+      } else if (this.tipo == "promocion") {
         this.getPromos();
-      }
-      else{
-        
+      } else {
         this.getDesc();
       }
     },
-    setPageInterval(cant, limit){
-      if ((cant / limit) % limit == 0)
-        this.pagCount = Math.trunc(cant / limit);
+    setPageInterval(cant, limit) {
+      if ((cant / limit) % limit == 0) this.pagCount = Math.trunc(cant / limit);
       else this.pagCount = Math.trunc(cant / limit) + 1;
     },
     async search() {
       this.pagina = 1;
-      if(this.tipo == "producto"){
+      if (this.tipo == "producto") {
         this.getProducts();
-      }
-      else if(this.tipo == "promocion"){
+      } else if (this.tipo == "promocion") {
         this.getPromos();
-      }
-      else{
+      } else {
         this.getDesc();
       }
     },
-    verSiHayResultados(resultadosDeBusqueda){
-      if(resultadosDeBusqueda.length == 0){
+    verSiHayResultados(resultadosDeBusqueda) {
+      if (resultadosDeBusqueda.length == 0) {
         this.hayResultados = false;
-      }else{
+      } else {
         this.hayResultados = true;
       }
-    }
+    },
   },
   mounted: async function () {
     await this.getProducts();
@@ -421,23 +412,14 @@ export default {
 </script>
 
 <style scoped>
-
-h3 {
-  margin-left: 4rem;
-  text-align: left;
-  font-size: 1rem;
-  color: var(--font-color);
-}
-h4 {
-  text-align: right;
-  margin-right: 2rem;
-  font-size: 1rem;
-  color: var(--font-color);
+.form-control {
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
 }
 
 .short-button {
   background: none;
-  border: 2px solid var(--primary-color);
+  border: 1px solid var(--color-border);
   border-left: none;
   padding: 5px 1rem;
 }
@@ -445,7 +427,7 @@ h4 {
 .short-button:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  border-left: 2px solid var(--primary-color);
+  border-left: 1px solid var(--color-border);
 }
 .short-button:last-child {
   border-top-right-radius: 5px;
@@ -457,10 +439,10 @@ h4 {
 }
 
 .short-button_select {
-  background-color: var(--secondary-color);
+  background-color: var(--background);
 }
 
-.short-list { 
+.short-list {
   margin: 3em;
   display: grid;
   grid-template-columns: 400px 400px 400px;
@@ -468,37 +450,20 @@ h4 {
 }
 
 .short-product {
-  border: 2px solid var(--primary-color);
-  border-radius: 20px;
-  transition: 0.1s;
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
 }
 
-.short-product_select {
-  box-shadow: 0px 0px 10px 0px #888;
-}
-
-nav{
-    width:100%;
-    height:60px;
-    border-bottom:4px;
-    
-}
-
-.cont{
-    height:100%;
-    padding-top:0px;
-    float:right;
-    margin-right: 2rem;
-}
-.cont label{
-    color:#797d7f;
-    font-size:12.9px;
+nav {
+  width: 100%;
+  height: 60px;
+  border-bottom: 4px;
 }
 
 .options-inline {
-    margin: 2em 3em;
-    display: flex;
-    justify-content: space-between;
+  margin: 2em 3em;
+  display: flex;
+  justify-content: space-between;
 }
 
 input[type="search"]::-webkit-search-decoration,
@@ -511,25 +476,22 @@ input[type="search"]::-webkit-search-results-decoration {
   display: flex;
 }
 .search_input {
-  height: 40px;
-  border: 1px solid black;
+  background-color: transparent;
+  border: 1px solid var(--color-border);
   border-left: none;
-  border-radius: 15px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  width: 100%;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
   padding-left: 5px;
-  background-color: #fff;
   outline: none;
+  width: 100%;
 }
 .search_button {
-  height: 40px;
-  border: 1px solid black;
-  border-right: none;
   background: transparent;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
-  background-color: #fff;
+  border: 1px solid var(--color-border);
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  border-right: none;
+  height: 40px;
   padding-left: 5px;
 }
 
@@ -561,6 +523,6 @@ input[type="search"]::-webkit-search-results-decoration {
 
 .scrollable-pages::-webkit-scrollbar-thumb {
   background-color: #007bff;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
 }
 </style>
