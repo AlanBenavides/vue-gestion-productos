@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <router-link :to="clickeable ? '' : `/producto/${id_product}`">
-      <img class="img-item" :src="imagen" :alt="nombre"/>
+      <img class="img-item" :src="imagen" :alt="nombre" />
     </router-link>
     <h5 class="one-line">{{ nombre }}</h5>
     <p>{{ precio }} Bs.</p>
@@ -13,7 +13,14 @@
 <script>
 export default {
   name: "Item",
-  props: ["id_product", "nombre", "precio", "descripcion", "fecha", "clickeable"],
+  props: [
+    "id_product",
+    "nombre",
+    "precio",
+    "descripcion",
+    "fecha",
+    "clickeable",
+  ],
   data: function () {
     return {
       imagen: "",
@@ -47,8 +54,8 @@ export default {
   text-align: start;
   cursor: pointer;
   text-decoration: none;
-  color: black;
-  white-space:normal;
+  color: var(--font-color-primary);
+  white-space: normal;
 }
 
 .img-item {
@@ -65,7 +72,7 @@ export default {
   text-overflow: ellipsis;
 }
 
-.three-lines{
+.three-lines {
   line-height: 1.5em;
   height: 4.5em;
   word-wrap: break-word;

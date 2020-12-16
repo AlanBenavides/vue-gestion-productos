@@ -2,8 +2,7 @@
   <section>
     <h1 class="admin_productos-title">Galeria de la Tienda</h1>
     <div class="admin_productos-container">
-        
-        <Short class="admin_productos-products" />
+      <Short class="admin_productos-products" />
     </div>
   </section>
 </template>
@@ -13,7 +12,7 @@ import Short from "@/components/galeriaCli/Short.vue";
 export default {
   name: "GaleryCli",
   components: {
-      Short
+    Short,
   },
 };
 </script>
@@ -24,8 +23,8 @@ export default {
 }
 
 .admin_productos-title {
-  font-size: 25px;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 600;
   color: #42b883;
   margin-bottom: 1rem;
 }

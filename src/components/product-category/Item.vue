@@ -63,8 +63,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid #777;
-  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
   margin: 1rem;
 }
 
@@ -85,4 +85,3 @@ export default {
   margin-left: 3rem;
 }
 </style>
-

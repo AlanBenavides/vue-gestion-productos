@@ -9,11 +9,12 @@
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Nombre Producto:</div>
-          <input name='nombreProducto'
-            :style="
+          <input
+            name="nombreProducto"
+            :class="
               $v.producto.nombre_prod.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
             type="text"
             required
@@ -52,11 +53,12 @@
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Descripción:</div>
-          <textarea name='descripcionProducto'
-            :style="
+          <textarea
+            name="descripcionProducto"
+            :class="
               $v.producto.descripcion.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
             v-model="producto.descripcion"
             cols="50"
@@ -64,10 +66,10 @@
             maxlength="1000"
           />
         </label>
-        <div class="formulario_check-error1">
+        <div class="formulario_check-count">
           {{ `${producto.descripcion.length}/1000` }} caracteres.
         </div>
-       
+
         <div
           class="formulario_check-error"
           v-if="!$v.producto.descripcion.maxLength"
@@ -86,11 +88,12 @@
       <div>
         <label
           ><div class="formulario_name">Categoría:</div>
-          <input name='categoriaProducto'
-            :style="
+          <input
+            name="categoriaProducto"
+            :class="
               $v.producto.categoria.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
             list="categorias"
             v-model="producto.categoria"
@@ -135,13 +138,14 @@
             <span>(Bs):</span>
           </p>
 
-          <input name='precioProducto'
+          <input
+            name="precioProducto"
             type="text"
             v-model="producto.precio_unid"
-            :style="
+            :class="
               $v.producto.precio_unid.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error'
+                : 'formulario_check-input'
             "
           />
         </label>
@@ -175,7 +179,8 @@
         <legend class="formulario_name">Cantidad:</legend>
         <div class="formulario_group">
           <label
-            ><input name='cantidadUnidades'
+            ><input
+              name="cantidadUnidades"
               type="radio"
               id="precio_unidades"
               @click="selectCantidad(false)"
@@ -183,7 +188,8 @@
             />
             <span class="formulario_name formulario_name-span">Unidades</span>
           </label>
-          <input name='unidadesProducto'
+          <input
+            name="unidadesProducto"
             type="text"
             :disabled="disabled"
             v-model="producto.cantidad"
@@ -211,7 +217,8 @@
 
         <div class="formulario_group">
           <label
-            ><input name='cantidadPeso'
+            ><input
+              name="cantidadPeso"
               type="radio"
               value="peso"
               id="precio_peso"
@@ -220,7 +227,8 @@
             />
             <span class="formulario_name formulario_name-span">Peso</span>
           </label>
-          <input name='pesoProducto'
+          <input
+            name="pesoProducto"
             type="text"
             step="0.25"
             :disabled="!disabled"
@@ -230,7 +238,7 @@
           />
 
           <select
-            name='unidadMedProducto'
+            name="unidadMedProducto"
             :required="disabled"
             :disabled="!disabled"
             v-model="producto.unidad_med"
@@ -260,7 +268,8 @@
       <div class="formulario_group">
         <label
           ><div class="formulario_name">Fecha de vencimiento del producto:</div>
-          <input name='fechaVencProducto'
+          <input
+            name="fechaVencProducto"
             type="date"
             value="DD/MM/AA"
             onkeydown="return false"
@@ -292,8 +301,6 @@ import {
 } from "vuelidate/lib/validators";
 
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ'\s]*$/);
-//const alpha = helpers.regex("alpha", /^[0-9a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[' a-zA-ZÀ-ÿ\u00f1\u00d1]+$/);
-//const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,´.\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 const alpha3 = helpers.regex("alpha3", /^[a-zA-Z\s]*$/);
 
@@ -355,7 +362,6 @@ export default {
       descripcion: {
         required,
         maxLength: maxLength(1000),
-      
       },
       categoria: {
         required,
@@ -448,19 +454,20 @@ export default {
 <style>
 .formulario_tittle {
   text-align: left;
-  color: #919ca9;
+  color: var(--color-subtitle);
   font-size: 1.4rem;
   font-weight: 600;
 }
 
 .formulario_form {
-  background-color: #edf0f4;
+  background-color: var(--background);
   padding: 2rem;
   text-align: left;
 }
 
 .formulario label {
   display: block;
+  font-size: 1.2rem;
 }
 
 .formulario textarea {
@@ -474,8 +481,8 @@ export default {
 .formulario textarea,
 .formulario select {
   border: none;
-  border: 2px solid #8b8b8b;
-  border-radius: 6px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
   padding: 5px 7px;
 }
 
@@ -499,7 +506,7 @@ export default {
 }
 
 .formulario_name {
-  color: #919ca9;
+  color: var(--font-color-secondary);
 }
 
 .formulario_name-span {
@@ -516,25 +523,33 @@ export default {
 }
 
 .formulario_check-error {
-  color: red;
+  color: var(--font-color-error);
 }
 
 .formulario_check-error-center {
   text-align: center;
-  color: red;
+  color: var(--font-color-error);
 }
 
 .formulario_button {
   margin: auto;
   display: block;
-  background-color: rgb(51, 51, 51);
+  background-color: var(--color-btn);
   padding: 13px 100px;
   color: white;
   font-size: 20px;
   font-weight: 700;
 }
-.formulario_check-error1 {
-  color: black;
+
+.formulario_check-count {
   text-align: right;
+}
+
+.formulario_check-input {
+  border: 1px solid var(--font-color-accept);
+}
+
+.formulario_check-input-error {
+  border: 1px solid var(--font-color-error);
 }
 </style>

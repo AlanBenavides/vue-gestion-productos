@@ -9,7 +9,10 @@
           :key="index"
           @click="selectOrder(index)"
           :class="`short-button ${
-            currentSort == button.productSort || currentSort == button.promotionSort? 'short-button_select' : ''
+            currentSort == button.productSort ||
+            currentSort == button.promotionSort
+              ? 'short-button_select'
+              : ''
           }`"
         >
           {{ button.type }}
@@ -17,12 +20,20 @@
       </aside>
       <h4 v-if="!showOnlyProductsWithUnits">Mostrar:</h4>
       <aside class="short-buttonlist" v-if="!showOnlyProductsWithUnits">
-        <button class="short-button"
+        <button
+          class="short-button"
           @click="selectShow('products')"
-        >Productos</button>
-        <button class="short-button"
+          :class="show == 'products' ? 'short-button_select' : ''"
+        >
+          Productos
+        </button>
+        <button
+          class="short-button"
           @click="selectShow('promotions')"
-        >Promociones</button>
+          :class="show == 'promotions' ? 'short-button_select' : ''"
+        >
+          Promociones
+        </button>
       </aside>
     </div>
     <div class="short-list" v-if="show == 'products'">
@@ -61,7 +72,10 @@
     </div>
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
-        <li class="" :class="`page-item ${this.currentPage <= 1 ? 'disabled' : ''}`">
+        <li
+          class=""
+          :class="`page-item ${this.currentPage <= 1 ? 'disabled' : ''}`"
+        >
           <a class="page-link" href="#" @click="prevPag">Anterior</a>
         </li>
         <div class="scrollable-pages">
@@ -71,11 +85,15 @@
             :key="index"
             :class="currentPage == index ? 'active' : ''"
           >
-            <a class="page-link" href="#" @click="setPage(index)">{{ index }}</a>
+            <a class="page-link" href="#" @click="setPage(index)">{{
+              index
+            }}</a>
           </li>
         </div>
         <li
-          :class="`page-item ${this.currentPage >= this.pagCount ? 'disabled' : ''}`"
+          :class="`page-item ${
+            this.currentPage >= this.pagCount ? 'disabled' : ''
+          }`"
         >
           <a class="page-link" href="#" @click="nextPag">Siguiente</a>
         </li>
@@ -88,12 +106,12 @@
 import Item from "@/components/admin_prod/Item.vue";
 import ItemProm from "@/components/admin_prod/ItemProm.vue";
 
-
 export default {
   name: "Short",
   props: ["allowMultipleSelect", "showOnlyProductsWithUnits"],
   components: {
-    Item, ItemProm
+    Item,
+    ItemProm,
   },
   data: function () {
     return {
@@ -132,59 +150,67 @@ export default {
   },
   methods: {
     selectOrder(sortButtonIndex) {
-      this.currentSort = this.show == "products" ? this.sortButtons[sortButtonIndex].productSort : this.sortButtons[sortButtonIndex].promotionSort;
+      this.currentSort =
+        this.show == "products"
+          ? this.sortButtons[sortButtonIndex].productSort
+          : this.sortButtons[sortButtonIndex].promotionSort;
       this.currentPage = 1;
-      this.selectProduct(-1,0,true);
+      this.selectProduct(-1, 0, true);
       this.getProducts();
     },
-    selectShow(showOption){
-      if(this.show == showOption){
+    selectShow(showOption) {
+      if (this.show == showOption) {
         return;
       }
       this.show = showOption;
-      this.$emit("itemtype", this.show)
+      this.$emit("itemtype", this.show);
 
-      for(let order_select of this.sortButtons){
-        if(order_select.productSort == this.currentSort){
+      for (let order_select of this.sortButtons) {
+        if (order_select.productSort == this.currentSort) {
           this.currentSort = order_select.promotionSort;
-        }else if(order_select.promotionSort == this.currentSort){
+        } else if (order_select.promotionSort == this.currentSort) {
           this.currentSort = order_select.productSort;
         }
       }
 
       this.currentPage = 1;
-      this.selectProduct(-1,0,true);
+      this.selectProduct(-1, 0, true);
       this.getProducts();
     },
     selectProduct(productSelectedId, productSelectedCount, isChangingPage) {
-      if(this.allowMultipleSelect){
-        if(isChangingPage){
+      if (this.allowMultipleSelect) {
+        if (isChangingPage) {
           return;
         }
-        if(productSelectedId in this.$store.state.groupIDselected){
+        if (productSelectedId in this.$store.state.groupIDselected) {
           this.$store.commit("deleteID", productSelectedId);
-        }else{
-          this.$store.commit("addID", [productSelectedId, productSelectedCount]);
+        } else {
+          this.$store.commit("addID", [
+            productSelectedId,
+            productSelectedCount,
+          ]);
         }
-      }else{
-        if(this.productSelected[0] == productSelectedId){
-          this.productSelected = [-1,0];
-        }else{
-          this.productSelected = [productSelectedId,productSelectedCount];
+      } else {
+        if (this.productSelected[0] == productSelectedId) {
+          this.productSelected = [-1, 0];
+        } else {
+          this.productSelected = [productSelectedId, productSelectedCount];
         }
         this.$store.commit("changeSelection", this.productSelected);
       }
     },
-    itemSelected(id){
-      if(this.allowMultipleSelect){
-        return id in this.$store.state.groupIDselected ? 'short-product_select' : '';
-      }else{
-        return id == this.productSelected[0] ? 'short-product_select' : '';
+    itemSelected(id) {
+      if (this.allowMultipleSelect) {
+        return id in this.$store.state.groupIDselected
+          ? "short-product_select"
+          : "";
+      } else {
+        return id == this.productSelected[0] ? "short-product_select" : "";
       }
     },
     async getProducts() {
       let query = `${this.show}?criterio=${this.currentSort}&page=${this.currentPage}&limit=10`;
-      if(this.show == "products" && this.showOnlyProductsWithUnits){
+      if (this.show == "products" && this.showOnlyProductsWithUnits) {
         query += "&filter=1";
       }
       const response = await this.$http.get(query);
@@ -192,39 +218,37 @@ export default {
       const data = response.data;
       const arrayCount = parseInt(data.cant[0].count);
 
-      if (arrayCount%10 == 0)
-        this.pagCount = Math.trunc(arrayCount / 10);
+      if (arrayCount % 10 == 0) this.pagCount = Math.trunc(arrayCount / 10);
       else this.pagCount = Math.trunc(arrayCount / 10) + 1;
 
       this.arrayNext = data.next;
       this.arrayAnt = data.previus;
 
-      if(this.show == "products"){
+      if (this.show == "products") {
         this.products = data.results;
-      }else{
+      } else {
         this.promotions = data.results;
       }
-      
     },
 
     prevPag() {
       this.currentPage--;
-      this.selectProduct(-1,0,true);
+      this.selectProduct(-1, 0, true);
       this.getProducts();
     },
     nextPag() {
       this.currentPage++;
-      this.selectProduct(-1,0,true);
+      this.selectProduct(-1, 0, true);
       this.getProducts();
     },
     setPage(index) {
       this.currentPage = index;
-      this.selectProduct(-1,0,true);
+      this.selectProduct(-1, 0, true);
       this.getProducts();
-    }
+    },
   },
   mounted: async function () {
-    this.$emit("itemtype", this.show)
+    this.$emit("itemtype", this.show);
     await this.getProducts(this.currentPage, this.currentSort);
   },
 };
@@ -234,12 +258,10 @@ export default {
 h3 {
   text-align: start;
   font-size: 1rem;
-  color: var(--font-color);
 }
 h4 {
   text-align: start;
   font-size: 1rem;
-  color: var(--font-color);
 }
 
 .short-buttonlist {
@@ -249,7 +271,7 @@ h4 {
 
 .short-button {
   background: none;
-  border: 2px solid var(--primary-color);
+  border: 2px solid var(--color-border);
   border-left: none;
   padding: 5px 1rem;
 }
@@ -257,7 +279,7 @@ h4 {
 .short-button:first-child {
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  border-left: 2px solid var(--primary-color);
+  border-left: 2px solid var(--color-border);
 }
 .short-button:last-child {
   border-top-right-radius: 5px;
@@ -269,7 +291,7 @@ h4 {
 }
 
 .short-button_select {
-  background-color: var(--secondary-color);
+  background-color: var(--background);
 }
 
 .short-list {
@@ -282,13 +304,13 @@ h4 {
 }
 
 .short-product {
-  border: 2px solid var(--primary-color);
-  border-radius: 20px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
   transition: 0.1s;
 }
 
 .short-product_select {
-  box-shadow: 0px 0px 10px 0px #888;
+  box-shadow: 0px 0px 10px 0px var(--color-border);
 }
 
 .scrollable-pages {
@@ -308,6 +330,6 @@ h4 {
 
 .scrollable-pages::-webkit-scrollbar-thumb {
   background-color: #007bff;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
 }
 </style>

@@ -35,7 +35,6 @@ export default {
         `search?expresion=${this.expresion}&page=1&limit=3&table=producto`
       );
       this.data = response.data;
-      // console.log(this.data);
     },
   },
 };
@@ -52,24 +51,22 @@ input[type="search"]::-webkit-search-results-decoration {
   display: flex;
 }
 .search_input {
+  background-color: #fff;
   border: 1px solid black;
   border-left: none;
-  border-radius: 15px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  width: 100%;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
   padding-left: 5px;
-  background-color: #fff;
   outline: none;
+  width: 100%;
 }
 .search_button {
-  height: 40px;
-  border: 1px solid black;
-  border-right: none;
   background: transparent;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
-  background-color: #fff;
+  border: 1px solid black;
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+  border-right: none;
+  height: 40px;
   padding-left: 5px;
 }
 

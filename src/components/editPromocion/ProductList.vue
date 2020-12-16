@@ -30,57 +30,79 @@
         <button class="modl-button term" @click="addProducts()" v-if="this.showModal">Añadir productos</button>
         <button class="modl-button ext" @click="updateProducts()" v-if="this.showModal">X</button>
     </div>
+    <div class="it-container" v-if="this.products.length < 5">
+      <h6>Nuevo Producto</h6>
+      <div class="it-add" @click="showModal = !showModal">
+        <img class="im-add" src="@/assets/plus-circle.svg" height="120" />
+      </div>
+    </div>
+    <ModalProduct v-if="this.showModal"></ModalProduct>
+    <button
+      class="modl-button term"
+      @click="addProducts()"
+      v-if="this.showModal"
+    >
+      Añadir productos
+    </button>
+    <button
+      class="modl-button ext"
+      @click="updateProducts()"
+      v-if="this.showModal"
+    >
+      X
+    </button>
+  </div>
 </template>
 <script>
 import ModalProduct from "@/components/reg_promocion/ModalProduct.vue";
 import Item from "@/components/admin_prod/Item.vue";
 
 export default {
-    name: "ProductList",
-    components: {ModalProduct, Item},
-    data: () => {
-        return {
-            showModal: false,
-            products: [],
-            cant_products: {},
-        }
+  name: "ProductList",
+  components: { ModalProduct, Item },
+  data: () => {
+    return {
+      showModal: false,
+      products: [],
+      cant_products: {},
+    };
+  },
+  methods: {
+    addProducts() {
+      if (Object.keys(this.$store.state.groupIDselected).length > 0) {
+        this.getProducts();
+        this.showModal = !this.showModal;
+        alert("Productos añadidos.");
+      } else {
+        alert("No tienes productos seleccionados.");
+      }
     },
-    methods: {
-        addProducts(){
-            if(Object.keys(this.$store.state.groupIDselected).length > 0){
-                this.getProducts();
-                this.showModal = !this.showModal;
-                alert("Productos añadidos.");
-            }else{
-                alert("No tienes productos seleccionados.");
-            }
-        },
-        async getProducts(){
-            let newProducts = [];
-            let newCantProducts = {};
-            for(let productID in this.$store.state.groupIDselected){
-                const response = await this.$http.get(
-                    `products/${productID}`
-                );
-                newProducts.push(response.data.datos[0]);
-                newCantProducts[productID] = [this.$store.state.groupIDselected[productID][0],
-                response.data.datos[0].cantidad];
-            }
-            this.products = newProducts;
-            this.cant_products = newCantProducts;
-        },
-        deleteProduct(id){
-            this.$store.commit("deleteID", id);
-            this.getProducts();
-        },
-        updateProducts(){
-            this.$store.commit('updateGroup', this.cant_products);
-            this.showModal = !this.showModal;
-        },
-        upCounts(id){
-            this.$store.state.groupIDselected[id] = this.cant_products[id]
-        }
+    async getProducts() {
+      let newProducts = [];
+      let newCantProducts = {};
+      for (let productID in this.$store.state.groupIDselected) {
+        const response = await this.$http.get(`products/${productID}`);
+        newProducts.push(response.data.datos[0]);
+        newCantProducts[productID] = [
+          this.$store.state.groupIDselected[productID][0],
+          response.data.datos[0].cantidad,
+        ];
+      }
+      this.products = newProducts;
+      this.cant_products = newCantProducts;
     },
+    deleteProduct(id) {
+      this.$store.commit("deleteID", id);
+      this.getProducts();
+    },
+    updateProducts() {
+      this.$store.commit("updateGroup", this.cant_products);
+      this.showModal = !this.showModal;
+    },
+    upCounts(id) {
+      this.$store.state.groupIDselected[id] = this.cant_products[id];
+    },
+  },
     async mounted(){
         const response = await this.$http.get(`/promotions/${this.$store.state.idSelected[0]}`);
         const datos = response.data.prod;
@@ -90,69 +112,78 @@ export default {
         }
         this.$store.commit("updateGroup", product_previus);
         this.getProducts();
+
     }
-}
+    this.$store.commit("updateGroup", product_previus);
+    this.getProducts();
+  },
+};
 </script>
 <style scoped>
-.product-list{
-    width: 96%;
-    height: 750px;
-    margin: 32px 2%;
-    background-color:#D0D3D4;
-    white-space: nowrap;
-    overflow-x: scroll;
-    overflow-y: hidden;
+.product-list {
+  width: 96%;
+  height: 750px;
+  margin: 32px 2%;
+  background-color: var(--background);
+  white-space: nowrap;
+  overflow-x: auto;
 }
 
-.it-container{
-    margin-top: 20px;
-    display: inline-block;
-    vertical-align: top;
+.it-container {
+  margin-top: 20px;
+  display: inline-block;
+  vertical-align: top;
 }
-.it-add{
-    width: 370px;
-    height: 650px;
-    margin: 32px;
-    margin-top: 5px;
-    border-radius: 20px;
-    background-color: #ECF0F1;
-}
-
-.im-add
-{
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
+.it-add {
+  width: 370px;
+  height: 650px;
+  margin: 32px;
+  margin-top: 5px;
+  border-radius: var(--border-radius);
+  background-color: var(--background);
+  border: 2px solid var(--color-border);
 }
 
-.term{
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-80%);
+.im-add {
+  position: relative;
+  top: 40%;
+  cursor: pointer;
 }
 
-.ext{
-    top: 0px;
-    right: 60px;
-    border-radius: 100px;
-    height: 60px;
-    width: 60px;
+.term {
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-80%);
 }
 
-.modl-button{
-    z-index: 1;
-    margin: 20px;
-    position: fixed;
+.ext {
+  top: 0px;
+  right: 60px;
+  border-radius: 100px;
+  height: 60px;
+  width: 60px;
+  background-color: white;
+  border: none;
 }
 
-.del-button{
-    position: relative;
-    left: 40%;
-    top: 2%;
-    height: 40px;
-    width: 40px;
-    border-radius: 100%;
+.modl-button {
+  z-index: 1;
+  margin: 20px;
+  position: fixed;
+  padding: 4px;
+  border: 1px solid var(--color-border);
+}
+
+.del-button {
+  background-color: transparent;
+  border: none;
+  position: relative;
+  font-weight: 600;
+  font-size: 1.2rem;
+  left: 40%;
+  top: 10px;
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
 }
 </style>

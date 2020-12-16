@@ -78,7 +78,11 @@ export default {
       return this.$store.state.idSelected[1] == true;
     },
     canDeleteProm() {
-      if (this.$store.state.idSelected[0] == -1 && this.itemtype === "promotions") return true;
+      if (
+        this.$store.state.idSelected[0] == -1 &&
+        this.itemtype === "promotions"
+      )
+        return true;
       else if (this.itemtype === "products") return true;
       return false;
     },
@@ -193,8 +197,8 @@ div {
   text-transform: uppercase;
   font-size: 14px;
   background: none;
-  border: 1.4px solid grey;
-  border-radius: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
   width: 230px;
   padding: 16px;
   margin: 1rem;
