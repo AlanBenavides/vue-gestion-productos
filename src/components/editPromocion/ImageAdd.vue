@@ -1,15 +1,21 @@
 <template>
-  <div class="image-container">
-    <p>Foto de la promoción</p>
-    <div class="image-add">
-      <img
-        class="img-prom"
-        :src="imagen"
-        @click="addFiles()"
-        :height="
-          imagen.search('/img/plus-circle.2de4ac5c.svg') == -1 ? '' : 120
-        "
-      />
+    <div class="image-container">
+        <p>Foto de la promoción</p>
+        <div class="image-add">
+            <img class="img-prom" :src="imagen" alt="">
+            <img class="edit-icon" src="@/assets/edit-imagen.png"  @click="addFiles()" alt="">
+        </div>
+        <input
+            type="file"
+            id="files"
+            ref="files"
+            accept="image/*"
+            class="images_input"
+            @change="getImage()"
+        />
+        <span class="formulario_check-error" v-if="!$v.image.required">
+            Coloque una fotografia
+        </span>
     </div>
     <input
       type="file"
@@ -130,6 +136,24 @@ export default {
 
 .images_input {
   display: none;
+}
+
+.edit-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 500px;
+    max-height: 400px;
+    z-index: 1;
+    border-radius: 20px;
+    opacity: 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: opacity 0.5s;
+}
+
+.edit-icon:hover {
+    opacity: 1;
 }
 
 .button-img {

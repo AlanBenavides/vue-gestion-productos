@@ -22,14 +22,14 @@
       >
         {{ buttons[1].name }}
       </router-link>
-      <router-link
-        to=""
+       <button
+        :disabled="canEditProducts "
         class="button"
-        tag="button"
-        :disabled="$store.state.idSelected[0] == -1"
+        @click="editProduct"
       >
-        {{ buttons[0].name }}
-      </router-link>
+        Editar producto
+      </button>
+      
       <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
@@ -42,6 +42,7 @@
       <router-link to="/product-category" class="button" tag="button">
         Administrar categorías
       </router-link>
+     
     </ul>
   </aside>
 </template>
@@ -70,6 +71,11 @@ export default {
       if (this.$store.state.idSelected[0] == -1) return false;
       else if (this.itemtype == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
+    },  canEditProducts() {
+      console.log(this.$store.state.idSelected[1] == null && this.tipo == "products")
+      if (this.$store.state.idSelected[0] == -1) return true;
+      else if (this.tipo == "promotions") return true;
+      return this.$store.state.idSelected[1] == true;
     },
     canDeleteProm() {
       if (
@@ -92,9 +98,22 @@ export default {
 
       if (id != -1) {
         this.$router.push(`/descuento_producto/${id}`);
-      } else {
-        alert("Seleccione un producto");
-      }
+       }else{
+         alert("Seleccione un producto")
+          
+       }
+      
+    },
+    async editProduct() {
+      const id = this.$store.state.idSelected[0];
+      
+      
+       if(id != -1 ){
+        this.$router.push(`/editar_producto/${id}`);
+       }else{
+         alert("Seleccione un producto")
+       }
+      
     },
     async eliminarProm() {
       const idprom = this.$store.state.idSelected[0];

@@ -35,7 +35,7 @@ export default {
       } else {
         date = new Date(this.fecha_fin);
       }
-      const day = date.getDate() + 1;
+      const day = date.getDate();
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
       return `${day}-${month}-${year}`;

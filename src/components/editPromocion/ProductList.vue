@@ -1,32 +1,34 @@
 <template>
-  <div class="product-list">
-    <div
-      class="it-container"
-      v-for="(product, index) of this.products"
-      :key="product.cod_prod"
-    >
-      <h6>Producto {{ index + 1 }}</h6>
-      <div class="it-add">
-        <button class="del-button" @click="deleteProduct(product.cod_prod)">
-          X
-        </button>
-        <Item
-          :id_product="product.cod_prod"
-          :nombre="product.nombre_prod"
-          :precio="product.precio_unid"
-          :descripcion="product.descripcion"
-          :fecha="product.fecha_adic"
-        >
-        </Item>
-        <label>Cantidad: </label>
-        <input
-          type="number"
-          min="1"
-          :max="product.cantidad"
-          v-model.number="cant_products[product.cod_prod][0]"
-          @change="upCounts(product.cod_prod)"
-        />
-      </div>
+    <div class="product-list">
+        <div class="it-container" v-for="(product, index) of this.products" :key="product.cod_prod">
+            <h6>Producto {{index + 1}}</h6>
+            <div class="it-add">
+                <button class="del-button" @click="deleteProduct(product.cod_prod)">X</button>
+                <Item 
+                    :id_product="product.cod_prod"
+                    :nombre="product.nombre_prod"
+                    :precio="product.precio_unid"
+                    :descripcion="product.descripcion"
+                    :fecha="product.fecha_adic">
+                </Item>
+                <label>Cantidad: </label>
+                <input type="number" min="1" 
+                :max="product.cantidad"
+                v-model.number="cant_products[product.cod_prod][0]"
+                @change="upCounts(product.cod_prod)"
+                onkeydown="return false"
+                />
+            </div>
+        </div>
+        <div class="it-container" v-if="this.products.length < 5">
+            <h6>Nuevo Producto</h6>            
+            <div class="it-add" @click="showModal=!showModal;">
+                <img class="im-add" src="@/assets/add-product.png" alt="" width="340">
+            </div>          
+        </div>
+        <ModalProduct v-if="this.showModal"></ModalProduct>
+        <button class="modl-button term" @click="addProducts()" v-if="this.showModal">Añadir productos</button>
+        <button class="modl-button ext" @click="updateProducts()" v-if="this.showModal">X</button>
     </div>
     <div class="it-container" v-if="this.products.length < 5">
       <h6>Nuevo Producto</h6>
@@ -101,17 +103,16 @@ export default {
       this.$store.state.groupIDselected[id] = this.cant_products[id];
     },
   },
-  async mounted() {
-    const response = await this.$http.get(
-      `/promotions/products/${this.$store.state.idSelected[0]}`
-    );
-    const datos = response.data.datos;
-    let product_previus = {};
-    for (let dato of datos) {
-      product_previus[dato.cod_prod] = [
-        1 /*product_previus.cant_en_prom*/,
-        10 /*product_previus.cantidad*/,
-      ];
+    async mounted(){
+        const response = await this.$http.get(`/promotions/${this.$store.state.idSelected[0]}`);
+        const datos = response.data.prod;
+        let product_previus = {};
+        for(let dato of datos){
+            product_previus[dato.cod_prod] = [dato.cant_prod, dato.cantidad]
+        }
+        this.$store.commit("updateGroup", product_previus);
+        this.getProducts();
+
     }
     this.$store.commit("updateGroup", product_previus);
     this.getProducts();

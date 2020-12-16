@@ -5,7 +5,7 @@
     >
     <div class="navbar-nav">
       <div>
-        <button @click="changePass" class="nav-link">
+        <button @click="changePass()" class="nav-link">
           <img src="@/assets/logo.png" height="30px" width="30px" /> Paula
           Wilson <b class="caret"></b>
         </button>
@@ -15,13 +15,18 @@
 </template>
 
 <script>
-
 export default {
   name: "Nav",
   methods: {
     changePass() {
-      if (this.$store.state.auth) this.$store.commit("logout");
-      else this.$store.commit("login");
+      if (localStorage.getItem("session-vue") == "true") this.logout();
+      else this.login();
+    },
+    login() {
+      localStorage.setItem("session-vue", "true");
+    },
+    logout() {
+      localStorage.setItem("session-vue", "false");
     },
   },
 };

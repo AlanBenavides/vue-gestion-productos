@@ -40,6 +40,9 @@
       <p class="datos_info datos_descripcion">
         {{ datos.descripcion }}
       </p>
+      <div v-if="isClient" class="datos_container-button">
+        <button class="datos_button">Añadir al carrito</button>
+      </div>
     </div>
   </section>
 </template>
@@ -49,7 +52,12 @@ export default {
   name: "Datos",
   props: ["datos"],
   data: function () {
-    return {};
+    return {
+      isClient: false,
+    };
+  },
+  mounted: function () {
+    this.isClient = localStorage.getItem("session-vue") == "true";
   },
   methods: {
     transformDate(value) {
@@ -113,5 +121,19 @@ export default {
 
 .datos_unids {
   font-size: 20px;
+}
+
+.datos_container-button {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.datos_button {
+  background-color: var(--color-btn);
+  border: none;
+  border-radius: var(--border-radius);
+  color: white;
+  padding: 1rem 2rem;
+  margin-right: 0;
 }
 </style>
