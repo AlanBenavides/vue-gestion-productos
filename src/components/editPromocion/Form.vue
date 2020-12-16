@@ -218,7 +218,7 @@ import {
   between,
   integer,
 } from "vuelidate/lib/validators";
-import Alert from "@/components/Alert.vue"
+import Alert from "@/components/Alert.vue";
 
 const alpha = helpers.regex("alpha", /^[a-zA-Z0-9ñ\sáéíóúÁÉÍÓÚ.,:;'`"-]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
@@ -264,7 +264,7 @@ const min_products = (value) => {
 export default {
   name: "Form",
   props: ["image"],
-  components: {Alert},
+  components: { Alert },
   data() {
     return {
       disabled: false,
@@ -318,27 +318,23 @@ export default {
   methods: {
     async submitForm() {
       try {
-        if (!this.$v.promocion.$invalid) {
-          if (this.image == "") this.alert("warning","Registra la imagen de la promoción");
-          else {
-            for (let id in this.$store.state.groupIDselected) {
-              if (
-                this.promocion.cantidad *
-                  this.$store.state.groupIDselected[id][0] >
-                this.$store.state.groupIDselected[id][1]
-              ) {
-                this.alert("warning","No existen suficientes productos para esta promoción.");
-                return;
-              }
-            }
-            await this.sendDataProm();
-            this.alert("success","Datos de la promoción editados exitosamente");
+        if (this.image == "")
+          throw new Error("warning", "Registra la imagen de la promoción");
+
+        for (let id in this.$store.state.groupIDselected) {
+          if (
+            this.promotion.cantidad * this.$store.state.groupIDselected[id][0] >
+            this.$store.state.groupIDselected[id][1]
+          ) {
+            throw new Error(
+              "No existen suficientes productos para esta promoción."
+            );
           }
-        } else {
-          this.alert("warning","Rellene todos los datos correctamente");
+          await this.sendDataProm();
+          this.alert("success", "Nueva promoción creada exitosamente");
         }
       } catch (error) {
-        this.alert("warning",error);
+        this.alert("warning", error);
       }
     },
     async sendDataProm() {
@@ -359,16 +355,16 @@ export default {
     },
     parseDate(dat) {
       const date = new Date(dat);
-      return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
     },
-    alert(alertType, alertMessage){
+    alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
-    }
+    },
   },
   computed: {
     isAllValid() {
       return this.$v.promocion.$invalid || this.image == ""
-        ? "form_button_disabled"
+        ? "button-disabled"
         : "";
     },
   },
@@ -470,10 +466,15 @@ export default {
 }
 
 .formulario_check-input {
-  border: 1px solid var(--font-color-accept);
+  border: 1px solid var(--font-color-accept) !important;
 }
 
 .formulario_check-input-error {
-  border: 1px solid var(--font-color-error);
+  border: 1px solid var(--font-color-error) !important;
+}
+
+.button-disabled {
+  background: var(--color-btn-disable);
+  border: 2px solid var(--color-btn-disable);
 }
 </style>

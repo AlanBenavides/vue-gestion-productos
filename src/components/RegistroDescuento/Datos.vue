@@ -89,27 +89,35 @@
           >
             Aplicar descuento
           </button>
-          <button :disabled="!descuento.hayDescuento" @click="confirmDeletion($event);" class="formulario_button" :class="!descuento.hayDescuento ? 'button_disabled': ''">
+          <button
+            :disabled="!descuento.hayDescuento"
+            @click="confirmDeletion($event)"
+            class="formulario_button"
+            :class="!descuento.hayDescuento ? 'button_disabled' : ''"
+          >
             Eliminar descuento
           </button>
         </div>
       </form>
     </div>
     <Alert ref="alert"></Alert>
-    <Confirm ref="confirm" @taken-decision="executeAction($event,deleteDiscount)"></Confirm>
+    <Confirm
+      ref="confirm"
+      @taken-decision="executeAction($event, deleteDiscount)"
+    ></Confirm>
   </section>
 </template>
 
 <script>
-import Confirm from "@/components/Confirm.vue"
-import Alert from "@/components/Alert.vue"
+import Confirm from "@/components/Confirm.vue";
+import Alert from "@/components/Alert.vue";
 import { between, helpers, required } from "vuelidate/lib/validators";
 const alpha2 = helpers.regex("alpha1", /^[0-9\s]*$/);
 
 export default {
   name: "Datos",
   props: ["datos"],
-  components: {Confirm, Alert},
+  components: { Confirm, Alert },
   data: function () {
     return {
       descuento: {
@@ -145,13 +153,13 @@ export default {
       try {
         if (!this.$v.descuento.$invalid) {
           await this.sendDataDiscounts();
-          this.alert("success","Descuento creado exitosamente");
+          this.alert("success", "Descuento creado exitosamente");
           this.descuento.hayDescuento = true;
         } else {
-          this.alert("warning","Rellene todos los datos correctamente");
+          this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning",error);
+        this.alert("warning", error);
       }
     },
     async sendDataDiscounts() {
@@ -172,10 +180,10 @@ export default {
         throw new Error("Cantidad de productos insuficiente ");
       }
     },
-    async deleteDiscount(){
+    async deleteDiscount() {
       try {
         await this.$http.delete(`discounts/${this.datos.cod_prod}`);
-        this.alert("success","Eliminación exitosa");
+        this.alert("success", "Eliminación exitosa");
         this.descuento.porcentaje = "";
         this.descuento.cantidad = null;
         this.descuento.hayDescuento = false;
@@ -183,21 +191,23 @@ export default {
         this.alert("warning", error);
       }
     },
-    confirmDeletion(defaultEvent){
+    confirmDeletion(defaultEvent) {
       defaultEvent.preventDefault();
-      this.confirm("¿Seguro que quiere eliminar el descuento de este producto?");
+      this.confirm(
+        "¿Seguro que quiere eliminar el descuento de este producto?"
+      );
     },
-    confirm(confirmMessage){
-      this.$refs.confirm.showConfirm(confirmMessage);  
+    confirm(confirmMessage) {
+      this.$refs.confirm.showConfirm(confirmMessage);
     },
-    executeAction(takenDecision, functionToExecute){
-      if(takenDecision){
+    executeAction(takenDecision, functionToExecute) {
+      if (takenDecision) {
         functionToExecute();
       }
     },
-    alert(alertType, alertMessage){
+    alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
-    }
+    },
   },
   mounted: async function () {
     const response = await this.$http.get(`discounts/${this.$route.params.id}`);
@@ -270,11 +280,11 @@ export default {
 }
 
 .formulario_check-input {
-  border: 1px solid var(--font-color-accept);
+  border: 1px solid var(--font-color-accept) !important;
 }
 
 .formulario_check-input-error {
-  border: 1px solid var(--font-color-error);
+  border: 1px solid var(--font-color-error) !important;
 }
 
 .precio_descuento {

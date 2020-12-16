@@ -4,7 +4,7 @@
 
     <div class="edicion_container">
       <EditImages @sendimages="passImages($event)" />
-      <EditForm class="edicion_form" :images="images"/>
+      <EditForm class="edicion_form" :images="images" />
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   name: "EditarProducto",
   components: {
     EditForm,
-    EditImages
+    EditImages,
   },
   data: function () {
     return {
@@ -29,7 +29,7 @@ export default {
       this.images = images;
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -39,7 +39,7 @@ export default {
 }
 
 .edicion_tittle {
-  color: #8d8d8d;
+  color: var(--color-title);
   font-weight: 600;
 }
 
@@ -51,11 +51,11 @@ export default {
 
 .edicion_form {
   grid-column: 2 / 3;
-  grid-row:1/3;
+  grid-row: 1/3;
 }
 
 .edicion_image {
   grid-column: 1 / 2;
-  grid-row:1/3;
+  grid-row: 1/3;
 }
 </style>

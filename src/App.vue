@@ -35,7 +35,7 @@ export default {
   --font-color-primary: #3b4754;
   --font-color-secondary: #7a7a7a;
   --font-color-error: #ff4b4b;
-  --font-color-accept: #2ac817;
+  --font-color-accept: #4caf50;
   --font-discount-after: #ff4b4b;
   --font-discount-before: #2ac817;
   --border-radius: 5px;

@@ -47,7 +47,7 @@ export default {
 .admin_productos-title {
   font-size: 2rem;
   font-weight: 600;
-  color: #42b983;
+  color: var(--color-title);
   margin-bottom: 4rem;
 }
 </style>

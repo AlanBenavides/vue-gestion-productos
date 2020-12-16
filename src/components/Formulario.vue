@@ -283,7 +283,11 @@
         </div>
       </div>
 
-      <button :disabled="$v.producto.$invalid" class="formulario_button">
+      <button
+        :disabled="$v.producto.$invalid"
+        :class="$v.producto.$invalid ? 'button-disabled' : ''"
+        class="formulario_button"
+      >
         Confirmar
       </button>
     </form>
@@ -336,7 +340,7 @@ const validate_decimales = (value) => {
 
 export default {
   name: "Formulario",
-  components: {Alert},
+  components: { Alert },
   data() {
     return {
       disabled: false,
@@ -419,7 +423,7 @@ export default {
           this.alert("warning", "Rellene todos los datos correctamente");
         }
       } catch (error) {
-        this.alert("warning",error);
+        this.alert("warning", error);
       }
     },
     async sendDataProduct() {
@@ -450,7 +454,7 @@ export default {
         });
       });
     },
-    alert(alertType, alertMessage){
+    alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
   },
@@ -552,10 +556,15 @@ export default {
 }
 
 .formulario_check-input {
-  border: 1px solid var(--font-color-accept);
+  border: 1px solid var(--font-color-accept) !important;
 }
 
 .formulario_check-input-error {
-  border: 1px solid var(--font-color-error);
+  border: 1px solid var(--font-color-error) !important;
+}
+
+.button-disabled {
+  background: var(--color-btn-disable);
+  border: 2px solid var(--color-btn-disable);
 }
 </style>

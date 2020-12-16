@@ -10,10 +10,10 @@
         <label
           ><div class="formulario_name">Nombre Producto:</div>
           <input
-            :style="
+            :class="
               $v.producto.nombre_prod.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error '
+                : 'formulario_check-input '
             "
             type="text"
             required
@@ -53,10 +53,10 @@
         <label
           ><div class="formulario_name">Descripción:</div>
           <textarea
-            :style="
+            :class="
               $v.producto.descripcion.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error '
+                : 'formulario_check-input '
             "
             v-model="producto.descripcion"
             cols="50"
@@ -64,7 +64,7 @@
             maxlength="1000"
           />
         </label>
-        <div class="formulario_check-error1">
+        <div class="formulario_check-count">
           {{ `${producto.descripcion.length}/1000` }} caracteres.
         </div>
 
@@ -87,10 +87,10 @@
         <label
           ><div class="formulario_name">Categoría:</div>
           <input
-            :style="
+            :class="
               $v.producto.categoria.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error '
+                : 'formulario_check-input '
             "
             list="categorias"
             v-model="producto.categoria"
@@ -138,10 +138,10 @@
           <input
             type="text"
             v-model="producto.precio_unid"
-            :style="
+            :class="
               $v.producto.precio_unid.$invalid
-                ? 'border:1px solid red '
-                : 'border:1px solid green '
+                ? 'formulario_check-input-error '
+                : 'formulario_check-input '
             "
           />
         </label>
@@ -470,13 +470,13 @@ export default {
 <style>
 .formulario_tittle {
   text-align: left;
-  color: #919ca9;
+  color: var(--font-color-primary);
   font-size: 1.4rem;
   font-weight: 600;
 }
 
 .formulario_form {
-  background-color: #edf0f4;
+  background-color: var(--background);
   padding: 2rem;
   text-align: left;
 }
@@ -496,8 +496,8 @@ export default {
 .formulario textarea,
 .formulario select {
   border: none;
-  border: 2px solid #8b8b8b;
-  border-radius: 6px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
   padding: 5px 7px;
 }
 
@@ -521,7 +521,7 @@ export default {
 }
 
 .formulario_name {
-  color: #919ca9;
+  color: var(--font-color-secondary);
 }
 
 .formulario_name-span {
@@ -538,36 +538,49 @@ export default {
 }
 
 .formulario_check-error {
-  color: red;
+  color: var(--font-color-error);
 }
 
 .formulario_check-error-center {
   text-align: center;
-  color: red;
+  color: var(--font-color-error);
 }
 
 .formulario_button {
   margin: auto;
   display: block;
-  background-color: rgb(51, 51, 51);
+  background-color: var(--color-btn);
   padding: 13px 100px;
   color: white;
   font-size: 20px;
   font-weight: 700;
 }
-.formulario_check-error1 {
-  color: black;
+
+.formulario_check-count {
   text-align: right;
 }
+
 .checked::after {
+  content: "";
   display: block;
+  border-radius: 50%;
   height: 7px;
   width: 7.95px;
-  background: #8b8b8b;
-  content: "";
+  background: var(--font-color-secondary);
   position: relative;
   top: 3px;
   left: 2.5px;
-  border-radius: 50%;
+}
+
+.formulario_check-input {
+  border: 1px solid var(--font-color-accept) !important;
+}
+
+.formulario_check-input-error {
+  border: 1px solid var(--font-color-error) !important;
+}
+.button-disabled {
+  background: var(--color-btn-disable);
+  border: 2px solid var(--color-btn-disable);
 }
 </style>

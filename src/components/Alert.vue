@@ -1,31 +1,31 @@
 <template>
-  <div v-if="show" class="alert" :class="type"> 
-    <span class="closebtn" @click="hideAlert()">&times;</span> 
-    {{message}}
+  <div v-if="show" class="alert" :class="type">
+    <span class="closebtn" @click="hideAlert()">&times;</span>
+    {{ message }}
   </div>
 </template>
 
 <script>
 export default {
   name: "Alert",
-  data(){
+  data() {
     return {
       show: false,
-      type: '',
-      message: '',
-    }
+      type: "",
+      message: "",
+    };
   },
   methods: {
-    showAlert(alertType, alertMessage){
+    showAlert(alertType, alertMessage) {
       this.type = alertType;
       this.message = alertMessage;
       this.show = true;
     },
-    hideAlert(){
+    hideAlert() {
       this.show = false;
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -40,10 +40,11 @@ export default {
 }
 
 .success {
-  background-color: #4CAF50;
+  background-color: var(--font-color-accept);
 }
 
 .warning {
+  /* background-color: var(--font-discount-after) */
   background-color: #ff9800;
 }
 

@@ -271,19 +271,19 @@ h4 {
 
 .short-button {
   background: none;
-  border: 2px solid var(--color-border);
+  border: 1px solid var(--color-border);
   border-left: none;
   padding: 5px 1rem;
 }
 
 .short-button:first-child {
-  border-top-left-radius: 5px;
+  border-top-left-radius: var(--border-radius);
   border-bottom-left-radius: 5px;
-  border-left: 2px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
 }
 .short-button:last-child {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 .short-button:focus {
