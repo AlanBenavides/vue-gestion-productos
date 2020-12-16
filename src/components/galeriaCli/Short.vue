@@ -177,7 +177,6 @@ export default {
       expresion: "",
       hayResultados: true,
       arrayCategoria: [],
-      //arrayAnt: [],
       orderButtons: [
         {
           order: "nombre_prod",

@@ -22,42 +22,51 @@
       >
         {{ buttons[1].name }}
       </router-link>
-       <button
-        :disabled="canEditProducts "
-        class="button"
-        @click="editProduct"
-      >
+      <button :disabled="canEditProducts" class="button" @click="editProduct">
         Editar producto
       </button>
-      
+
       <button :disabled="canAddToProm" class="button" @click="hayCantidad">
         Aplicar descuento
       </button>
-      <button class="button" :disabled="!isProduct" @click="handlerConfirmProductDeletion()">
+      <button
+        class="button"
+        :disabled="!isProduct"
+        @click="handlerConfirmProductDeletion()"
+      >
         Eliminar Producto
       </button>
-      <button class="button" :disabled="canDeleteProm" @click="handlerConfirmPromotionDeletion()">
+      <button
+        class="button"
+        :disabled="canDeleteProm"
+        @click="handlerConfirmPromotionDeletion()"
+      >
         Eliminar Promocion
       </button>
       <router-link to="/product-category" class="button" tag="button">
         Administrar categorías
       </router-link>
-     
     </ul>
     <Alert ref="alert"></Alert>
-    <Confirm ref="confirm" @taken-decision="executeAction($event,eliminarProm)"></Confirm>
-    <Confirm ref="confirm1" @taken-decision="executeAction($event,deleteProduct)"></Confirm>
+    <Confirm
+      ref="confirm"
+      @taken-decision="executeAction($event, eliminarProm)"
+    ></Confirm>
+    <Confirm
+      ref="confirm1"
+      @taken-decision="executeAction($event, deleteProduct)"
+    ></Confirm>
   </aside>
 </template>
 
 <script>
 import Alert from "@/components/Alert.vue";
-import Confirm from "@/components/Confirm.vue"
+import Confirm from "@/components/Confirm.vue";
 
 export default {
   name: "Options",
   props: ["itemtype"],
-  components: {Alert, Confirm},
+  components: { Alert, Confirm },
   data: function () {
     return {
       buttons: [
@@ -78,8 +87,8 @@ export default {
       if (this.$store.state.idSelected[0] == -1) return false;
       else if (this.itemtype == "promotions") return true;
       return this.$store.state.idSelected[1] == null;
-    },  canEditProducts() {
-      console.log(this.$store.state.idSelected[1] == null && this.tipo == "products")
+    },
+    canEditProducts() {
       if (this.$store.state.idSelected[0] == -1) return true;
       else if (this.tipo == "promotions") return true;
       return this.$store.state.idSelected[1] == true;
@@ -109,11 +118,23 @@ export default {
         this.alert("warning", "Seleccione un producto");
       }
     },
-    handlerConfirmPromotionDeletion(){
+    async editProduct() {
+      const id = this.$store.state.idSelected[0];
+
+      if (id != -1) {
+        this.$router.push(`/editar_producto/${id}`);
+      } else {
+        alert("Seleccione un producto");
+      }
+    },
+    handlerConfirmPromotionDeletion() {
       const idprom = this.$store.state.idSelected[0];
 
       if (idprom != -1) {
-        this.confirm("Esta seguro que desea eliminar esta promocion", "confirm");
+        this.confirm(
+          "Esta seguro que desea eliminar esta promocion",
+          "confirm"
+        );
       } else {
         this.alert("warning", "Seleccione una promocion");
       }
@@ -128,15 +149,18 @@ export default {
       const response = await this.$http.get(`products/${id}`);
       return response.data.datos[0].cantidad;
     },
-    async handlerConfirmProductDeletion(){
+    async handlerConfirmProductDeletion() {
       const idProduct = this.$store.state.idSelected[0];
       const promotions = await this.getPromotions(idProduct);
       const disconunt =
         (await this.getDiscount(idProduct)).length != 0 ? true : false;
       const promotionMessage =
         promotions.length != 0 ? this.renderPromotions(promotions) : "";
-      
-      this.confirm(this.getFormatedMessage(disconunt, promotionMessage), "confirm1");
+
+      this.confirm(
+        this.getFormatedMessage(disconunt, promotionMessage),
+        "confirm1"
+      );
     },
     async deleteProduct() {
       const idProduct = this.$store.state.idSelected[0];
@@ -168,16 +192,16 @@ export default {
         else return message;
       }
     },
-    alert(alertType, alertMessage){
+    alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
     },
-    confirm(confirmMessage, confirmRefId){
-      this.$refs[confirmRefId].showConfirm(confirmMessage);  
+    confirm(confirmMessage, confirmRefId) {
+      this.$refs[confirmRefId].showConfirm(confirmMessage);
     },
-    executeAction(takenDecision, functionToExecute){
-      if(takenDecision){
+    executeAction(takenDecision, functionToExecute) {
+      if (takenDecision) {
         functionToExecute();
-      }else{
+      } else {
         this.alert("success", "se cancelo la eliminacion");
       }
     },

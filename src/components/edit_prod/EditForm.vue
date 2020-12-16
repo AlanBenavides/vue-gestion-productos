@@ -67,7 +67,7 @@
         <div class="formulario_check-error1">
           {{ `${producto.descripcion.length}/1000` }} caracteres.
         </div>
-       
+
         <div
           class="formulario_check-error"
           v-if="!$v.producto.descripcion.maxLength"
@@ -176,26 +176,23 @@
         <div class="formulario_group">
           <label
             ><input
-               type="radio"
-              
-               :value="true"
+              type="radio"
+              :value="true"
               id="precio_unidades"
-              :class="!disabled? 'checked': ' '"
+              :class="!disabled ? 'checked' : ' '"
               @click="selectCantidad(false)"
-              v-model="producto.unidad" 
-
+              v-model="producto.unidad"
             />
-        
+
             <span class="formulario_name formulario_name-span">Unidades</span>
           </label>
           <input
             type="text"
-            
             :disabled="disabled"
             v-model="producto.cantidad"
             :required="!disabled"
           />
-          
+
           <div
             class="formulario_check-error"
             v-if="!$v.producto.cantidad.between"
@@ -223,15 +220,13 @@
               value="peso"
               id="precio_peso"
               @click="selectCantidad(true)"
-              :class="disabled ? 'checked': ' ' "
+              :class="disabled ? 'checked' : ' '"
               v-model="producto.unidad"
-
-              
             />
-           
+
             <span class="formulario_name formulario_name-span">Peso</span>
           </label>
-         
+
           <input
             type="text"
             step="0.25"
@@ -303,8 +298,6 @@ import {
 } from "vuelidate/lib/validators";
 
 const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ+áéíóúÁÉÍÓÚ'\s]*$/);
-//const alpha = helpers.regex("alpha", /^[0-9a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[' a-zA-ZÀ-ÿ\u00f1\u00d1]+$/);
-//const alpha1 = helpers.regex("alpha1", /^[a-zA-Z0-9ñ,´.\s]*$/);
 const alpha2 = helpers.regex("alpha1", /^[0-9,.\s]*$/);
 const alpha3 = helpers.regex("alpha3", /^[a-zA-Z\s]*$/);
 
@@ -366,7 +359,6 @@ export default {
       descripcion: {
         required,
         maxLength: maxLength(1000),
-      
       },
       categoria: {
         required,
@@ -394,20 +386,15 @@ export default {
     },
   },
   methods: {
-  
     selectCantidad(disabled) {
       this.disabled = disabled;
       if (!this.disabled) {
         this.producto.peso = null;
         this.producto.unidad_med = null;
-        //this.producto.cantidad = "";
       } else {
         this.producto.cantidad = null;
-        //this.producto.peso = "";
-        //this.producto.unidad_med = "";
       }
     },
-    
 
     async submitForm() {
       try {
@@ -429,9 +416,7 @@ export default {
     },
     async sendDataProduct(productId) {
       try {
-        console.log(this.producto.categoria)
         await this.$http.put(`products/${productId}`, {
-      
           nombre_prod: this.producto.nombre_prod,
           descripcion: this.producto.descripcion,
           categoria: this.producto.categoria,
@@ -449,39 +434,35 @@ export default {
       }
     },
     async sendImage(productId) {
-      //this.images.forEach(async (image) => {
-        await this.$http.put( `images/${productId}`, {
-          imagen: this.images,
-        });
-      //});
+      await this.$http.put(`images/${productId}`, {
+        imagen: this.images,
+      });
     },
     transformDate1(value) {
       const date = new Date(value);
-     
-      return `${date.getFullYear()}-${
-        date.getMonth() + 1
-      }-${date.getDate() + 1}`;
+
+      return `${date.getFullYear()}-${date.getMonth() + 1}-${
+        date.getDate() + 1
+      }`;
     },
   },
-   mounted: async function () {
-    const response = (await this.$http.get(`products/${this.$route.params.id}`)).data.datos[0];
-    this.producto.nombre_prod=response.nombre_prod
-    this.producto.descripcion =response.descripcion
-    this.producto.categoria=response.nombre_cat
-    this.producto.precio_unid=response.precio_unid
-    this.producto.unidad=response.unidad
-    this.producto.cantidad=response.cantidad
-    this.producto.peso=response.peso
-    this.producto.unidad_med=response.unidad_med
-    if(response.fecha_venc != null){
-
-      this.producto.fecha_venc=this.transformDate1(response.fecha_venc)
+  mounted: async function () {
+    const response = (await this.$http.get(`products/${this.$route.params.id}`))
+      .data.datos[0];
+    this.producto.nombre_prod = response.nombre_prod;
+    this.producto.descripcion = response.descripcion;
+    this.producto.categoria = response.nombre_cat;
+    this.producto.precio_unid = response.precio_unid;
+    this.producto.unidad = response.unidad;
+    this.producto.cantidad = response.cantidad;
+    this.producto.peso = response.peso;
+    this.producto.unidad_med = response.unidad_med;
+    if (response.fecha_venc != null) {
+      this.producto.fecha_venc = this.transformDate1(response.fecha_venc);
     }
-    if(response.peso){
+    if (response.peso) {
       this.selectCantidad(true);
-      
     }
-    //console.log(response.data.datos[0]);
   },
 };
 </script>
@@ -578,18 +559,15 @@ export default {
   color: black;
   text-align: right;
 }
-.checked::after{
-  display:block;
+.checked::after {
+  display: block;
   height: 7px;
   width: 7.95px;
-  background:#8b8b8b;
- content: "";
- position:relative;
- top: 3px;
- left: 2.5px;
- border-radius: 50%;
-    
- 
-     
+  background: #8b8b8b;
+  content: "";
+  position: relative;
+  top: 3px;
+  left: 2.5px;
+  border-radius: 50%;
 }
 </style>

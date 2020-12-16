@@ -19,7 +19,6 @@
 </template>
 
 <script>
-//import { Router } from 'express';
 export default {
   name: "Item",
   props: [
