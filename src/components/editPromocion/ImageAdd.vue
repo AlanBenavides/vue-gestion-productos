@@ -4,9 +4,14 @@
     <div class="image-add">
       <img
         class="img-prom"
-        @click="addFiles()"
         :src="imagen"
         :height="imagen == '/img/plus-circle.2de4ac5c.svg' ? 120 : ''"
+      />
+      <img 
+        class="edit-icon"
+        src="@/assets/edit-imagen.png"
+        @click="addFiles()"
+        alt=""
       />
     </div>
     <input
@@ -17,13 +22,16 @@
       class="images_input"
       @change="getImage()"
     />
-    <!-- <span class="formulario_check-error"> Coloque una fotografia </span> -->
+    <span class="formulario_check-error" v-if="!$v.image.required">
+      Coloque una fotografia
+    </span>
     <Alert ref="alert"></Alert>
   </div>
 </template>
 
 <script>
 import Alert from "@/components/Alert.vue";
+import { required } from "vuelidate/lib/validators";
 
 export default {
   name: "ImageAdd",
@@ -32,6 +40,11 @@ export default {
     return {
       image: "",
     };
+  },
+  validations: {
+    image: {
+      required
+    }
   },
   async mounted() {
     const response = await this.$http.get(
@@ -109,7 +122,7 @@ export default {
   margin: 32px;
 }
 .image-add {
-  z-index: -1;
+  position: relative;
   height: 436px;
   border-radius: var(--border-radius);
   background-color: var(--background);

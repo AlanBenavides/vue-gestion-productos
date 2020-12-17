@@ -29,7 +29,7 @@ export default {
   methods: {
     parseDate() {
       const date = new Date(this.fecha);
-      const day = date.getDate();
+      const day = date.getDate() + 1;
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
       return `${day}-${month}-${year}`;

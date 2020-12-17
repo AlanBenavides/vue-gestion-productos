@@ -122,7 +122,8 @@ export default {
     const datos = response.data.prod;
     let product_previus = {};
     for (let dato of datos) {
-      product_previus[dato.cod_prod] = [dato.cant_prod, dato.cantidad];
+      const response = await this.$http.get(`products/${dato.cod_prod}`);
+      product_previus[dato.cod_prod] = [dato.cant_prod, response.data.datos[0].cantidad];
     }
     this.$store.commit("updateGroup", product_previus);
     this.getProducts();
