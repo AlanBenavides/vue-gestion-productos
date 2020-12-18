@@ -63,7 +63,7 @@ ul.no-bullets {
 .price {
   align-items: right;
   position: absolute;
-  left: 37%;
+  left: 50%;
   color: var(--font-color-primary);
   display: inline-flex;
   font-weight: 600;

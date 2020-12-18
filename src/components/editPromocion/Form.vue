@@ -323,7 +323,7 @@ export default {
 
         for (let id in this.$store.state.groupIDselected) {
           if (
-            this.promotion.cantidad * this.$store.state.groupIDselected[id][0] >
+            this.promocion.cantidad * this.$store.state.groupIDselected[id][0] >
             this.$store.state.groupIDselected[id][1]
           ) {
             throw new Error(
@@ -331,7 +331,7 @@ export default {
             );
           }
           await this.sendDataProm();
-          this.alert("success", "Nueva promoción creada exitosamente");
+          this.alert("success", "Datos de la promoción editados exitosamente");
         }
       } catch (error) {
         this.alert("warning", error);
@@ -355,7 +355,7 @@ export default {
     },
     parseDate(dat) {
       const date = new Date(dat);
-      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() + 1}`;
     },
     alert(alertType, alertMessage) {
       this.$refs.alert.showAlert(alertType, alertMessage);
