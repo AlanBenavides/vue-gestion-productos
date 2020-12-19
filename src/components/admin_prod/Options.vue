@@ -91,7 +91,7 @@ export default {
     canEditProducts() {
       if (this.$store.state.idSelected[0] == -1) return true;
       else if (this.itemtype == "promotions") return true;
-      return this.$store.state.idSelected[1] == true;
+      return this.$store.state.idSelected[1] == false;
     },
     canDeleteProm() {
       if (
